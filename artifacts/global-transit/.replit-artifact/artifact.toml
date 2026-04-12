@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Global Transit"
+version = "1.0.0"
+id = "artifacts/global-transit"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24999
+
+[services.development]
+run = "pnpm --filter @workspace/global-transit run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/global-transit", "run", "build" ]
+publicDir = "artifacts/global-transit/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24999"
+BASE_PATH = "/"
