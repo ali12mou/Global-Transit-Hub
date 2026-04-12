@@ -17,7 +17,7 @@ export const translations = {
     },
     about: {
       title: "Spécialiste du Corridor Djibouti — Éthiopie",
-      description: "Global Transit orchestre les flux de marchandises entre les marchés mondiaux et l'Afrique de l'Est. Implantés à Djibouti, porte d'entrée incontournable de l'Éthiopie et du corridor est-africain, nous maîtrisons les dédouanements, la logistique portuaire et la chaîne d'approvisionnement régionale avec une expertise inégalée.",
+      description: "SA Global Transit & Service orchestre les flux de marchandises entre les marchés mondiaux et l'Afrique de l'Est. Implantés à Djibouti, porte d'entrée incontournable de l'Éthiopie et du corridor est-africain, nous maîtrisons les dédouanements, la logistique portuaire et la chaîne d'approvisionnement régionale avec une expertise inégalée.",
       missionTitle: "Notre Mission",
       missionText: "Faciliter l'accès des importateurs et exportateurs éthiopiens et est-africains aux marchés mondiaux, en offrant des solutions logistiques fiables, rapides et adaptées aux réalités locales.",
       stats: [
@@ -97,7 +97,7 @@ export const translations = {
       }
     },
     footer: {
-      copyright: "© 2025 Global Transit. Tous droits réservés. | Djibouti & Éthiopie",
+      copyright: "© 2025 SA Global Transit & Service. Tous droits réservés. | Djibouti & Éthiopie",
       links: ["Politique de Confidentialité", "Termes & Conditions", "Conformité Douanière"]
     }
   },
@@ -199,7 +199,7 @@ export const translations = {
       }
     },
     footer: {
-      copyright: "© 2025 Global Transit. جميع الحقوق محفوظة. | جيبوتي وإثيوبيا",
+      copyright: "© 2025 SA Global Transit & Service. جميع الحقوق محفوظة. | جيبوتي وإثيوبيا",
       links: ["سياسة الخصوصية", "الشروط والأحكام", "الامتثال الجمركي"]
     }
   },
@@ -301,7 +301,7 @@ export const translations = {
       }
     },
     footer: {
-      copyright: "© 2025 Global Transit. መብቱ በህግ የተጠበቀ ነው። | ጅቡቲ እና ኢትዮጵያ",
+      copyright: "© 2025 SA Global Transit & Service. መብቱ በህግ የተጠበቀ ነው። | ጅቡቲ እና ኢትዮጵያ",
       links: ["የግላዊነት ፖሊሲ", "ውሎች እና ሁኔታዎች", "የጉምሩክ ህጎች"]
     }
   },
@@ -403,7 +403,7 @@ export const translations = {
       }
     },
     footer: {
-      copyright: "© 2025 Global Transit. Haki zote zimehifadhiwa. | Djibouti & Ethiopia",
+      copyright: "© 2025 SA Global Transit & Service. Haki zote zimehifadhiwa. | Djibouti & Ethiopia",
       links: ["Sera ya Faragha", "Vigezo na Masharti", "Utekelezaji wa Forodha"]
     }
   },
@@ -505,7 +505,7 @@ export const translations = {
       }
     },
     footer: {
-      copyright: "© 2025 Global Transit. Dhammaan xuquuqaha waa la xafiday. | Jabuuti & Itoobiya",
+      copyright: "© 2025 SA Global Transit & Service. Dhammaan xuquuqaha waa la xafiday. | Jabuuti & Itoobiya",
       links: ["Siyaasadda Khaaska ah", "Shuruudaha & Xaaladaha", "Xeerka Jamaarada"]
     }
   },
@@ -607,7 +607,7 @@ export const translations = {
       }
     },
     footer: {
-      copyright: "© 2025 Global Transit. Mirgi hunduu seeraan eegamaadha. | Jibuutii & Itoophiyaa",
+      copyright: "© 2025 SA Global Transit & Service. Mirgi hunduu seeraan eegamaadha. | Jibuutii & Itoophiyaa",
       links: ["Imaammata Iccitii", "Haalawwan & Dambiiwwan", "Seeraa Gumrukaa"]
     }
   }

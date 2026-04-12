@@ -12,7 +12,7 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-6">
               <Ship className="h-8 w-8 text-secondary" />
-              <span className="text-white font-serif font-bold text-2xl tracking-wide">Global Transit</span>
+              <span className="text-white font-serif font-bold text-lg tracking-wide leading-tight">SA Global Transit<br/><span className="text-secondary text-xs font-medium tracking-widest">& Service</span></span>
             </div>
             <p className="text-white/60 mb-6 max-w-sm">
               {t.hero.subheadline}
