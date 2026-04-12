@@ -41,7 +41,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollTo('hero')}>
           <Ship className="h-8 w-8 text-accent" />
-          <span className="text-white font-serif font-bold text-xl tracking-wide leading-tight">SA Global Transit<br/><span className="text-secondary text-sm font-medium tracking-widest">& Service</span></span>
+          <span className="text-white font-serif font-bold text-base tracking-wide leading-tight">Global Transit<br/><span className="text-secondary text-xs font-medium tracking-widest">and Transport Services</span></span>
         </div>
 
         {/* Desktop Nav */}

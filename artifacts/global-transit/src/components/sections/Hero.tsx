@@ -34,7 +34,7 @@ export function Hero() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-secondary/90 backdrop-blur-sm text-white mb-6 border-l-4 border-accent uppercase tracking-widest text-sm font-bold">
-              SA Global Transit & Service
+              Global Transit and Transport Services
             </div>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white leading-tight mb-6">
