@@ -1,0 +1,119 @@
+import { Link } from "wouter";
+import { useLanguage } from "../../contexts/LanguageContext";
+import { Linkedin, Twitter, Facebook, Phone, Mail, MessageCircle, MapPin } from "lucide-react";
+
+export function Footer() {
+  const { t } = useLanguage();
+
+  return (
+    <footer className="bg-[#080d26] text-white pt-12 md:pt-16 pb-8 border-t-[4px] border-secondary">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+
+          {/* Logo + Social */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center mb-5">
+              <div className="bg-white rounded-md px-3 py-2">
+                <img src="/logo.png" alt="Global Transit and Transport Services" className="h-14 w-auto" />
+              </div>
+            </div>
+            <p className="text-white/60 mb-6 text-sm leading-relaxed max-w-xs">
+              {t.hero.subheadline}
+            </p>
+            <div className="flex gap-3">
+              <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors">
+                <Linkedin className="h-4 w-4" />
+              </a>
+              <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors">
+                <Twitter className="h-4 w-4" />
+              </a>
+              <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors">
+                <Facebook className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Nav links */}
+          <div>
+            <h4 className="font-serif font-bold text-base mb-5">{t.nav.aboutUs}</h4>
+            <ul className="space-y-3">
+              <li><a href="#" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.ourCompany}</a></li>
+              <li><a href="#" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.ourTeam}</a></li>
+              <li><a href="#" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.careers}</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-serif font-bold text-base mb-5">
+              <Link href="/activities" className="hover:text-secondary transition-colors">
+                {t.nav.ourBusiness}
+              </Link>
+            </h4>
+            <ul className="space-y-3">
+              <li>
+                <Link href="/activities#maritime" className="text-white/60 hover:text-secondary transition-colors text-sm">
+                  {t.services.maritime.title}
+                </Link>
+              </li>
+              <li>
+                <Link href="/activities#land" className="text-white/60 hover:text-secondary transition-colors text-sm">
+                  {t.services.land.title}
+                </Link>
+              </li>
+              <li>
+                <Link href="/activities#supply" className="text-white/60 hover:text-secondary transition-colors text-sm">
+                  {t.services.supply.title}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="font-serif font-bold text-base mb-5">{t.contact.info.title}</h4>
+            <address className="not-italic text-white/60 space-y-3">
+              <div className="flex items-start gap-2">
+                <MapPin className="h-4 w-4 text-secondary shrink-0 mt-0.5" />
+                <span className="text-sm">{t.contact.info.address}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-secondary shrink-0" />
+                <a href="tel:+25321341716" className="hover:text-secondary transition-colors text-sm">+253 21 34 17 16</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-secondary shrink-0" />
+                <a href="tel:+25377821832" className="hover:text-secondary transition-colors text-sm">+253 77 82 18 32</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4 text-[#25D366] shrink-0" />
+                <a href="https://wa.me/25377696130" target="_blank" rel="noopener noreferrer" className="hover:text-[#25D366] transition-colors font-medium text-sm">+253 77 69 61 30 (WhatsApp)</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-secondary shrink-0" />
+                <a href="mailto:info@gttsgroup.com" className="hover:text-secondary transition-colors text-sm break-all">info@gttsgroup.com</a>
+              </div>
+            </address>
+          </div>
+
+        </div>
+
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          <p className="text-white/50 text-xs sm:text-sm">{t.footer.copyright}</p>
+          <div className="flex flex-wrap justify-center md:justify-center items-center gap-4 sm:gap-6 text-xs sm:text-sm">
+            <Link
+              href="/login?next=/admin"
+              className="text-secondary font-semibold hover:text-secondary/90 transition-colors"
+            >
+              {t.nav.admin}
+            </Link>
+            {t.footer.links.map((link, i) => (
+              <a key={i} href="#" className="text-white/50 hover:text-white transition-colors">
+                {link}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
