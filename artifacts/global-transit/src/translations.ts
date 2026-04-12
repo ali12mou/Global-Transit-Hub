@@ -11,75 +11,94 @@ export const translations = {
       language: "Français"
     },
     hero: {
-      headline: "Connecter les Marchés, Déplacer le Monde",
-      subheadline: "Votre partenaire de confiance pour la logistique mondiale, le fret maritime et les solutions de chaîne d'approvisionnement intercontinentales.",
+      headline: "La Porte vers Djibouti, l'Éthiopie & l'Afrique de l'Est",
+      subheadline: "Votre partenaire de référence pour l'import-export entre l'Europe, l'Asie et l'Afrique de l'Est — via le port stratégique de Djibouti.",
       cta: "Découvrir nos services"
     },
     about: {
-      title: "Autorité Mondiale en Logistique",
-      description: "Fondée sur les principes de fiabilité et d'efficacité, Global Transit orchestre des mouvements de fret complexes à travers tous les continents. Notre vaste réseau et notre expertise maritime garantissent que votre cargaison atteint sa destination de manière sûre et ponctuelle.",
+      title: "Spécialiste du Corridor Djibouti — Éthiopie",
+      description: "Global Transit orchestre les flux de marchandises entre les marchés mondiaux et l'Afrique de l'Est. Implantés à Djibouti, porte d'entrée incontournable de l'Éthiopie et du corridor est-africain, nous maîtrisons les dédouanements, la logistique portuaire et la chaîne d'approvisionnement régionale avec une expertise inégalée.",
       missionTitle: "Notre Mission",
-      missionText: "Fournir des solutions logistiques de premier ordre qui stimulent le commerce mondial, en privilégiant la sécurité, la durabilité et l'excellence opérationnelle.",
+      missionText: "Faciliter l'accès des importateurs et exportateurs éthiopiens et est-africains aux marchés mondiaux, en offrant des solutions logistiques fiables, rapides et adaptées aux réalités locales.",
       stats: [
-        { value: "150+", label: "Pays Desservis" },
-        { value: "2M+", label: "EVP Transportés Annuellement" },
-        { value: "45", label: "Années d'Excellence" }
+        { value: "Djibouti", label: "Hub Stratégique" },
+        { value: "Éthiopie", label: "Marché Principal" },
+        { value: "15+", label: "Pays d'Afrique de l'Est Desservis" }
       ]
+    },
+    regions: {
+      title: "Notre Zone de Couverture",
+      subtitle: "Djibouti, Éthiopie et Afrique de l'Est",
+      djibouti: {
+        name: "Djibouti",
+        role: "Hub Maritime Stratégique",
+        desc: "Djibouti est la porte d'entrée maritime de l'Afrique de l'Est. Notre bureau principal coordonne toutes les opérations portuaires, le transit douanier et le stockage."
+      },
+      ethiopia: {
+        name: "Éthiopie",
+        role: "Marché d'Importation Clé",
+        desc: "Pays enclavé de 120 millions d'habitants, l'Éthiopie dépend du port de Djibouti pour 95% de ses échanges. Nous gérons l'import de marchandises, équipements et matières premières."
+      },
+      eastAfrica: {
+        name: "Afrique de l'Est",
+        role: "Expansion Régionale",
+        desc: "Somalie, Kenya, Soudan, Érythrée, Ouganda, Rwanda — notre réseau régional s'étend à travers toute l'Afrique de l'Est pour une logistique sans frontières."
+      }
     },
     services: {
       title: "Nos Domaines d'Expertise",
       maritime: {
         title: "Fret Maritime",
-        desc: "Expédition mondiale de conteneurs avec un accès prioritaire aux principaux ports internationaux et un routage optimisé."
+        desc: "Import-export via le Port de Djibouti, gestion des conteneurs FCL/LCL, transit douanier et liaisons avec les grandes lignes maritimes mondiales."
       },
       air: {
         title: "Fret Aérien",
-        desc: "Services de fret aérien rapides et sécurisés pour les expéditions sensibles au temps à travers le monde."
+        desc: "Expéditions urgentes via l'Aéroport International de Djibouti-Ambouli et Addis-Abeba. Idéal pour marchandises périssables et hauts de gamme."
       },
       land: {
         title: "Transport Terrestre",
-        desc: "Réseaux routiers et ferroviaires complets assurant une livraison sans faille de porte à porte."
+        desc: "Corridor routier Djibouti — Éthiopie (RN1), flotte de camions dédiée, livraison jusqu'à Addis-Abeba, Mekelle, Dire Dawa et toutes les régions éthiopiennes."
       },
       supply: {
         title: "Chaîne d'Approvisionnement",
-        desc: "Solutions de bout en bout intégrant l'entreposage, la distribution et la gestion avancée des stocks."
+        desc: "Gestion complète de bout en bout : sourcing mondial, dédouanement, entreposage à Djibouti et distribution en Éthiopie et Afrique de l'Est."
       }
     },
     projects: {
       title: "Projets Phares",
       p1: {
-        title: "Infrastructure Énergétique Offshore",
-        desc: "Transport sécurisé d'équipements de forage de 5 000 tonnes à travers l'Atlantique."
+        title: "Corridor Djibouti — Addis-Abeba",
+        desc: "Gestion de la chaîne logistique complète pour un importateur d'équipements industriels éthiopien — du port de Shanghaï jusqu'aux entrepôts d'Addis-Abeba."
       },
       p2: {
-        title: "Expansion Terminal Conteneurs",
-        desc: "Gestion logistique de la modernisation du plus grand hub portuaire d'Asie."
+        title: "Expansion du Port de Djibouti",
+        desc: "Participation logistique à la modernisation du Doraleh Multi-Purpose Port — terminal à conteneurs, manutention et gestion des flux."
       },
       p3: {
-        title: "Relais Logistique Continental",
-        desc: "Chaîne d'approvisionnement intégrée air-mer pour le déploiement mondial de technologies médicales."
+        title: "Relais Humanitaire Afrique de l'Est",
+        desc: "Acheminement de vivres, médicaments et équipements d'urgence pour des ONG internationales en Éthiopie, Somalie et Soudan."
       },
       viewAll: "Voir Tous les Projets"
     },
     contact: {
-      title: "Engagez la Conversation",
+      title: "Parlons de votre Projet",
       form: {
         name: "Nom Complet",
         email: "Adresse Email",
         service: "Service Souhaité",
-        message: "Détails de l'Expédition",
+        message: "Décrivez votre besoin logistique",
         submit: "Demander un Devis"
       },
       info: {
-        title: "Siège Mondial",
-        address: "1 Port Authority Road, Quartier Maritime",
-        phone: "+33 1 23 45 67 89",
-        email: "operations@globaltransit.com"
+        title: "Siège Social — Djibouti",
+        address: "Avenue du Général de Gaulle, BP 2450, Djibouti-Ville",
+        phone: "+253 21 35 40 00",
+        email: "operations@globaltransit.dj"
       }
     },
     footer: {
-      copyright: "© 2024 Global Transit. Tous droits réservés.",
-      links: ["Politique de Confidentialité", "Termes & Conditions", "Conformité Maritime"]
+      copyright: "© 2025 Global Transit. Tous droits réservés. | Djibouti & Éthiopie",
+      links: ["Politique de Confidentialité", "Termes & Conditions", "Conformité Douanière"]
     }
   },
   ar: {
@@ -94,75 +113,94 @@ export const translations = {
       language: "العربية"
     },
     hero: {
-      headline: "نربط الأسواق، ونحرك العالم",
-      subheadline: "شريكك الموثوق للخدمات اللوجستية العالمية، والشحن البحري، وحلول سلسلة التوريد عبر القارات.",
+      headline: "بوابتكم إلى جيبوتي وإثيوبيا وشرق أفريقيا",
+      subheadline: "شريككم المتخصص في الاستيراد والتصدير بين الأسواق العالمية وشرق أفريقيا، عبر الميناء الاستراتيجي لجيبوتي.",
       cta: "اكتشف خدماتنا"
     },
     about: {
-      title: "سلطة عالمية في الخدمات اللوجستية",
-      description: "تأسست شركة Global Transit على مبادئ الموثوقية والكفاءة، وتقوم بتنسيق حركات الشحن المعقدة عبر جميع القارات. تضمن شبكتنا الواسعة وخبرتنا البحرية وصول شحنتك إلى وجهتها بأمان وفي الوقت المحدد.",
+      title: "متخصصون في ممر جيبوتي — إثيوبيا",
+      description: "تنسق شركة Global Transit حركة البضائع بين الأسواق العالمية وشرق أفريقيا. بوجودنا في جيبوتي، بوابة إثيوبيا والممر الأفريقي الشرقي، نتقن إجراءات الجمارك، واللوجستيات الميناءية، وسلسلة التوريد الإقليمية بخبرة لا مثيل لها.",
       missionTitle: "مهمتنا",
-      missionText: "توفير حلول لوجستية من الدرجة الأولى تدفع التجارة العالمية، مع إعطاء الأولوية للسلامة والاستدامة والتميز التشغيلي.",
+      missionText: "تيسير وصول المستوردين والمصدرين الإثيوبيين وشرق أفريقيا إلى الأسواق العالمية، مع تقديم حلول لوجستية موثوقة وسريعة تتكيف مع الواقع المحلي.",
       stats: [
-        { value: "150+", label: "دولة مخدومة" },
-        { value: "2M+", label: "حاوية مكافئة تُنقل سنوياً" },
-        { value: "45", label: "عاما من التميز" }
+        { value: "جيبوتي", label: "مركز استراتيجي" },
+        { value: "إثيوبيا", label: "السوق الرئيسية" },
+        { value: "15+", label: "دول شرق أفريقيا مخدومة" }
       ]
+    },
+    regions: {
+      title: "منطقة تغطيتنا",
+      subtitle: "جيبوتي وإثيوبيا وشرق أفريقيا",
+      djibouti: {
+        name: "جيبوتي",
+        role: "مركز بحري استراتيجي",
+        desc: "جيبوتي هي بوابة شرق أفريقيا البحرية. يقوم مكتبنا الرئيسي بتنسيق جميع العمليات الميناءية والعبور الجمركي والتخزين."
+      },
+      ethiopia: {
+        name: "إثيوبيا",
+        role: "سوق الاستيراد الرئيسية",
+        desc: "تعتمد إثيوبيا، الدولة الحبيسة ذات 120 مليون نسمة، على ميناء جيبوتي في 95% من تجارتها. ندير استيراد البضائع والمعدات والمواد الخام."
+      },
+      eastAfrica: {
+        name: "شرق أفريقيا",
+        role: "توسع إقليمي",
+        desc: "الصومال وكينيا والسودان وإريتريا وأوغندا ورواندا — يمتد شبكتنا الإقليمية عبر شرق أفريقيا بأسرها للوجستيات بلا حدود."
+      }
     },
     services: {
       title: "مجالات خبرتنا",
       maritime: {
         title: "الشحن البحري",
-        desc: "شحن الحاويات العالمي مع وصول ذي أولوية إلى الموانئ الدولية الرئيسية وتوجيه محسّن."
+        desc: "الاستيراد والتصدير عبر ميناء جيبوتي، وإدارة الحاويات FCL/LCL، والعبور الجمركي، والروابط مع خطوط الشحن البحري العالمية الكبرى."
       },
       air: {
         title: "الشحن الجوي",
-        desc: "خدمات شحن جوي سريعة وآمنة للشحنات الحساسة للوقت حول العالم."
+        desc: "شحنات عاجلة عبر مطار جيبوتي أمبولي ومطار أديس أبابا. مثالي للبضائع سريعة التلف والمنتجات الفاخرة."
       },
       land: {
         title: "النقل البري",
-        desc: "شبكات طرق وسكك حديدية شاملة تضمن التوصيل السلس من الباب إلى الباب."
+        desc: "ممر جيبوتي — إثيوبيا (الطريق الوطني 1)، أسطول شاحنات مخصص، توصيل حتى أديس أبابا ومكيلي وديري داوا وجميع المناطق الإثيوبية."
       },
       supply: {
         title: "سلسلة التوريد",
-        desc: "حلول شاملة تدمج التخزين والتوزيع وإدارة المخزون المتقدمة."
+        desc: "إدارة كاملة من البداية إلى النهاية: التوريد العالمي، التخليص الجمركي، التخزين في جيبوتي، والتوزيع في إثيوبيا وشرق أفريقيا."
       }
     },
     projects: {
       title: "المشاريع البارزة",
       p1: {
-        title: "البنية التحتية للطاقة البحرية",
-        desc: "النقل الآمن لمعدات الحفر بوزن 5000 طن عبر المحيط الأطلسي."
+        title: "ممر جيبوتي — أديس أبابا",
+        desc: "إدارة سلسلة اللوجستيات الكاملة لمستورد إثيوبي للمعدات الصناعية — من ميناء شنغهاي حتى مستودعات أديس أبابا."
       },
       p2: {
-        title: "توسيع محطة الحاويات",
-        desc: "الإدارة اللوجستية لتحديث أكبر مركز ميناء في آسيا."
+        title: "توسيع ميناء جيبوتي",
+        desc: "المشاركة اللوجستية في تحديث ميناء دورالة متعدد الأغراض — محطة الحاويات والمناولة وإدارة تدفقات البضائع."
       },
       p3: {
-        title: "الربط اللوجستي القاري",
-        desc: "سلسلة توريد متكاملة جواً وبحراً للنشر العالمي للتكنولوجيا الطبية."
+        title: "الإغاثة الإنسانية في شرق أفريقيا",
+        desc: "إيصال الغذاء والأدوية والمعدات الطارئة للمنظمات الدولية غير الحكومية في إثيوبيا والصومال والسودان."
       },
       viewAll: "عرض كل المشاريع"
     },
     contact: {
-      title: "ابدأ المحادثة",
+      title: "تحدث معنا عن مشروعك",
       form: {
         name: "الاسم الكامل",
         email: "البريد الإلكتروني",
         service: "الخدمة المطلوبة",
-        message: "تفاصيل الشحنة",
+        message: "اشرح احتياجاتك اللوجستية",
         submit: "اطلب تسعيرة"
       },
       info: {
-        title: "المقر العالمي",
-        address: "1 طريق هيئة الميناء، الحي البحري",
-        phone: "+971 4 123 4567",
-        email: "operations@globaltransit.com"
+        title: "المقر الرئيسي — جيبوتي",
+        address: "شارع الجنرال ديغول، ص.ب 2450، مدينة جيبوتي",
+        phone: "+253 21 35 40 00",
+        email: "operations@globaltransit.dj"
       }
     },
     footer: {
-      copyright: "© 2024 Global Transit. جميع الحقوق محفوظة.",
-      links: ["سياسة الخصوصية", "الشروط والأحكام", "الامتثال البحري"]
+      copyright: "© 2025 Global Transit. جميع الحقوق محفوظة. | جيبوتي وإثيوبيا",
+      links: ["سياسة الخصوصية", "الشروط والأحكام", "الامتثال الجمركي"]
     }
   },
   am: {
@@ -177,75 +215,94 @@ export const translations = {
       language: "አማርኛ"
     },
     hero: {
-      headline: "ገበያዎችን ማገናኘት፣ ዓለምን ማንቀሳቀስ",
-      subheadline: "ለዓለም አቀፍ ሎጂስቲክስ፣ የባህር ላይ ጭነት እና አህጉር አቋራጭ የአቅርቦት ሰንሰለት መፍትሄዎች ታማኝ አጋርዎ።",
+      headline: "ወደ ጅቡቲ፣ ኢትዮጵያ እና ምስራቅ አፍሪካ በሮ",
+      subheadline: "ከዓለም ገበያዎች ወደ ምስራቅ አፍሪካ — የጅቡቲ ስትራቴጂካዊ ወደብ በኩል ለማስመጣት እና ለመላክ ታማኝ አጋርዎ።",
       cta: "አገልግሎቶቻችንን ያግኙ"
     },
     about: {
-      title: "ዓለም አቀፍ የሎጂስቲክስ ባለስልጣን",
-      description: "በአስተማማኝነት እና በብቃት መርሆዎች ላይ የተመሰረተው Global Transit በሁሉም አህጉራት ውስብስብ የጭነት እንቅስቃሴዎችን ያስተባብራል። የኛ ሰፊ አውታረመረብ እና የባህር ላይ እውቀት ጭነትዎ ደህንነቱ በተጠበቀ ሁኔታ እና በሰዓቱ መድረሱን ያረጋግጣል።",
+      title: "በጅቡቲ — ኢትዮጵያ ኮሪደር ላይ ባለሙያዎች",
+      description: "Global Transit ከዓለም ገበያዎች ወደ ምስራቅ አፍሪካ የሚደረጉ የዕቃ ዝውውሮችን ያስተባብራል። በኢትዮጵያ እና በምስራቅ አፍሪካ ኮሪደር ዋና መዳረሻ በሆነው ጅቡቲ ተቀምጠን፣ ጉምሩክ ማስፈቀጃ፣ ወደብ ሎጂስቲክስ እና ክልላዊ አቅርቦት ሰንሰለትን ቁጥጥር ወደር በሌለው ሙያ እናካሂዳለን።",
       missionTitle: "ተልእኳችን",
-      missionText: "ደህንነትን፣ ዘላቂነትን እና የአሰራር የላቀ ደረጃን ቅድሚያ በመስጠት ዓለም አቀፍ ንግድን የሚያነቃቁ ከፍተኛ ደረጃ ያላቸው የሎጂስቲክስ መፍትሄዎችን መስጠት።",
+      missionText: "ኢትዮጵያዊያን እና ምስራቅ አፍሪካዊያን አስመጪዎች እና ላኪዎች ወደ ዓለም ገበያዎች እንዲደርሱ ማመቻቸት — አስተማማኝ፣ ፈጣን እና ለአካባቢ ሁኔታ የተስማሙ ሎጂስቲክስ መፍትሄዎች በማቅረብ።",
       stats: [
-        { value: "150+", label: "ያገለገሉ ሀገራት" },
-        { value: "2M+", label: "በየዓመቱ የተጓጓዙ TEU" },
-        { value: "45", label: "የልህቀት ዓመታት" }
+        { value: "ጅቡቲ", label: "ስትራቴጂካዊ ማዕከል" },
+        { value: "ኢትዮጵያ", label: "ዋና ገበያ" },
+        { value: "15+", label: "የምስራቅ አፍሪካ ሀገራት" }
       ]
     },
+    regions: {
+      title: "የሽፋን አካባቢያችን",
+      subtitle: "ጅቡቲ፣ ኢትዮጵያ እና ምስራቅ አፍሪካ",
+      djibouti: {
+        name: "ጅቡቲ",
+        role: "ስትራቴጂካዊ የባህር ማዕከል",
+        desc: "ጅቡቲ የምስራቅ አፍሪካ የባህር መዳረሻ ናት። ዋና ቢሮአችን ሁሉንም የወደብ ስራዎች፣ የጉምሩክ ሽግግር እና ማቋቋሚያ ያስተባብራል።"
+      },
+      ethiopia: {
+        name: "ኢትዮጵያ",
+        role: "ዋና የማስመጣት ገበያ",
+        desc: "120 ሚሊዮን ሕዝብ ያላት ምድር ተቦቅ ሀገር ኢትዮጵያ ለ95% ንግዷ የጅቡቲ ወደብ ትጠቀማለች። ዕቃዎችን፣ መሳሪያዎችን እና ጥሬ ዕቃዎችን ማስመጣትን እናስተዳድራለን።"
+      },
+      eastAfrica: {
+        name: "ምስራቅ አፍሪካ",
+        role: "ክልላዊ ስርጭት",
+        desc: "ሶማሊያ፣ ኬንያ፣ ሱዳን፣ ኤርትራ፣ ዩጋንዳ፣ ሩዋንዳ — ድንበር አልባ ሎጂስቲክስ ለሁሉም ምስራቅ አፍሪካ ክልላዊ አውታርነታችን ተዘርጋ ነው።"
+      }
+    },
     services: {
-      title: "የእኛ የሙያ መስኮች",
+      title: "የሙያ ዘርፎቻችን",
       maritime: {
-        title: "የባህር ላይ ጭነት",
-        desc: "ዓለም አቀፍ የኮንቴይነር ማጓጓዣ ከዋና ዋና ዓለም አቀፍ ወደቦች ቅድሚያ መዳረሻ እና የተመቻቸ መስመር ጋር።"
+        title: "የባህር ጭነት",
+        desc: "በጅቡቲ ወደብ በኩል ማስመጣት እና መላክ፣ FCL/LCL ኮንቴይነር አስተዳደር፣ የጉምሩክ ሽግግር እና ከዓለም ዋና የባህር ጭነት ሰርዓቶች ጋር ግንኙነት።"
       },
       air: {
         title: "የአየር ጭነት",
-        desc: "በዓለም ዙሪያ ለጊዜ-ስሜታዊ ጭነቶች ፈጣን እና ደህንነቱ የተጠበቀ የአየር ማጓጓዣ አገልግሎቶች።"
+        desc: "ፈጣን ጭነቶች በጅቡቲ-አምቡሊ ዓለም አቀፍ አውሮፕላን ማረፊያ እና አዲስ አበባ ቦሌ። ለሚበሰብሱ ዕቃዎች እና ዋጋ ያላቸው ምርቶች ተስማሚ።"
       },
       land: {
         title: "የመሬት ትራንስፖርት",
-        desc: "እንከን የለሽ ከቤት ወደ ቤት ማድረስ የሚያረጋግጡ አጠቃላይ የመንገድ እና የባቡር አውታሮች።"
+        desc: "ጅቡቲ — ኢትዮጵያ መንገድ ኮሪደር (ብሄራዊ መንገድ 1)፣ ልዩ ተሽከርካሪ መርከቦች፣ እስከ አዲስ አበባ፣ መቀሌ፣ ድሬ ዳዋ እና ሁሉም ኢትዮጵያ ክልሎች ድረስ ማድረስ።"
       },
       supply: {
-        title: "የአቅርቦት ሰንሰለት",
-        desc: "መጋዘንን፣ ስርጭትን እና የላቀ የእቃ ዝርዝር አስተዳደርን የሚያዋህዱ ከጫፍ እስከ ጫፍ መፍትሄዎች።"
+        title: "አቅርቦት ሰንሰለት",
+        desc: "ሙሉ ከጫፍ እስከ ጫፍ አስተዳደር፡ ዓለም አቀፍ ምንጭ ማሰስ፣ ጉምሩክ ማስፈቀጃ፣ በጅቡቲ ማቆያ እና በኢትዮጵያ እና ምስራቅ አፍሪካ ስርጭት።"
       }
     },
     projects: {
-      title: "ዋና ፕሮጀክቶች",
+      title: "ዋና ፕሮጀክቶቻችን",
       p1: {
-        title: "የባህር ላይ የኃይል መሰረተ ልማት",
-        desc: "የ5,000 ቶን ቁፋሮ መሳሪያዎችን በአትላንቲክ ውቅያኖስ ላይ በደህና ማጓጓዝ።"
+        title: "ጅቡቲ — አዲስ አበባ ኮሪደር",
+        desc: "ለኢትዮጵያ ኢንዱስትሪ መሳሪያ አስመጪ ሙሉ ሎጂስቲክስ ሰንሰለት አስተዳደር — ከሻንጋይ ወደብ እስከ አዲስ አበባ መጋዘኖች።"
       },
       p2: {
-        title: "የኮንቴይነር ተርሚናል ማስፋፊያ",
-        desc: "የእስያ ትልቁ የወደብ ማዕከል ዘመናዊነት ሎጂስቲክስ አስተዳደር።"
+        title: "የጅቡቲ ወደብ ማስፋፊያ",
+        desc: "ወደ ዶራሌ ባለብዙ ዓላማ ወደብ ዘመናዊነት ሎጂስቲክስ ተሳትፎ — ኮንቴይነር ተርሚናል፣ ስራ አያያዝ እና የፍሰት አስተዳደር።"
       },
       p3: {
-        title: "አህጉራዊ ሎጂስቲክስ ቅብብል",
-        desc: "ለህክምና ቴክኖሎጂ ዓለም አቀፍ ስምሪት የተዋሃደ የአየር-ባህር አቅርቦት ሰንሰለት።"
+        title: "የምስራቅ አፍሪካ የሰብዓዊ ዕርዳታ",
+        desc: "ለዓለም አቀፍ ኢ-መንግስታዊ ድርጅቶች በኢትዮጵያ፣ ሶማሊያ እና ሱዳን ምግብ፣ መድሃኒቶች እና አስቸኳይ መሳሪያዎች ማድረስ።"
       },
       viewAll: "ሁሉንም ፕሮጀክቶች ይመልከቱ"
     },
     contact: {
-      title: "ውይይቱን ይጀምሩ",
+      title: "ፕሮጀክትዎን እንነጋገር",
       form: {
         name: "ሙሉ ስም",
-        email: "የኢሜይል አድራሻ",
+        email: "ኢሜይል አድራሻ",
         service: "የሚፈለግ አገልግሎት",
-        message: "የጭነት ዝርዝሮች",
+        message: "የሎጂስቲክስ ፍላጎትዎን ይግለጹ",
         submit: "ዋጋ ይጠይቁ"
       },
       info: {
-        title: "ዓለም አቀፍ ዋና መሥሪያ ቤት",
-        address: "1 የወደብ ባለስልጣን መንገድ፣ የባህር ዳርቻ ሰፈር",
-        phone: "+251 11 123 4567",
-        email: "operations@globaltransit.com"
+        title: "ዋና መሥሪያ ቤት — ጅቡቲ",
+        address: "አቨኑ ዱ ጄነራል ዴ ጎል፣ ፒኦ ሳጥን 2450፣ ጅቡቲ ከተማ",
+        phone: "+253 21 35 40 00",
+        email: "operations@globaltransit.dj"
       }
     },
     footer: {
-      copyright: "© 2024 Global Transit. መብቱ በህግ የተጠበቀ ነው።",
-      links: ["የግላዊነት ፖሊሲ", "ውሎች እና ሁኔታዎች", "የባህር ላይ ታዛዥነት"]
+      copyright: "© 2025 Global Transit. መብቱ በህግ የተጠበቀ ነው። | ጅቡቲ እና ኢትዮጵያ",
+      links: ["የግላዊነት ፖሊሲ", "ውሎች እና ሁኔታዎች", "የጉምሩክ ህጎች"]
     }
   },
   sw: {
@@ -260,75 +317,94 @@ export const translations = {
       language: "Kiswahili"
     },
     hero: {
-      headline: "Kuunganisha Masoko, Kusogeza Dunia",
-      subheadline: "Mshirika wako anayetegemewa kwa usafirishaji wa kimataifa, usafirishaji wa baharini, na suluhisho za mnyororo wa usambazaji wa mabara.",
+      headline: "Lango lako la Djibouti, Ethiopia na Afrika Mashariki",
+      subheadline: "Mshirika wako maalum wa uingizaji na usafirishaji wa bidhaa kati ya masoko ya kimataifa na Afrika Mashariki — kupitia bandari ya kimkakati ya Djibouti.",
       cta: "Gundua Huduma Zetu"
     },
     about: {
-      title: "Mamlaka ya Kimataifa katika Usafirishaji",
-      description: "Ilianzishwa kwa misingi ya kutegemewa na ufanisi, Global Transit inaratibu harakati ngumu za mizigo katika mabara yote. Mtandao wetu mpana na utaalam wa baharini unahakikisha mzigo wako unafika unakoenda salama na kwa wakati.",
+      title: "Wataalamu wa Njia ya Djibouti — Ethiopia",
+      description: "Global Transit inaratibu mtiririko wa bidhaa kati ya masoko ya kimataifa na Afrika Mashariki. Tukiwa Djibouti, lango kuu la Ethiopia na ukanda wa Afrika Mashariki, tunamiliki utaratibu wa forodha, mantiki ya bandari, na mnyororo wa usambazaji wa kikanda kwa utaalamu usio na kifani.",
       missionTitle: "Dhamira Yetu",
-      missionText: "Kutoa suluhisho za usafirishaji za kiwango cha juu zinazoendesha biashara ya kimataifa, tukipa kipaumbele usalama, uendelevu, na ubora wa kiutendaji.",
+      missionText: "Kurahisisha ufikiaji wa waingizaji na wasafirishaji wa Ethiopia na Afrika Mashariki kwenye masoko ya kimataifa, kwa kutoa suluhisho za usafirishaji zinazotegemewa, za haraka na zinazofaa hali ya hewa ya ndani.",
       stats: [
-        { value: "150+", label: "Nchi Zinazohudumiwa" },
-        { value: "2M+", label: "TEU Zinasafirishwa Kila Mwaka" },
-        { value: "45", label: "Miaka ya Ubora" }
+        { value: "Djibouti", label: "Kituo cha Kimkakati" },
+        { value: "Ethiopia", label: "Soko Kuu" },
+        { value: "15+", label: "Nchi za Afrika Mashariki" }
       ]
     },
+    regions: {
+      title: "Eneo Letu la Huduma",
+      subtitle: "Djibouti, Ethiopia na Afrika Mashariki",
+      djibouti: {
+        name: "Djibouti",
+        role: "Kituo cha Kimkakati cha Baharini",
+        desc: "Djibouti ni lango la baharini la Afrika Mashariki. Ofisi yetu kuu inaratibu shughuli zote za bandari, usafiri wa forodha na uhifadhi."
+      },
+      ethiopia: {
+        name: "Ethiopia",
+        role: "Soko Kuu la Uingizaji",
+        desc: "Ethiopia, nchi isiyopakana na bahari yenye watu milioni 120, inategemea bandari ya Djibouti kwa 95% ya biashara yake. Tunasimamia uingizaji wa bidhaa, vifaa na malighafi."
+      },
+      eastAfrica: {
+        name: "Afrika Mashariki",
+        role: "Upanuzi wa Kikanda",
+        desc: "Somalia, Kenya, Sudan, Eritrea, Uganda, Rwanda — mtandao wetu wa kikanda unaenea Afrika Mashariki nzima kwa mantiki isiyo na mipaka."
+      }
+    },
     services: {
-      title: "Maeneo Yetu ya Utaalam",
+      title: "Maeneo Yetu ya Utaalamu",
       maritime: {
         title: "Usafirishaji wa Baharini",
-        desc: "Usafirishaji wa makontena duniani kote na ufikiaji wa kipaumbele kwa bandari kuu za kimataifa na njia zilizoboreshwa."
+        desc: "Uingizaji na usafirishaji kupitia Bandari ya Djibouti, usimamizi wa makontena FCL/LCL, usafiri wa forodha na uhusiano na mstari mkubwa wa usafirishaji wa baharini duniani."
       },
       air: {
         title: "Usafirishaji wa Anga",
-        desc: "Huduma za haraka na salama za usafirishaji wa anga kwa mizigo inayohitaji wakati duniani kote."
+        desc: "Mizigo ya haraka kupitia Uwanja wa Ndege wa Kimataifa wa Djibouti-Ambouli na Addis Ababa. Bora kwa bidhaa zinazoharibishwa haraka na bidhaa za thamani."
       },
       land: {
         title: "Usafiri wa Nchi Kavu",
-        desc: "Mitandao kamili ya barabara na reli inahakikisha uwasilishaji usio na mshono wa mlango kwa mlango."
+        desc: "Njia ya Djibouti — Ethiopia (Barabara ya Kitaifa 1), meli ya malori iliyowekwa wakfu, utoaji hadi Addis Ababa, Mekelle, Dire Dawa na mikoa yote ya Ethiopia."
       },
       supply: {
         title: "Mnyororo wa Usambazaji",
-        desc: "Suluhisho za mwanzo hadi mwisho zinazounganisha uhifadhi, usambazaji, na usimamizi wa hali ya juu wa hesabu."
+        desc: "Usimamizi kamili wa mwanzo hadi mwisho: utafutaji wa bidhaa duniani, usafishaji wa forodha, uhifadhi huko Djibouti, na usambazaji nchini Ethiopia na Afrika Mashariki."
       }
     },
     projects: {
       title: "Miradi Mashuhuri",
       p1: {
-        title: "Miundombinu ya Nishati ya Pwani",
-        desc: "Usafirishaji salama wa vifaa vya kuchimba visima vya tani 5,000 kuvuka Bahari ya Atlantiki."
+        title: "Njia ya Djibouti — Addis Ababa",
+        desc: "Usimamizi wa mnyororo wa mantiki kamili kwa mwingizaji wa vifaa vya viwanda wa Ethiopia — kutoka bandari ya Shanghai hadi maghala ya Addis Ababa."
       },
       p2: {
-        title: "Upanuzi wa Kituo cha Makontena",
-        desc: "Usimamizi wa vifaa wa kisasa wa kitovu kikubwa cha bandari barani Asia."
+        title: "Upanuzi wa Bandari ya Djibouti",
+        desc: "Ushiriki wa kimantiki katika usasishaji wa Bandari ya Doraleh ya Matumizi Mengi — kituo cha makontena, uendeshaji na usimamizi wa mtiririko."
       },
       p3: {
-        title: "Uunganishaji wa Vifaa vya Bara",
-        desc: "Mnyororo wa usambazaji uliojumuishwa wa hewa-bahari kwa usambazaji wa teknolojia ya matibabu kimataifa."
+        title: "Misaada ya Kibinadamu Afrika Mashariki",
+        desc: "Uwasilishaji wa chakula, dawa na vifaa vya dharura kwa mashirika ya kimataifa yasiyokuwa ya serikali nchini Ethiopia, Somalia na Sudan."
       },
       viewAll: "Tazama Miradi Yote"
     },
     contact: {
-      title: "Anza Mazungumzo",
+      title: "Tuzungumze kuhusu Mradi Wako",
       form: {
         name: "Jina Kamili",
         email: "Barua Pepe",
         service: "Huduma Inayohitajika",
-        message: "Maelezo ya Usafirishaji",
+        message: "Eleza mahitaji yako ya mantiki",
         submit: "Omba Nukuu"
       },
       info: {
-        title: "Makao Makuu ya Dunia",
-        address: "1 Barabara ya Mamlaka ya Bandari, Robo ya Baharini",
-        phone: "+254 20 123 4567",
-        email: "operations@globaltransit.com"
+        title: "Makao Makuu — Djibouti",
+        address: "Njia ya Jenerali de Gaulle, S.L.P 2450, Mji wa Djibouti",
+        phone: "+253 21 35 40 00",
+        email: "operations@globaltransit.dj"
       }
     },
     footer: {
-      copyright: "© 2024 Global Transit. Haki zote zimehifadhiwa.",
-      links: ["Sera ya Faragha", "Vigezo na Masharti", "Utekelezaji wa Baharini"]
+      copyright: "© 2025 Global Transit. Haki zote zimehifadhiwa. | Djibouti & Ethiopia",
+      links: ["Sera ya Faragha", "Vigezo na Masharti", "Utekelezaji wa Forodha"]
     }
   },
   so: {
@@ -343,75 +419,94 @@ export const translations = {
       language: "Soomaali"
     },
     hero: {
-      headline: "Isku Xirka Suuqyada, Dhaqaajinta Adduunka",
-      subheadline: "Wadaagaaga la aamini karo ee saadka caalamiga ah, rarida badda, iyo xalalka silsilada saadka ee qaaradaha.",
+      headline: "Albaabkaaga Jabuuti, Itoobiya iyo Bariga Afrika",
+      subheadline: "Wadaagaaga khaaska ah ee soo dejinta iyo dirista alaabta u dhexeeya suuqyada caalamiga ah iyo Bariga Afrika — iyada oo loo marayo dekedda istiraatiijiyada ah ee Jabuuti.",
       cta: "Ogow Adeegyadeena"
     },
     about: {
-      title: "Awooda Caalamiga ah ee Saadka",
-      description: "Iyada oo lagu aasaasay mabaadi'da isku halaynta iyo hufnaanta, Global Transit waxay agaasintaa dhaqdhaqaaqyada xamuulka ee kakan ee dhammaan qaaradaha. Shabakadeena ballaaran iyo khibradeena badda waxay hubisaa in xamuulkaagu gaaro meesha uu u socdo si nabad ah oo waqtigiisa ah.",
+      title: "Xirfadlayaasha Wadada Jabuuti — Itoobiya",
+      description: "Global Transit waxay horumariso socdaalka alaabta u dhexeeya suuqyada caalamiga ah iyo Bariga Afrika. Iyaga oo ku yaalaan Jabuuti, albaabka Itoobiya iyo wadada Bariga Afrika, waxaan si fiican u garannaa habraacyada jamaarada, shaqaynta dekedda, iyo silsilada saadka gobolka oo khibrad aan la mid lahayn.",
       missionTitle: "Hadafkeena",
-      missionText: "Siinta xalalka saadka ee heerka ugu sarreeya ee wada ganacsiga caalamiga ah, iyadoo mudnaanta la siinayo badbaadada, joogteynta, iyo heer sare ee hawlgalka.",
+      missionText: "Fududaynta helitaanka soo dejiyeyaasha iyo diriyeyaasha Itoobiyaanka iyo Bariga Afrika ee suuqyada adduunka, iyaga oo la siinayo xalalka saadka ee la믿믿믿 믿믿믿믿 믿믿믿믿믿믿믿.",
       stats: [
-        { value: "150+", label: "Waddamo Loo Adeegay" },
-        { value: "2M+", label: "TEU La Raray Sannadkii" },
-        { value: "45", label: "Sano oo Heer Sare ah" }
+        { value: "Jabuuti", label: "Xarun Istiraatiijiyad" },
+        { value: "Itoobiya", label: "Suuqda Weyn" },
+        { value: "15+", label: "Wadamada Bariga Afrika" }
       ]
+    },
+    regions: {
+      title: "Goobta Aan Daboolno",
+      subtitle: "Jabuuti, Itoobiya iyo Bariga Afrika",
+      djibouti: {
+        name: "Jabuuti",
+        role: "Xarun Badeed oo Istiraatiijiyad ah",
+        desc: "Jabuuti waa albaabka badeed ee Bariga Afrika. Xafiiskayaga ugu weyn wuxuu iska hagaajiyaa dhammaan hawlaha dekedda, gudbinta jamaarada iyo kaydinta."
+      },
+      ethiopia: {
+        name: "Itoobiya",
+        role: "Suuqda Weyn ee Soo Dejinta",
+        desc: "Itoobiya, dalka aan bad lahayn ee 120 milyan oo qof, waxay ku tirsantaa dekedda Jabuuti 95% ganacsigeedu. Waxaan maamulinaa soo dejinta alaabta, qaladka iyo agabka."
+      },
+      eastAfrica: {
+        name: "Bariga Afrika",
+        role: "Ballaarinta Gobolka",
+        desc: "Soomaaliya, Kenya, Sudan, Eritrea, Uganda, Rwanda — shabakadeena gobolka waxay ku fadhiyaan dhammaan Bariga Afrika saadka aan xuduud lahayn."
+      }
     },
     services: {
       title: "Meelaha Aan Khibrada U Leenahay",
       maritime: {
         title: "Rarida Badda",
-        desc: "Daabulida weelasha caalamiga ah iyadoo leh mudnaan gaarid dekedaha caalamiga ah ee waaweyn iyo marin hagaajin."
+        desc: "Soo dejinta iyo dirista iyada oo loo marayo Dekedda Jabuuti, maamulka weelasha FCL/LCL, gudbinta jamaarada iyo xiriirka xayndaabadaha weyn ee rarida badda adduunka."
       },
       air: {
         title: "Rarida Hawada",
-        desc: "Adeegyada rarida hawada ee degdegga ah oo aamin ah ee rarka xasaasiga ku ah waqtiga adduunka oo dhan."
+        desc: "Rarida deg-degga ah iyada oo loo marayo Garoonka Diyaaradaha Caalamiga ah ee Jabuuti-Ambouli iyo Addis Ababa. Ku habboon alaabta qudhunta ah iyo alaabta qaalisan."
       },
       land: {
         title: "Gaadiidka Berriga",
-        desc: "Shabakadaha jidadka iyo tareennada oo dhamaystiran oo hubinaya gaarsiinta albaab-ilaa-albaab oo aan kala go' lahayn."
+        desc: "Jidka Jabuuti — Itoobiya (Wadada Qaranka 1), koox baabuur ah oo u gaar ah, gaarsiinta ilaa Addis Ababa, Mekelle, Dire Dawa iyo dhammaan gobolada Itoobiya."
       },
       supply: {
         title: "Silsilada Saadka",
-        desc: "Xalalka dhamaadka-ilaa-dhamaadka ee isku daraya kaydinta, qaybinta, iyo maamulka alaabta ee horumarsan."
+        desc: "Maamul dhamaystiran oo dhamaadka-ilaa-dhamaadka ah: ururinta caalamiga ah, xeerka jamaarada, kaydinta Jabuuti, iyo qaybinta Itoobiya iyo Bariga Afrika."
       }
     },
     projects: {
       title: "Mashaariicda Muhiimka ah",
       p1: {
-        title: "Kaabayaasha Tamarta Badda",
-        desc: "Daabulida aaminka ah ee qalabka qodista 5,000-tan ee guud ahaan Badweynta Atlaantikada."
+        title: "Jidka Jabuuti — Addis Ababa",
+        desc: "Maamulka silsilada saadka oo dhamaystiran oo loogu talagalay soo dejiye Itoobiyaan ah ee qaladka wershadaha — ka dekedda Shanghai ilaa kaydiyaasha Addis Ababa."
       },
       p2: {
-        title: "Ballaarinta Terminalka Weelasha",
-        desc: "Maamulka saadka ee casriyeynta xarunta dekedda ugu weyn Aasiya."
+        title: "Ballaarinta Dekedda Jabuuti",
+        desc: "Kaqeyb-galka saadka ah ee casriyeynta Dekadda Doraleh ee Ujeedooyin Badan — guriga weelasha, gacanta iyo maamulka socdaalka."
       },
       p3: {
-        title: "Isku Xirka Saadka Qaaradda",
-        desc: "Silsilad saadka hawo-badeed isku dhafan ee daadguraynta caalamiga ah ee tignoolajiyada caafimaadka."
+        title: "Gargaarka Bulsho ee Bariga Afrika",
+        desc: "Gaarsiinta cunto, dawo iyo qalab deg-deg ah ee ururada caalamiga ah ee aan dowli ahayn ee Itoobiya, Soomaaliya iyo Sudan."
       },
       viewAll: "Daawo Dhammaan Mashaariicda"
     },
     contact: {
-      title: "Bilow Wada Hadalka",
+      title: "Nala Hadal Mashruucaaga",
       form: {
         name: "Magaca Buuxa",
         email: "Cinwaanka Iimaylka",
         service: "Adeegga Loo Baahan Yahay",
-        message: "Faahfaahinta Rarka",
+        message: "Sharax baahidaada saadka",
         submit: "Codsiga Qiimaynta"
       },
       info: {
-        title: "Xarunta Dhexe ee Caalamiga ah",
-        address: "1 Waddada Hay'adda Dekedaha, Xaafadda Badda",
-        phone: "+252 61 123 4567",
-        email: "operations@globaltransit.com"
+        title: "Xafiiska Guud — Jabuuti",
+        address: "Avenue du Général de Gaulle, BP 2450, Magaalada Jabuuti",
+        phone: "+253 21 35 40 00",
+        email: "operations@globaltransit.dj"
       }
     },
     footer: {
-      copyright: "© 2024 Global Transit. Dhammaan xuquuqaha waa la xafiday.",
-      links: ["Siyaasadda Khaaska ah", "Shuruudaha & Xaaladaha", "U hoggaansanaanta Badda"]
+      copyright: "© 2025 Global Transit. Dhammaan xuquuqaha waa la xafiday. | Jabuuti & Itoobiya",
+      links: ["Siyaasadda Khaaska ah", "Shuruudaha & Xaaladaha", "Xeerka Jamaarada"]
     }
   },
   orm: {
@@ -426,75 +521,94 @@ export const translations = {
       language: "Afaan Oromoo"
     },
     hero: {
-      headline: "Gabaa Walquunnamsiisuu, Addunyaa Sochoosuu",
-      subheadline: "Michuu keessan amanamaa loojistiiksii addunyaa, fe'umsa galaanaa, fi furmaata raabsii dhiyeessii ardii qaxxaamuruuf.",
+      headline: "Balbala Keessan Jibuutii, Itoophiyaa fi Baha Afriikaa",
+      subheadline: "Michuu keessan addaa kan gabaa addunyaa fi Baha Afriikaa walitti fidu — buufata galaanaa Jibuutii hundeessaa qabuun.",
       cta: "Tajaajilawwan Keenya Baradhaa"
     },
     about: {
-      title: "Abbaa Taayitaa Loojistiiksii Addunyaa",
-      description: "Qajeeltoowwan amanamummaa fi gahumsaa irratti hundaa'uun, Global Transit sochii fe'umsaa xaxamaa ardiiwwan hunda keessatti ni qindeessa. Cimina neetwoorkii keenyaa fi muuxannoo galaanaa keenya fe'umsi keessan nageenyaan fi yeroon iddoo itti yaadame akka gahu ni mirkaneessa.",
+      title: "Ogeeyyii Daandii Jibuutii — Itoophiyaa",
+      description: "Global Transit socha meeshaalee gabaa addunyaa fi Baha Afriikaa gidduutti ni qindeessa. Jibuutii, balbala guddaa Itoophiyaa fi daandii Baha Afriikaatti argamnee, gurgurtaa gumrukaa, loojistiiksii buufataa, fi raabsii dhiyeessii naannoo muuxannoo qabuun ni bulchina.",
       missionTitle: "Ergama Keenya",
-      missionText: "Furmaata loojistiiksii sadarkaa olaanaa kan daldala addunyaa oofu dhiyeessuu, nageenya, itti fufiinsa, fi gahumsa hojiif dursa kennuudhaan.",
+      missionText: "Importing and exporting businesses from Ethiopia and East Africa to access global markets through reliable, fast logistics solutions tailored to local realities.",
       stats: [
-        { value: "150+", label: "Biyyoota Tajaajilaman" },
-        { value: "2M+", label: "TEU Waggaatti Fe'aman" },
-        { value: "45", label: "Waggoota Gahumsaa" }
+        { value: "Jibuutii", label: "Buufata Strategii" },
+        { value: "Itoophiyaa", label: "Gabaa Gurguddoo" },
+        { value: "15+", label: "Biyyoota Baha Afriikaa" }
       ]
+    },
+    regions: {
+      title: "Naannoo Hojii Keenya",
+      subtitle: "Jibuutii, Itoophiyaa fi Baha Afriikaa",
+      djibouti: {
+        name: "Jibuutii",
+        role: "Buufata Galaanaa Strategii",
+        desc: "Jibuutii balbala galaanaa Baha Afriikaati. Waajjirri keenya ol'aanaan hojii buufataa, daandii gumrukaa fi kuusaa hunda ni qindeessa."
+      },
+      ethiopia: {
+        name: "Itoophiyaa",
+        role: "Gabaa Fudhataa Gurguddoo",
+        desc: "Itoophiyaan, biyya galaanaa hin qabne miliyoona 120 jiraattu, gurgurtaa isii keessaa 95% buufata Jibuutiitti hirkata. Fudhataa meeshaalee, meeshaalee hojii fi qabeenya irratti too'annaa ni goona."
+      },
+      eastAfrica: {
+        name: "Baha Afriikaa",
+        role: "Babal'ina Naannoo",
+        desc: "Somaaliyaa, Keeniyaa, Suudaan, Eertiraa, Yugaandaa, Ruwaandaa — neetwoorkiin naannoo keenya Baha Afriikaa guutuu loojistiiksii daangaa malee taasiisa."
+      }
     },
     services: {
       title: "Naannoowwan Muuxannoo Keenyaa",
       maritime: {
         title: "Fe'umsa Galaanaa",
-        desc: "Fe'umsa konteenarii addunyaa guutuu waliin daandii qophaa'aa fi carraa dursa buufataalee iddoowwan idla-addunyaa gurguddootti."
+        desc: "Fudhataa fi ergaa Buufata Jibuutii darbee, bulchiinsa konteenarii FCL/LCL, daandii gumrukaa fi hidhata sarara fe'umsaa galaanaa addunyaa gurguddootiin."
       },
       air: {
         title: "Fe'umsa Qilleensaa",
-        desc: "Tajaajila fe'umsa qilleensaa saffisaa fi amansiisaa ta'e mi'a yeroof saaxilamoo ta'aniif addunyaa guutuutti."
+        desc: "Fe'umsa ariifataa Buufata Xiyyaaraa Idla-addunyaa Jibuutii-Amboolii fi Finfinnee darbee. Meeshaalee baduu danda'aniif fi gatii qabaniiif gaarii."
       },
       land: {
         title: "Geejjiba Lafaa",
-        desc: "Neetwoorkii daandii fi baaburaa bal'aa kan dhiyeessii manaa-manatti rakkoo malee mirkaneessu."
+        desc: "Daandii Jibuutii — Itoophiyaa (Daandii Biyyoolessaa 1), harki konkolaataa addaa, Finfinnee, Maqalee, Dirree Dhaawaa fi naannoo Itoophiyaa hunda geejjisa."
       },
       supply: {
         title: "Raabsii Dhiyeessii",
-        desc: "Furmaata dhuma-gara-dhumaa kan kuusaa, raabsii, fi bulchiinsa meeshaa sadarkaa olaanaa walitti maku."
+        desc: "Bulchiinsa dhuma-gara-dhumaa guutuu: madda meeshaalee addunyaa, qulqulleessa gumrukaa, kuusaa Jibuutii, fi raabsii Itoophiyaa fi Baha Afriikaatti."
       }
     },
     projects: {
       title: "Pirojektota Gurguddoo",
       p1: {
-        title: "Bu'uuraalee Misoomaa Annisaa Galaana Irraa",
-        desc: "Geejjiba mi'a qotuu toonii 5,000 ta'u nageenyaan Garba Atlaantiik qaxxaamuruun."
+        title: "Daandii Jibuutii — Finfinnee",
+        desc: "Bulchiinsa silsila loojistiiksii guutuu fudhataa meeshaalee industirii Itoophiyaatiif — buufata Shanghaay irraa gara kuusaa Finfinnee."
       },
       p2: {
-        title: "Bal'ina Buufata Konteenarii",
-        desc: "Bulchiinsa loojistiiksii ammayyeessuu handhuura buufata galaanaa Eeshiyaa isa guddaa."
+        title: "Babal'ina Buufata Jibuutii",
+        desc: "Hirmaannaa loojistiiksii ammayyeessuu Buufata Doraleh Kaayyoo Hedduu — buufata konteenarii, harkisuu fi bulchiinsa socha."
       },
       p3: {
-        title: "Walquunnamtii Loojistiiksii Ardii",
-        desc: "Silsila dhiyeessii qilleensa-galaanaa qindaa'aa teknolojii yaalaa addunyaa guutuutti raabsuuf."
+        title: "Gargaarsa Namoomaa Baha Afriikaa",
+        desc: "Dhiyeessuu nyaataa, qorichaa fi meeshaalee ariifataa dhaabbilee miti-mootummaa idla-addunyaatiif Itoophiyaa, Somaaliyaa fi Suudaan keessatti."
       },
       viewAll: "Pirojektota Hunda Ilaali"
     },
     contact: {
-      title: "Mariidhaan Jalqabi",
+      title: "Pirojektii Keessan Irratti Haa Haasofnu",
       form: {
         name: "Maqaa Guutuu",
         email: "Teessoo Iimeelii",
         service: "Tajaajila Barbaadame",
-        message: "Bal'ina Fe'umsaa",
+        message: "Fedhii loojistiiksii keessan ibsaa",
         submit: "Gatii Gaafadhu"
       },
       info: {
-        title: "Waajjira Muummee Addunyaa",
-        address: "1 Daandii Abbaa Taayitaa Buufataa, Kuta Galaanaa",
-        phone: "+251 11 123 4567",
-        email: "operations@globaltransit.com"
+        title: "Waajjira Muummee — Jibuutii",
+        address: "Avenue du Général de Gaulle, BP 2450, Magaalaa Jibuutii",
+        phone: "+253 21 35 40 00",
+        email: "operations@globaltransit.dj"
       }
     },
     footer: {
-      copyright: "© 2024 Global Transit. Mirgi hunduu seeraan eegamaadha.",
-      links: ["Imaammata Iccitii", "Haalawwan & Dambiiwwan", "Seera Galaanaa Eeguu"]
+      copyright: "© 2025 Global Transit. Mirgi hunduu seeraan eegamaadha. | Jibuutii & Itoophiyaa",
+      links: ["Imaammata Iccitii", "Haalawwan & Dambiiwwan", "Seeraa Gumrukaa"]
     }
   }
 };
