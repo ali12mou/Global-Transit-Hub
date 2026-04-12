@@ -40,8 +40,8 @@ export function Navbar() {
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-primary shadow-md py-3' : 'bg-primary/90 backdrop-blur-sm py-5'}`}>
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         <div className="flex items-center cursor-pointer" onClick={() => scrollTo('hero')}>
-          <div className="bg-white rounded px-2 py-1">
-            <img src="/logo.png" alt="Global Transit and Transport Services" className="h-10 w-auto" />
+          <div className="bg-white rounded-md px-3 py-1.5">
+            <img src="/logo.png" alt="Global Transit and Transport Services" className="h-14 w-auto" />
           </div>
         </div>
 

@@ -11,8 +11,8 @@ export function Footer() {
           
           <div>
             <div className="flex items-center mb-6">
-              <div className="bg-white rounded px-2 py-1">
-                <img src="/logo.png" alt="Global Transit and Transport Services" className="h-12 w-auto" />
+              <div className="bg-white rounded-md px-3 py-2">
+                <img src="/logo.png" alt="Global Transit and Transport Services" className="h-16 w-auto" />
               </div>
             </div>
             <p className="text-white/60 mb-6 max-w-sm">
