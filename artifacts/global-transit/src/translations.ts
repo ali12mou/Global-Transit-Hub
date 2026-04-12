@@ -92,8 +92,8 @@ export const translations = {
       info: {
         title: "Siège Social — Djibouti",
         address: "Avenue du Général de Gaulle, BP 2450, Djibouti-Ville",
-        phone: "+253 21 35 40 00",
-        email: "operations@globaltransit.dj"
+        phone: "+253 77 82 18 32 | +253 21 34 17 16 | +253 77 69 61 30",
+        email: "info@gttsgroup.com"
       }
     },
     footer: {
@@ -194,8 +194,8 @@ export const translations = {
       info: {
         title: "المقر الرئيسي — جيبوتي",
         address: "شارع الجنرال ديغول، ص.ب 2450، مدينة جيبوتي",
-        phone: "+253 21 35 40 00",
-        email: "operations@globaltransit.dj"
+        phone: "+253 77 82 18 32 | +253 21 34 17 16 | +253 77 69 61 30",
+        email: "info@gttsgroup.com"
       }
     },
     footer: {
@@ -296,8 +296,8 @@ export const translations = {
       info: {
         title: "ዋና መሥሪያ ቤት — ጅቡቲ",
         address: "አቨኑ ዱ ጄነራል ዴ ጎል፣ ፒኦ ሳጥን 2450፣ ጅቡቲ ከተማ",
-        phone: "+253 21 35 40 00",
-        email: "operations@globaltransit.dj"
+        phone: "+253 77 82 18 32 | +253 21 34 17 16 | +253 77 69 61 30",
+        email: "info@gttsgroup.com"
       }
     },
     footer: {
@@ -398,8 +398,8 @@ export const translations = {
       info: {
         title: "Makao Makuu — Djibouti",
         address: "Njia ya Jenerali de Gaulle, S.L.P 2450, Mji wa Djibouti",
-        phone: "+253 21 35 40 00",
-        email: "operations@globaltransit.dj"
+        phone: "+253 77 82 18 32 | +253 21 34 17 16 | +253 77 69 61 30",
+        email: "info@gttsgroup.com"
       }
     },
     footer: {
@@ -500,8 +500,8 @@ export const translations = {
       info: {
         title: "Xafiiska Guud — Jabuuti",
         address: "Avenue du Général de Gaulle, BP 2450, Magaalada Jabuuti",
-        phone: "+253 21 35 40 00",
-        email: "operations@globaltransit.dj"
+        phone: "+253 77 82 18 32 | +253 21 34 17 16 | +253 77 69 61 30",
+        email: "info@gttsgroup.com"
       }
     },
     footer: {
@@ -602,8 +602,8 @@ export const translations = {
       info: {
         title: "Waajjira Muummee — Jibuutii",
         address: "Avenue du Général de Gaulle, BP 2450, Magaalaa Jibuutii",
-        phone: "+253 21 35 40 00",
-        email: "operations@globaltransit.dj"
+        phone: "+253 77 82 18 32 | +253 21 34 17 16 | +253 77 69 61 30",
+        email: "info@gttsgroup.com"
       }
     },
     footer: {

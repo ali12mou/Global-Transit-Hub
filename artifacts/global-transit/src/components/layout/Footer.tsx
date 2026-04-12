@@ -1,5 +1,5 @@
 import { useLanguage } from "../../contexts/LanguageContext";
-import { Linkedin, Twitter, Facebook } from "lucide-react";
+import { Linkedin, Twitter, Facebook, Phone, Mail, MessageCircle, MapPin } from "lucide-react";
 
 export function Footer() {
   const { t } = useLanguage();
@@ -52,10 +52,27 @@ export function Footer() {
 
           <div>
             <h4 className="font-serif font-bold text-lg mb-6">{t.contact.info.title}</h4>
-            <address className="not-italic text-white/60 space-y-4">
-              <p>{t.contact.info.address}</p>
-              <p>{t.contact.info.phone}</p>
-              <p>{t.contact.info.email}</p>
+            <address className="not-italic text-white/60 space-y-3">
+              <div className="flex items-start gap-2">
+                <MapPin className="h-4 w-4 text-secondary shrink-0 mt-0.5" />
+                <span>{t.contact.info.address}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-secondary shrink-0" />
+                <a href="tel:+25321341716" className="hover:text-secondary transition-colors">+253 21 34 17 16</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-secondary shrink-0" />
+                <a href="tel:+25377821832" className="hover:text-secondary transition-colors">+253 77 82 18 32</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4 text-[#25D366] shrink-0" />
+                <a href="https://wa.me/25377696130" target="_blank" rel="noopener noreferrer" className="hover:text-[#25D366] transition-colors font-medium">+253 77 69 61 30 (WhatsApp)</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-secondary shrink-0" />
+                <a href="mailto:info@gttsgroup.com" className="hover:text-secondary transition-colors">info@gttsgroup.com</a>
+              </div>
             </address>
           </div>
 

@@ -15,7 +15,7 @@ export function Hero() {
   };
 
   return (
-    <section id="hero" className="relative min-h-[100dvh] flex items-center pt-20 overflow-hidden bg-primary">
+    <section id="hero" className="relative min-h-[100dvh] flex items-center pt-36 overflow-hidden bg-primary">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
