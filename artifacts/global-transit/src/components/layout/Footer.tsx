@@ -1,5 +1,5 @@
 import { useLanguage } from "../../contexts/LanguageContext";
-import { Ship, Linkedin, Twitter, Facebook } from "lucide-react";
+import { Linkedin, Twitter, Facebook } from "lucide-react";
 
 export function Footer() {
   const { t } = useLanguage();
@@ -10,9 +10,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <Ship className="h-8 w-8 text-secondary" />
-              <span className="text-white font-serif font-bold text-base tracking-wide leading-tight">Global Transit<br/><span className="text-secondary text-xs font-medium tracking-widest">and Transport Services</span></span>
+            <div className="flex items-center mb-6">
+              <div className="bg-white rounded px-2 py-1">
+                <img src="/logo.png" alt="Global Transit and Transport Services" className="h-12 w-auto" />
+              </div>
             </div>
             <p className="text-white/60 mb-6 max-w-sm">
               {t.hero.subheadline}
