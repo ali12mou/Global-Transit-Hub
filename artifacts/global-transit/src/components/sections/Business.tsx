@@ -36,19 +36,19 @@ export function Business() {
   ];
 
   return (
-    <section id="business" className="py-24 bg-muted relative">
+    <section id="business" className="py-16 md:py-24 bg-muted relative">
       <div className="container mx-auto px-4 md:px-6">
-        
-        <div className="text-center max-w-3xl mx-auto mb-16">
+
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <div className="inline-block px-3 py-1 bg-white text-primary font-bold tracking-wider text-sm mb-4 border-l-2 border-secondary shadow-sm">
             {t.nav.ourBusiness.toUpperCase()}
           </div>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-primary">
             {t.services.title}
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
           {services.map((service, idx) => (
             <motion.div
               key={service.id}
@@ -58,22 +58,22 @@ export function Business() {
               transition={{ duration: 0.5, delay: idx * 0.1 }}
               className="group relative bg-white overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="aspect-[16/9] overflow-hidden relative">
-                <img 
-                  src={service.img} 
-                  alt={service.title} 
+              <div className="aspect-video overflow-hidden relative">
+                <img
+                  src={service.img}
+                  alt={service.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors duration-500" />
               </div>
-              <div className="p-8 relative">
-                <div className="absolute top-0 right-8 -translate-y-1/2 w-12 h-12 bg-secondary text-white flex items-center justify-center font-serif text-xl font-bold shadow-lg">
+              <div className="p-5 sm:p-8 relative">
+                <div className="absolute top-0 right-5 sm:right-8 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-secondary text-white flex items-center justify-center font-serif text-lg sm:text-xl font-bold shadow-lg">
                   0{idx + 1}
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-primary mb-4 group-hover:text-secondary transition-colors">
+                <h3 className="text-xl sm:text-2xl font-serif font-bold text-primary mb-3 sm:mb-4 group-hover:text-secondary transition-colors">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   {service.desc}
                 </p>
               </div>
