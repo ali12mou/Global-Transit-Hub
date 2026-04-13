@@ -51,7 +51,7 @@ export function Footer() {
               </Link>
             </h4>
             <ul className="space-y-3">
-              {SITE_SERVICE_IDS.map((id) => (
+              {SITE_SERVICE_IDS.map((id: string) => (
                 <li key={id}>
                   <Link
                     href={`/activities#${id}`}
@@ -102,7 +102,7 @@ export function Footer() {
             >
               {t.nav.admin}
             </Link>
-            {t.footer.links.map((link, i) => (
+            {t.footer.links.map((link: string, i: number) => (
               <a key={i} href="#" className="text-white/50 hover:text-white transition-colors">
                 {link}
               </a>

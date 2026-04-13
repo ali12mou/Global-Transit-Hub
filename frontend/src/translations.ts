@@ -1,4 +1,6 @@
-export const translations = {
+export type Language = "fr" | "en" | "ar" | "am" | "sw" | "so" | "orm";
+
+export const translations: Record<Language, any> = {
   fr: {
     nav: {
       aboutUs: "À Propos",
@@ -159,12 +161,16 @@ export const translations = {
       title: "Administration",
       subtitle: "Tableau de bord",
       noInquiries: "Aucune demande pour le moment.",
+      colId: "ID",
       colDate: "Date",
       colName: "Nom",
       colEmail: "E-mail",
+      colPhone: "Téléphone",
       colInterest: "Service",
+      colDescription: "Description",
       colMessage: "Message",
       colReviewer: "Traité par",
+      colAction: "Action",
       logout: "Déconnexion",
       loginRequired: "Espace réservé aux administrateurs.",
       goLogin: "Connexion",
@@ -198,6 +204,8 @@ export const translations = {
       links: ["Politique de Confidentialité", "Termes & Conditions", "Conformité Douanière"]
     }
   },
+  // English fallback: keep UI usable without duplicating every string.
+  en: {},
   ar: {
     nav: {
       aboutUs: "معلومات عنا",
@@ -358,12 +366,16 @@ export const translations = {
       title: "لوحة الإدارة",
       subtitle: "لوحة التحكم",
       noInquiries: "لا توجد طلبات بعد.",
+      colId: "المعرّف",
       colDate: "التاريخ",
       colName: "الاسم",
       colEmail: "البريد",
+      colPhone: "الهاتف",
       colInterest: "الخدمة",
+      colDescription: "الوصف",
       colMessage: "الرسالة",
       colReviewer: "المعالج",
+      colAction: "إجراء",
       logout: "خروج",
       loginRequired: "للمسؤولين فقط.",
       goLogin: "تسجيل الدخول",
@@ -555,12 +567,16 @@ export const translations = {
       title: "አስተዳዳሪ",
       subtitle: "ዳሽቦርድ",
       noInquiries: "ጥያቄ የለም።",
+      colId: "መለያ",
       colDate: "ቀን",
       colName: "ስም",
       colEmail: "ኢሜይል",
+      colPhone: "ስልክ",
       colInterest: "አገልግሎት",
+      colDescription: "መግለጫ",
       colMessage: "መልዕክት",
       colReviewer: "አስተናጋጅ",
+      colAction: "እርምጃ",
       logout: "ውጣ",
       loginRequired: "ለአስተዳዳሪዎች ብቻ።",
       goLogin: "መግቢያ",
@@ -752,12 +768,16 @@ export const translations = {
       title: "Msimamizi",
       subtitle: "Dashibodi",
       noInquiries: "Hakuna maombi bado.",
+      colId: "ID",
       colDate: "Tarehe",
       colName: "Jina",
       colEmail: "Barua pepe",
+      colPhone: "Simu",
       colInterest: "Huduma",
+      colDescription: "Maelezo",
       colMessage: "Ujumbe",
       colReviewer: "Aliyehakiki",
+      colAction: "Kitendo",
       logout: "Toka",
       loginRequired: "Kwa wasimamizi tu.",
       goLogin: "Ingia",
@@ -949,12 +969,16 @@ export const translations = {
       title: "Maamulaha",
       subtitle: "Dashboard",
       noInquiries: "Weli codsi ma jiro.",
+      colId: "ID",
       colDate: "Taariikh",
       colName: "Magac",
       colEmail: "Iimayl",
+      colPhone: "Taleefoon",
       colInterest: "Adeeg",
+      colDescription: "Sharaxaad",
       colMessage: "Fariin",
       colReviewer: "Wax ka qaatay",
+      colAction: "Ficil",
       logout: "Ka bax",
       loginRequired: "Kaliya maamulayaasha.",
       goLogin: "Gal",
@@ -1146,12 +1170,16 @@ export const translations = {
       title: "Bulchaa",
       subtitle: "Daashboordii",
       noInquiries: "Amalli hin jiru.",
+      colId: "ID",
       colDate: "Guyyaa",
       colName: "Maqaa",
       colEmail: "Imeelii",
+      colPhone: "Bilbila",
       colInterest: "Tajaajila",
+      colDescription: "Ibsa",
       colMessage: "Ergaa",
       colReviewer: "Hojjete",
+      colAction: "Gocha",
       logout: "Ba'i",
       loginRequired: "Bulchootaaf qofa.",
       goLogin: "Seensa",
@@ -1185,4 +1213,4 @@ export const translations = {
   }
 };
 
-export type Language = keyof typeof translations;
+translations.en = translations.fr;

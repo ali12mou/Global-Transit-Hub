@@ -8,6 +8,7 @@ import { Language } from "../../translations";
 
 const languages: { code: Language; label: string; name: string }[] = [
   { code: 'fr', label: 'FR', name: 'Français' },
+  { code: 'en', label: 'EN', name: 'English' },
   { code: 'ar', label: 'AR', name: 'العربية' },
   { code: 'am', label: 'AM', name: 'አማርኛ' },
   { code: 'sw', label: 'SW', name: 'Kiswahili' },

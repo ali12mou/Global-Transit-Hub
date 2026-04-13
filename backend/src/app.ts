@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import pinoHttp from "pino-http";
 import router from "./routes";
 import { logger } from "./lib/logger";
+import { ensureUploadsDir } from "./lib/uploads";
 
 const app: Express = express();
 
@@ -52,6 +53,10 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Static uploads (admin CMS images)
+const uploadsDir = ensureUploadsDir();
+app.use("/uploads", express.static(uploadsDir, { maxAge: "7d", fallthrough: true }));
 
 app.use("/api", router);
 

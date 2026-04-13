@@ -44,7 +44,7 @@ export function About() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
           >
-            {t.about.stats.map((stat, idx) => (
+            {t.about.stats.map((stat: { value: string; label: string }, idx: number) => (
               <div
                 key={idx}
                 className={`p-6 sm:p-8 bg-white border border-border shadow-sm flex flex-col justify-center ${idx === 2 ? 'sm:col-span-2 bg-primary text-white border-none' : ''}`}

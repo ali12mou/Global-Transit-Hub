@@ -66,7 +66,7 @@ router.get("/me", optionalAuth, async (req: AuthedRequest, res) => {
     return;
   }
   res.json({
-    user: { id: req.auth.sub, email: u.email, role: u.role },
+    user: { id: req.auth.sub, email: String((u as any).email ?? ""), role: String((u as any).role ?? "") },
   });
 });
 

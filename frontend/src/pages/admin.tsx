@@ -345,15 +345,15 @@ export default function AdminPage() {
                   <table className="w-full text-sm text-left">
                     <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
                       <tr>
-                        <th className="px-4 py-3 font-semibold">ID</th>
+                        <th className="px-4 py-3 font-semibold">{t.adminPage.colId}</th>
                         <th className="px-4 py-3 font-semibold">{t.adminPage.colName}</th>
                         <th className="px-4 py-3 font-semibold">{t.adminPage.colEmail}</th>
-                        <th className="px-4 py-3 font-semibold">Téléphone</th>
+                        <th className="px-4 py-3 font-semibold">{t.adminPage.colPhone}</th>
                         <th className="px-4 py-3 font-semibold">{t.adminPage.colInterest}</th>
-                        <th className="px-4 py-3 font-semibold">Description</th>
+                        <th className="px-4 py-3 font-semibold">{t.adminPage.colDescription}</th>
                         <th className="px-4 py-3 font-semibold min-w-[260px]">{t.adminPage.colMessage}</th>
                         <th className="px-4 py-3 font-semibold">{t.adminPage.colReviewer}</th>
-                        <th className="px-4 py-3 font-semibold text-right">Action</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">

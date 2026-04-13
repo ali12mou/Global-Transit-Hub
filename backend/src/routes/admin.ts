@@ -1,11 +1,38 @@
 import { Router, type IRouter } from "express";
+import multer from "multer";
+import path from "node:path";
+import crypto from "node:crypto";
 import { ContactInquiry } from "../models/ContactInquiry";
 import { User } from "../models/User";
-import { requireAdmin } from "../middleware/auth";
+import { ActivityService } from "../models/ActivityService";
+import { ActivityOperation } from "../models/ActivityOperation";
+import { requireAdmin, type AuthedRequest } from "../middleware/auth";
+import { ensureUploadsDir } from "../lib/uploads";
 
 const router: IRouter = Router();
 
 router.use(requireAdmin);
+
+const uploadsDir = ensureUploadsDir();
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadsDir),
+  filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase().slice(0, 10);
+    const base = crypto.randomBytes(16).toString("hex");
+    cb(null, `${Date.now()}-${base}${ext}`);
+  },
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 7 * 1024 * 1024 },
+});
+
+router.post("/uploads", upload.array("images", 12), (req, res) => {
+  const files = (req.files as Express.Multer.File[] | undefined) ?? [];
+  const urls = files.map((f) => `/uploads/${f.filename}`);
+  res.json({ urls });
+});
 
 router.get("/stats", async (_req, res) => {
   const [inquiriesCount, usersCount, adminUsersCount] = await Promise.all([
@@ -25,21 +52,21 @@ router.get("/inquiries", async (_req, res) => {
 
   res.json({
     inquiries: list.map((row) => ({
-      id: row._id.toString(),
-      firstName: row.firstName,
-      lastName: row.lastName,
-      email: row.email,
-      phone: row.phone,
-      interest: row.interest,
-      destinations: row.destinations,
-      message: row.message,
-      createdAt: row.createdAt,
-      reviewedBy: row.reviewedBy,
+      id: String((row as any)._id),
+      firstName: String((row as any).firstName ?? ""),
+      lastName: String((row as any).lastName ?? ""),
+      email: String((row as any).email ?? ""),
+      phone: String((row as any).phone ?? ""),
+      interest: String((row as any).interest ?? ""),
+      destinations: String((row as any).destinations ?? ""),
+      message: String((row as any).message ?? ""),
+      createdAt: (row as any).createdAt,
+      reviewedBy: (row as any).reviewedBy,
     })),
   });
 });
 
-router.patch("/inquiries/:id/review", async (req, res) => {
+router.patch("/inquiries/:id/review", async (req: AuthedRequest, res) => {
   const id = String(req.params["id"] ?? "").trim();
   if (!id) {
     res.status(400).json({ error: "invalid_id" });
@@ -67,16 +94,16 @@ router.patch("/inquiries/:id/review", async (req, res) => {
 
   res.json({
     inquiry: {
-      id: updated._id.toString(),
-      firstName: updated.firstName,
-      lastName: updated.lastName,
-      email: updated.email,
-      phone: updated.phone,
-      interest: updated.interest,
-      destinations: updated.destinations,
-      message: updated.message,
-      createdAt: updated.createdAt,
-      reviewedBy: updated.reviewedBy,
+      id: String((updated as any)._id),
+      firstName: String((updated as any).firstName ?? ""),
+      lastName: String((updated as any).lastName ?? ""),
+      email: String((updated as any).email ?? ""),
+      phone: String((updated as any).phone ?? ""),
+      interest: String((updated as any).interest ?? ""),
+      destinations: String((updated as any).destinations ?? ""),
+      message: String((updated as any).message ?? ""),
+      createdAt: (updated as any).createdAt,
+      reviewedBy: (updated as any).reviewedBy,
     },
   });
 });

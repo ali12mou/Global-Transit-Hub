@@ -6,7 +6,9 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 export default defineConfig(async ({ mode }) => {
   const env = loadEnv(mode, import.meta.dirname, "");
-  const rawPort = env.PORT ?? process.env.PORT ?? "5173";
+  // Avoid clashing with backend's PORT env var (often set to 8080).
+  // We intentionally ignore env.PORT here.
+  const rawPort = env.VITE_PORT ?? process.env.VITE_PORT ?? "5173";
   const port = Number(rawPort);
   if (Number.isNaN(port) || port <= 0) {
     throw new Error(`Invalid PORT value: "${rawPort}"`);
