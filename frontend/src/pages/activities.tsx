@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import heroBg from "../assets/hero-bg.png";
+import { SITE_SERVICE_IDS, siteServiceImages } from "@/lib/siteServices";
 import maritimeImg from "../assets/service-maritime.png";
 import landImg from "../assets/service-land.png";
 import supplyImg from "../assets/service-supply.png";
@@ -28,11 +29,12 @@ export default function ActivitiesPage() {
 
   const captions = [p.cap1, p.cap2, p.cap3, p.cap4, p.cap5, p.cap6] as const;
 
-  const pillars = [
-    { id: "maritime" as const, title: t.services.maritime.title, desc: t.services.maritime.desc, img: maritimeImg },
-    { id: "land" as const, title: t.services.land.title, desc: t.services.land.desc, img: landImg },
-    { id: "supply" as const, title: t.services.supply.title, desc: t.services.supply.desc, img: supplyImg },
-  ];
+  const pillars = SITE_SERVICE_IDS.map((id) => ({
+    id,
+    title: t.services[id].title,
+    desc: t.services[id].desc,
+    img: siteServiceImages[id],
+  }));
 
   return (
     <main className="min-h-screen bg-background flex flex-col">

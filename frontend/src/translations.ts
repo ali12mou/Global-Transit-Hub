@@ -48,18 +48,26 @@ export const translations = {
       }
     },
     services: {
-      title: "Nos Domaines d'Expertise",
-      maritime: {
-        title: "Fret Maritime",
-        desc: "Import-export via le Port de Djibouti, gestion des conteneurs FCL/LCL, transit douanier et liaisons avec les grandes lignes maritimes mondiales."
+      title: "Nos services",
+      clearance: {
+        title: "Clearance",
+        desc: "Dédouanement import / export, formalités et déclarations au port de Djibouti et sur les corridors régionaux."
       },
-      land: {
-        title: "Transport Terrestre",
-        desc: "Corridor routier Djibouti — Éthiopie (RN1), flotte de camions dédiée, livraison jusqu'à Addis-Abeba, Mekelle, Dire Dawa et toutes les régions éthiopiennes."
+      logistics: {
+        title: "Logistics",
+        desc: "Chaîne logistique : manutention, entreposage, transport et coordination des flux porte à porte."
       },
-      supply: {
-        title: "Chaîne d'Approvisionnement",
-        desc: "Gestion complète de bout en bout : sourcing mondial, dédouanement, entreposage à Djibouti et distribution en Éthiopie et Afrique de l'Est."
+      transit: {
+        title: "Transit",
+        desc: "Transit de marchandises sur le corridor Djibouti — Éthiopie et en Afrique de l’Est : suivi, affrètement et livraison."
+      },
+      customs: {
+        title: "Système douanes",
+        desc: "Accompagnement du système douanier : conformité réglementaire, classification, fiscalité et relations avec les administrations."
+      },
+      documents: {
+        title: "Documents",
+        desc: "Constitution et suivi des dossiers : connaissements, factures, certificats d’origine et pièces administratives."
       }
     },
     projects: {
@@ -126,8 +134,8 @@ export const translations = {
       title: "Sur le terrain, à Djibouti et en Afrique de l’Est",
       subtitle: "Manutention portuaire, transport routier, entreposage et corridor Djibouti — Éthiopie.",
       intro:
-        "Nos équipes interviennent sur les terminaux, zones logistiques et routes stratégiques : chargement de conteneurs, affrètement, transit douanier et distribution vers Addis-Abeba et la région. Découvrez nos quatre domaines d’expertise et un aperçu de nos opérations.",
-      pillarsTitle: "Nos domaines d’expertise",
+        "Nos équipes interviennent sur les terminaux, zones logistiques et routes stratégiques : clearance, logistics, transit, système douanes et documents. Découvrez nos cinq pôles métiers et un aperçu de nos opérations.",
+      pillarsTitle: "Nos cinq pôles métiers",
       galleryTitle: "Nos opérations en images",
       cta: "Parler de votre flux logistique",
       cap1: "Fret maritime et transit via le port de Djibouti.",
@@ -149,7 +157,7 @@ export const translations = {
     },
     adminPage: {
       title: "Administration",
-      subtitle: "Demandes de contact",
+      subtitle: "Tableau de bord",
       noInquiries: "Aucune demande pour le moment.",
       colDate: "Date",
       colName: "Nom",
@@ -159,7 +167,31 @@ export const translations = {
       colReviewer: "Traité par",
       logout: "Déconnexion",
       loginRequired: "Espace réservé aux administrateurs.",
-      goLogin: "Connexion"
+      goLogin: "Connexion",
+      loadError: "Erreur de chargement.",
+      backToSite: "Retour au site",
+      menu: "Menu",
+      navStats: "Statistiques site",
+      navActivities: "Nos activités",
+      navTeam: "Notre équipe",
+      navCareers: "Carrières",
+      navProjects: "Nos projets",
+      navContact: "Contact",
+      navSettings: "Paramètres",
+      statsTitle: "Indicateurs",
+      statInquiries: "Demandes de contact",
+      statUsers: "Comptes utilisateurs",
+      statAdmins: "Administrateurs",
+      statsHint: "Données issues de la base MongoDB.",
+      inquiriesTitle: "Demandes reçues",
+      cmsTitle: "Contenu du site",
+      cmsBody:
+        "La gestion éditoriale de cette rubrique pourra être ajoutée ici. En attendant, ouvrez la page publique correspondante.",
+      cmsOpenSite: "Voir sur le site",
+      settingsTitle: "Paramètres",
+      settingsAccount: "Compte connecté",
+      settingsBody:
+        "Options avancées (mot de passe, notifications, etc.) pourront être proposées ici."
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. Tous droits réservés. | Djibouti & Éthiopie",
@@ -215,18 +247,26 @@ export const translations = {
       }
     },
     services: {
-      title: "مجالات خبرتنا",
-      maritime: {
-        title: "الشحن البحري",
-        desc: "الاستيراد والتصدير عبر ميناء جيبوتي، وإدارة الحاويات FCL/LCL، والعبور الجمركي، والروابط مع خطوط الشحن البحري العالمية الكبرى."
+      title: "خدماتنا",
+      clearance: {
+        title: "التخليص",
+        desc: "تخليص جمركي للاستيراد والتصدير، إجراءات وإقرارات في ميناء جيبوتي والممرات الإقليمية."
       },
-      land: {
-        title: "النقل البري",
-        desc: "ممر جيبوتي — إثيوبيا (الطريق الوطني 1)، أسطول شاحنات مخصص، توصيل حتى أديس أبابا ومكيلي وديري داوا وجميع المناطق الإثيوبية."
+      logistics: {
+        title: "اللوجستيات",
+        desc: "سلسلة لوجستية: المناولة، التخزين، النقل وتنسيق التدفقات من الباب إلى الباب."
       },
-      supply: {
-        title: "سلسلة التوريد",
-        desc: "إدارة كاملة من البداية إلى النهاية: التوريد العالمي، التخليص الجمركي، التخزين في جيبوتي، والتوزيع في إثيوبيا وشرق أفريقيا."
+      transit: {
+        title: "الترانزيت",
+        desc: "عبور البضائع عبر ممر جيبوتي — إثيوبيا وشرق أفريقيا: تتبع، شحن وتسليم."
+      },
+      customs: {
+        title: "النظام الجمركي",
+        desc: "دعم النظام الجمركي: الامتثال التنظيمي، التصنيف، الضرائب والعلاقة مع الإدارات."
+      },
+      documents: {
+        title: "المستندات",
+        desc: "إعداد ومتابعة الملفات: بوليصات الشحن، الفواتير، شهادات المنشأ والوثائق الإدارية."
       }
     },
     projects: {
@@ -316,7 +356,7 @@ export const translations = {
     },
     adminPage: {
       title: "لوحة الإدارة",
-      subtitle: "طلبات الاتصال",
+      subtitle: "لوحة التحكم",
       noInquiries: "لا توجد طلبات بعد.",
       colDate: "التاريخ",
       colName: "الاسم",
@@ -326,7 +366,29 @@ export const translations = {
       colReviewer: "المعالج",
       logout: "خروج",
       loginRequired: "للمسؤولين فقط.",
-      goLogin: "تسجيل الدخول"
+      goLogin: "تسجيل الدخول",
+      loadError: "خطأ في التحميل.",
+      backToSite: "العودة للموقع",
+      menu: "القائمة",
+      navStats: "إحصائيات الموقع",
+      navActivities: "أنشطتنا",
+      navTeam: "فريقنا",
+      navCareers: "الوظائف",
+      navProjects: "مشاريعنا",
+      navContact: "اتصل بنا",
+      navSettings: "الإعدادات",
+      statsTitle: "المؤشرات",
+      statInquiries: "طلبات الاتصال",
+      statUsers: "حسابات المستخدمين",
+      statAdmins: "المسؤولون",
+      statsHint: "بيانات من قاعدة MongoDB.",
+      inquiriesTitle: "الطلبات الواردة",
+      cmsTitle: "محتوى الموقع",
+      cmsBody: "يمكن إضافة إدارة المحتوى لاحقًا. افتح الصفحة العامة المقابلة.",
+      cmsOpenSite: "عرض على الموقع",
+      settingsTitle: "الإعدادات",
+      settingsAccount: "الحساب المتصل",
+      settingsBody: "خيارات متقدمة (كلمة المرور، الإشعارات…) لاحقًا."
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. جميع الحقوق محفوظة. | جيبوتي وإثيوبيا",
@@ -382,18 +444,26 @@ export const translations = {
       }
     },
     services: {
-      title: "የሙያ ዘርፎቻችን",
-      maritime: {
-        title: "የባህር ጭነት",
-        desc: "በጅቡቲ ወደብ በኩል ማስመጣት እና መላክ፣ FCL/LCL ኮንቴይነር አስተዳደር፣ የጉምሩክ ሽግግር እና ከዓለም ዋና የባህር ጭነት ሰርዓቶች ጋር ግንኙነት።"
+      title: "አገልግሎቶቻችን",
+      clearance: {
+        title: "ክሊራንስ",
+        desc: "የመጡ እና የወጡ ጉምሩክ፣ በጅቡቲ ወደብ እና በክልላዊ መንገዶች ላይ ሂደቶች እና መግለጫዎች።"
       },
-      land: {
-        title: "የመሬት ትራንስፖርት",
-        desc: "ጅቡቲ — ኢትዮጵያ መንገድ ኮሪደር (ብሄራዊ መንገድ 1)፣ ልዩ ተሽከርካሪ መርከቦች፣ እስከ አዲስ አበባ፣ መቀሌ፣ ድሬ ዳዋ እና ሁሉም ኢትዮጵያ ክልሎች ድረስ ማድረስ።"
+      logistics: {
+        title: "ሎጂስቲክስ",
+        desc: "የሎጂስቲክስ ሰንሰለት፦ ማንሻ፣ ማቆያ፣ ትራንስፖርት እና ከበር እስከ በር ፍሰት ቅንብር።"
       },
-      supply: {
-        title: "አቅርቦት ሰንሰለት",
-        desc: "ሙሉ ከጫፍ እስከ ጫፍ አስተዳደር፡ ዓለም አቀፍ ምንጭ ማሰስ፣ ጉምሩክ ማስፈቀጃ፣ በጅቡቲ ማቆያ እና በኢትዮጵያ እና ምስራቅ አፍሪካ ስርጭት።"
+      transit: {
+        title: "ትራንዚት",
+        desc: "በጅቡቲ — ኢትዮጵያ እና በምስራቅ አፍሪካ ኮሪደር ላይ የእቃ ሽግግር፦ ክትትል፣ ኪራይ እና ማድረስ።"
+      },
+      customs: {
+        title: "የጉምሩክ ስርዓት",
+        desc: "የጉምሩክ ስርዓት ድጋፍ፦ ደንብ ተገቢነት፣ ምደባ፣ ታክስ እና ከአስተዳደሮች ጋር ግንኙነት።"
+      },
+      documents: {
+        title: "ሰነዶች",
+        desc: "የፋይሎች ዝግጅት እና ክትትል፦ ኮንዞሜንቶች፣ ደረሰኞች፣ የመነሻ ሰርተፊኬት እና አስተዳደራዊ ዶክመንቶች።"
       }
     },
     projects: {
@@ -483,7 +553,7 @@ export const translations = {
     },
     adminPage: {
       title: "አስተዳዳሪ",
-      subtitle: "የእውቂያ ጥያቄዎች",
+      subtitle: "ዳሽቦርድ",
       noInquiries: "ጥያቄ የለም።",
       colDate: "ቀን",
       colName: "ስም",
@@ -493,7 +563,29 @@ export const translations = {
       colReviewer: "አስተናጋጅ",
       logout: "ውጣ",
       loginRequired: "ለአስተዳዳሪዎች ብቻ።",
-      goLogin: "መግቢያ"
+      goLogin: "መግቢያ",
+      loadError: "መጫን አልተሳካም።",
+      backToSite: "ወደ ጣቢያ ተመለስ",
+      menu: "ምናሌ",
+      navStats: "የድር ጣቢያ ስታትስቲክስ",
+      navActivities: "እንቅስቃሴዎቻችን",
+      navTeam: "ቡድናችን",
+      navCareers: "ስራዎች",
+      navProjects: "ፕሮጀክቶቻችን",
+      navContact: "እውቂያ",
+      navSettings: "ቅንብሮች",
+      statsTitle: "አመልካቾች",
+      statInquiries: "የእውቂያ ጥያቄዎች",
+      statUsers: "የተጠቃሚ መለያዎች",
+      statAdmins: "አስተዳዳሪዎች",
+      statsHint: "ከ MongoDB ውሂብ።",
+      inquiriesTitle: "የተቀበሉ ጥያቄዎች",
+      cmsTitle: "የጣቢያ ይዘት",
+      cmsBody: "የይዘት አስተዳደር በኋላ ሊጨመር ይችላል። የህዝብ ገጹን ይክፈቱ።",
+      cmsOpenSite: "በጣቢያ ላይ ይመልከቱ",
+      settingsTitle: "ቅንብሮች",
+      settingsAccount: "የተገናኘ መለያ",
+      settingsBody: "የላቀ አማራጮች በኋላ።"
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. መብቱ በህግ የተጠበቀ ነው። | ጅቡቲ እና ኢትዮጵያ",
@@ -549,18 +641,26 @@ export const translations = {
       }
     },
     services: {
-      title: "Maeneo Yetu ya Utaalamu",
-      maritime: {
-        title: "Usafirishaji wa Baharini",
-        desc: "Uingizaji na usafirishaji kupitia Bandari ya Djibouti, usimamizi wa makontena FCL/LCL, usafiri wa forodha na uhusiano na mstari mkubwa wa usafirishaji wa baharini duniani."
+      title: "Huduma zetu",
+      clearance: {
+        title: "Clearance",
+        desc: "Ufutaji wa forodha wa uingizaji na usafirishaji, taratibu na matangazo katika Bandari ya Djibouti na njia za kikanda."
       },
-      land: {
-        title: "Usafiri wa Nchi Kavu",
-        desc: "Njia ya Djibouti — Ethiopia (Barabara ya Kitaifa 1), meli ya malori iliyowekwa wakfu, utoaji hadi Addis Ababa, Mekelle, Dire Dawa na mikoa yote ya Ethiopia."
+      logistics: {
+        title: "Logistics",
+        desc: "Mnyororo wa mantiki: upakiaji, uhifadhi, usafirishaji na uratibu wa mtiririko kutoka mlango hadi mlango."
       },
-      supply: {
-        title: "Mnyororo wa Usambazaji",
-        desc: "Usimamizi kamili wa mwanzo hadi mwisho: utafutaji wa bidhaa duniani, usafishaji wa forodha, uhifadhi huko Djibouti, na usambazaji nchini Ethiopia na Afrika Mashariki."
+      transit: {
+        title: "Transit",
+        desc: "Upitishaji wa bidhaa kwenye njia ya Djibouti — Ethiopia na Afrika Mashariki: ufuatiliaji, usafirishaji na utoaji."
+      },
+      customs: {
+        title: "Mfumo wa forodha",
+        desc: "Msaada wa mfumo wa forodha: kufuata kanuni, uainishaji, ushuru na uhusiano na idara."
+      },
+      documents: {
+        title: "Nyaraka",
+        desc: "Kuandaa na kufuatilia faili: vyeti vya usafirishaji, ankara, vyeti vya asili na nyaraka za kiutawala."
       }
     },
     projects: {
@@ -650,7 +750,7 @@ export const translations = {
     },
     adminPage: {
       title: "Msimamizi",
-      subtitle: "Maombi ya mawasiliano",
+      subtitle: "Dashibodi",
       noInquiries: "Hakuna maombi bado.",
       colDate: "Tarehe",
       colName: "Jina",
@@ -660,7 +760,29 @@ export const translations = {
       colReviewer: "Aliyehakiki",
       logout: "Toka",
       loginRequired: "Kwa wasimamizi tu.",
-      goLogin: "Ingia"
+      goLogin: "Ingia",
+      loadError: "Hitilafu ya kupakia.",
+      backToSite: "Rudi kwenye tovuti",
+      menu: "Menyu",
+      navStats: "Takwimu za tovuti",
+      navActivities: "Shughuli zetu",
+      navTeam: "Timu yetu",
+      navCareers: "Kazi",
+      navProjects: "Miradi yetu",
+      navContact: "Mawasiliano",
+      navSettings: "Mipangilio",
+      statsTitle: "Viashiria",
+      statInquiries: "Maombi ya mawasiliano",
+      statUsers: "Akaunti za watumiaji",
+      statAdmins: "Wasimamizi",
+      statsHint: "Data kutoka MongoDB.",
+      inquiriesTitle: "Maombi yaliyopokelewa",
+      cmsTitle: "Maudhui ya tovuti",
+      cmsBody: "Utawala wa maudhui utaongezwa baadaye. Fungua ukurasa wa umma.",
+      cmsOpenSite: "Tazama kwenye tovuti",
+      settingsTitle: "Mipangilio",
+      settingsAccount: "Akaunti iliyounganishwa",
+      settingsBody: "Chaguo za hali ya juu baadaye."
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. Haki zote zimehifadhiwa. | Djibouti & Ethiopia",
@@ -716,18 +838,26 @@ export const translations = {
       }
     },
     services: {
-      title: "Meelaha Aan Khibrada U Leenahay",
-      maritime: {
-        title: "Rarida Badda",
-        desc: "Soo dejinta iyo dirista iyada oo loo marayo Dekedda Jabuuti, maamulka weelasha FCL/LCL, gudbinta jamaarada iyo xiriirka xayndaabadaha weyn ee rarida badda adduunka."
+      title: "Adeegyadeena",
+      clearance: {
+        title: "Clearance",
+        desc: "Soo dejinta iyo dirista jamaarada, nidaamyada iyo ogeysiisyada dekedda Jabuuti iyo wadooyinka gobolka."
       },
-      land: {
-        title: "Gaadiidka Berriga",
-        desc: "Jidka Jabuuti — Itoobiya (Wadada Qaranka 1), koox baabuur ah oo u gaar ah, gaarsiinta ilaa Addis Ababa, Mekelle, Dire Dawa iyo dhammaan gobolada Itoobiya."
+      logistics: {
+        title: "Logistics",
+        desc: "Silsilada saadka: shaqada dekedda, kaydinta, gaadiidka iyo isku xirka socodka albaabka ilaa albaabka."
       },
-      supply: {
-        title: "Silsilada Saadka",
-        desc: "Maamul dhamaystiran oo dhamaadka-ilaa-dhamaadka ah: ururinta caalamiga ah, xeerka jamaarada, kaydinta Jabuuti, iyo qaybinta Itoobiya iyo Bariga Afrika."
+      transit: {
+        title: "Transit",
+        desc: "Marinta alaabta jidka Jabuuti — Itoobiya iyo Bariga Afrika: raadraaca, rarida iyo gaarsiinta."
+      },
+      customs: {
+        title: "Nidaamka jamaarada",
+        desc: "Taageerada nidaamka jamaarada: u hoggaansanaanta, kala-soocidda, canshuuraha iyo xiriirka hay'adaha."
+      },
+      documents: {
+        title: "Dukumiintiyada",
+        desc: "Diyaarinta iyo raadraaca faylasha: waraaqaha maraakiibta, biilasha, shahaadooyinka asalka iyo dukumiintiyada maamulka."
       }
     },
     projects: {
@@ -817,7 +947,7 @@ export const translations = {
     },
     adminPage: {
       title: "Maamulaha",
-      subtitle: "Codsiyada xiriirka",
+      subtitle: "Dashboard",
       noInquiries: "Weli codsi ma jiro.",
       colDate: "Taariikh",
       colName: "Magac",
@@ -827,7 +957,29 @@ export const translations = {
       colReviewer: "Wax ka qaatay",
       logout: "Ka bax",
       loginRequired: "Kaliya maamulayaasha.",
-      goLogin: "Gal"
+      goLogin: "Gal",
+      loadError: "Khalad soo dejinta.",
+      backToSite: "Ku laabo bogga",
+      menu: "Liiska",
+      navStats: "Tirakoobka bogga",
+      navActivities: "Howlaheena",
+      navTeam: "Kooxdeena",
+      navCareers: "Shaqooyinka",
+      navProjects: "Mashaariicdeena",
+      navContact: "Xiriir",
+      navSettings: "Dejinta",
+      statsTitle: "Tilmaamayaasha",
+      statInquiries: "Codsiyada xiriirka",
+      statUsers: "Akoonnada isticmaalayaasha",
+      statAdmins: "Maamulayaasha",
+      statsHint: "Xog ka timid MongoDB.",
+      inquiriesTitle: "Codsiyada la helay",
+      cmsTitle: "Mawduuca bogga",
+      cmsBody: "Maamulka mawduuca waa la dari karaa. Fur bogga dadweynaha.",
+      cmsOpenSite: "Ku eeg bogga",
+      settingsTitle: "Dejinta",
+      settingsAccount: "Akoonka ku xiran",
+      settingsBody: "Xulashooyin horumarsan markale."
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. Dhammaan xuquuqaha waa la xafiday. | Jabuuti & Itoobiya",
@@ -883,18 +1035,26 @@ export const translations = {
       }
     },
     services: {
-      title: "Naannoowwan Muuxannoo Keenyaa",
-      maritime: {
-        title: "Fe'umsa Galaanaa",
-        desc: "Fudhataa fi ergaa Buufata Jibuutii darbee, bulchiinsa konteenarii FCL/LCL, daandii gumrukaa fi hidhata sarara fe'umsaa galaanaa addunyaa gurguddootiin."
+      title: "Tajaajilawwan keenya",
+      clearance: {
+        title: "Clearance",
+        desc: "Gumruka fudhachuu fi erguu, adeemsa fi beeksisa buufata Jibuutii fi daandiiwwan naannoo irratti."
       },
-      land: {
-        title: "Geejjiba Lafaa",
-        desc: "Daandii Jibuutii — Itoophiyaa (Daandii Biyyoolessaa 1), harki konkolaataa addaa, Finfinnee, Maqalee, Dirree Dhaawaa fi naannoo Itoophiyaa hunda geejjisa."
+      logistics: {
+        title: "Logistics",
+        desc: "Silsa loojistiiksii: hojii buufataa, kuusaa, geejjiba fi walitti qindaa'ina sochaa balbala irraa gara balbalaa."
       },
-      supply: {
-        title: "Raabsii Dhiyeessii",
-        desc: "Bulchiinsa dhuma-gara-dhumaa guutuu: madda meeshaalee addunyaa, qulqulleessa gumrukaa, kuusaa Jibuutii, fi raabsii Itoophiyaa fi Baha Afriikaatti."
+      transit: {
+        title: "Transit",
+        desc: "Meeshaalee gara daandii Jibuutii — Itoophiyaa fi Baha Afriikaa irratti darbachuu: hordoffii, fe'umsa fi geejjibsa."
+      },
+      customs: {
+        title: "Sirna gumrukaa",
+        desc: "Gargaarsa sirna gumrukaa: itti fufiinsa seeraa, ramaddii, gibira fi walitti dhufeenya dhaabbilee."
+      },
+      documents: {
+        title: "Sanadoota",
+        desc: "Qopheessuu fi hordoffii galmeewwanii: waraqaa fe'umsaa, bilbilli, ragaa maddaa fi sanadoota bulchiinsaa."
       }
     },
     projects: {
@@ -984,7 +1144,7 @@ export const translations = {
     },
     adminPage: {
       title: "Bulchaa",
-      subtitle: "Gaaffiiwwan quunnamtii",
+      subtitle: "Daashboordii",
       noInquiries: "Amalli hin jiru.",
       colDate: "Guyyaa",
       colName: "Maqaa",
@@ -994,7 +1154,29 @@ export const translations = {
       colReviewer: "Hojjete",
       logout: "Ba'i",
       loginRequired: "Bulchootaaf qofa.",
-      goLogin: "Seensa"
+      goLogin: "Seensa",
+      loadError: "Fe'umsaanni hin milkoofne.",
+      backToSite: "Gara marsariitii deebi'i",
+      menu: "Galmee",
+      navStats: "Statistiksii marsariitii",
+      navActivities: "Hojiiwwan keenya",
+      navTeam: "Gareen keenya",
+      navCareers: "Hojiiwwan barbaachisoo",
+      navProjects: "Piroojektoota keenya",
+      navContact: "Quunnamtii",
+      navSettings: "Qindaa'ina",
+      statsTitle: "Mallattoolee",
+      statInquiries: "Gaaffiiwwan quunnamtii",
+      statUsers: "Akkaawuntii fayyadamtootaa",
+      statAdmins: "Bulchitoota",
+      statsHint: "Odeeffannoo MongoDB irraa.",
+      inquiriesTitle: "Gaaffiiwwan dhufan",
+      cmsTitle: "Qabiyyee marsariitii",
+      cmsBody: "Bulchiinsa qabiyyee booda ni danda'ama. Fuula ummataa bani.",
+      cmsOpenSite: "Marsariitii irratti ilaali",
+      settingsTitle: "Qindaa'ina",
+      settingsAccount: "Akkaawuntii walitti qabame",
+      settingsBody: "Filannoo ol'aanaa booda."
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. Mirgi hunduu seeraan eegamaadha. | Jibuutii & Itoophiyaa",

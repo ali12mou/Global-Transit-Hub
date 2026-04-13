@@ -6,7 +6,7 @@ const userSchema = new Schema(
     passwordHash: { type: String, required: true },
     role: { type: String, enum: ["admin", "user"], default: "user" },
   },
-  { timestamps: true },
+  { timestamps: true, collection: "users" },
 );
 
 export type UserDoc = InferSchemaType<typeof userSchema> & { _id: mongoose.Types.ObjectId };

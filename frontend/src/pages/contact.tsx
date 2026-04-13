@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { apiFetch } from "@/lib/api";
+import { SITE_SERVICE_IDS } from "@/lib/siteServices";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
 
@@ -182,9 +183,11 @@ export default function ContactPage() {
                     aria-label={p.interestLabel}
                     className="w-full rounded-md border border-border bg-white px-4 py-3 text-sm outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-colors"
                   >
-                    <option value="maritime">{t.services.maritime.title}</option>
-                    <option value="land">{t.services.land.title}</option>
-                    <option value="supply">{t.services.supply.title}</option>
+                    {SITE_SERVICE_IDS.map((id) => (
+                      <option key={id} value={id}>
+                        {t.services[id].title}
+                      </option>
+                    ))}
                     <option value="other">{p.otherService}</option>
                   </select>
                 </div>

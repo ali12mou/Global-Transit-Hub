@@ -1,4 +1,5 @@
 import { useLanguage } from "../../contexts/LanguageContext";
+import { SITE_SERVICE_IDS } from "@/lib/siteServices";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
@@ -101,9 +102,9 @@ export function Contact() {
                   {t.contact.form.service}
                 </label>
                 <select className="w-full p-3 sm:p-4 bg-white border border-border focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all appearance-none rounded-none text-sm">
-                  <option>{t.services.maritime.title}</option>
-                  <option>{t.services.land.title}</option>
-                  <option>{t.services.supply.title}</option>
+                  {SITE_SERVICE_IDS.map((id) => (
+                    <option key={id}>{t.services[id].title}</option>
+                  ))}
                 </select>
               </div>
 

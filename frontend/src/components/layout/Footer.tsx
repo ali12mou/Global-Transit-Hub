@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { SITE_SERVICE_IDS } from "@/lib/siteServices";
 import { Linkedin, Twitter, Facebook, Phone, Mail, MessageCircle, MapPin } from "lucide-react";
 
 export function Footer() {
@@ -50,21 +51,16 @@ export function Footer() {
               </Link>
             </h4>
             <ul className="space-y-3">
-              <li>
-                <Link href="/activities#maritime" className="text-white/60 hover:text-secondary transition-colors text-sm">
-                  {t.services.maritime.title}
-                </Link>
-              </li>
-              <li>
-                <Link href="/activities#land" className="text-white/60 hover:text-secondary transition-colors text-sm">
-                  {t.services.land.title}
-                </Link>
-              </li>
-              <li>
-                <Link href="/activities#supply" className="text-white/60 hover:text-secondary transition-colors text-sm">
-                  {t.services.supply.title}
-                </Link>
-              </li>
+              {SITE_SERVICE_IDS.map((id) => (
+                <li key={id}>
+                  <Link
+                    href={`/activities#${id}`}
+                    className="text-white/60 hover:text-secondary transition-colors text-sm"
+                  >
+                    {t.services[id].title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

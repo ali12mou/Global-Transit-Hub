@@ -18,6 +18,7 @@ function Router() {
       <Route path="/activities" component={ActivitiesPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/login" component={LoginPage} />
+      <Route path="/admin/:section" component={AdminPage} />
       <Route path="/admin" component={AdminPage} />
       <Route path="/" component={Home} />
       <Route component={NotFound} />
