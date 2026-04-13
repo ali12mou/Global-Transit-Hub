@@ -51,6 +51,11 @@ type Stats = {
   inquiriesCount: number;
   usersCount: number;
   adminUsersCount: number;
+  servicesCount?: number;
+  operationsCount?: number;
+  teamMembersCount?: number;
+  careersCount?: number;
+  activeCareersCount?: number;
 };
 
 type CmsService = {
@@ -76,6 +81,28 @@ type TeamMemberRow = {
   title: string;
   description: string;
   image: string;
+  active: boolean;
+  createdAt?: string;
+};
+
+type CareerRow = {
+  id: string;
+  title: string;
+  location: string;
+  contractType: string;
+  description: string;
+  applyEmail: string;
+  active: boolean;
+  createdAt?: string;
+};
+
+type ProjectRow = {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+  featured: boolean;
   active: boolean;
   createdAt?: string;
 };
@@ -197,6 +224,30 @@ export default function AdminPage() {
   const [teamForm, setTeamForm] = useState({ name: "", title: "", description: "" });
   const [teamFiles, setTeamFiles] = useState<FileList | null>(null);
 
+  const [careers, setCareers] = useState<CareerRow[]>([]);
+  const [careersError, setCareersError] = useState(false);
+  const [careerDialogOpen, setCareerDialogOpen] = useState(false);
+  const [editingCareer, setEditingCareer] = useState<CareerRow | null>(null);
+  const [careerForm, setCareerForm] = useState({
+    title: "",
+    location: "",
+    contractType: "",
+    applyEmail: "",
+    description: "",
+  });
+
+  const [projects, setProjects] = useState<ProjectRow[]>([]);
+  const [projectsError, setProjectsError] = useState(false);
+  const [projectDialogOpen, setProjectDialogOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<ProjectRow | null>(null);
+  const [projectForm, setProjectForm] = useState({
+    title: "",
+    category: "",
+    featured: true,
+    description: "",
+  });
+  const [projectFiles, setProjectFiles] = useState<FileList | null>(null);
+
   const isAdmin = me?.role === "admin";
 
   const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -284,6 +335,52 @@ export default function AdminPage() {
         setTeamMembers(json.members ?? []);
       } catch {
         if (!cancelled) setTeamError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, section]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (section !== "careers") return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/admin/careers");
+        if (cancelled) return;
+        if (!res.ok) {
+          setCareersError(true);
+          return;
+        }
+        const json = (await res.json()) as { careers: CareerRow[] };
+        setCareers(json.careers ?? []);
+      } catch {
+        if (!cancelled) setCareersError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, section]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (section !== "projects") return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/admin/projects");
+        if (cancelled) return;
+        if (!res.ok) {
+          setProjectsError(true);
+          return;
+        }
+        const json = (await res.json()) as { projects: ProjectRow[] };
+        setProjects(json.projects ?? []);
+      } catch {
+        if (!cancelled) setProjectsError(true);
       }
     })();
     return () => {
@@ -565,6 +662,169 @@ export default function AdminPage() {
       setTeamMembers((rows) => rows.filter((r) => r.id !== row.id));
     } finally {
       setActing((m) => ({ ...m, [`del_team_${row.id}`]: false }));
+    }
+  };
+
+  const openAddCareer = () => {
+    setEditingCareer(null);
+    setCareerForm({ title: "", location: "", contractType: "", applyEmail: "", description: "" });
+    setCareerDialogOpen(true);
+  };
+
+  const openEditCareer = (row: CareerRow) => {
+    setEditingCareer(row);
+    setCareerForm({
+      title: row.title,
+      location: row.location ?? "",
+      contractType: row.contractType ?? "",
+      applyEmail: row.applyEmail ?? "",
+      description: row.description ?? "",
+    });
+    setCareerDialogOpen(true);
+  };
+
+  const refreshCareers = async () => {
+    const res = await apiFetch("/admin/careers");
+    if (!res.ok) return;
+    const json = (await res.json()) as { careers: CareerRow[] };
+    setCareers(json.careers ?? []);
+  };
+
+  const saveCareer = async () => {
+    const id = editingCareer?.id;
+    setActing((m) => ({ ...m, career_save: true }));
+    try {
+      const payload = {
+        title: careerForm.title.trim(),
+        location: careerForm.location.trim(),
+        contractType: careerForm.contractType.trim(),
+        applyEmail: careerForm.applyEmail.trim(),
+        description: careerForm.description.trim(),
+      };
+      const res = await apiFetch(id ? `/admin/careers/${id}` : "/admin/careers", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+      await refreshCareers();
+      setCareerDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, career_save: false }));
+    }
+  };
+
+  const toggleCareer = async (row: CareerRow) => {
+    setActing((m) => ({ ...m, [`career_toggle_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/careers/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      if (!res.ok) return;
+      setCareers((rows) => rows.map((r) => (r.id === row.id ? { ...r, active: !r.active } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [`career_toggle_${row.id}`]: false }));
+    }
+  };
+
+  const deleteCareer = async (row: CareerRow) => {
+    setActing((m) => ({ ...m, [`career_del_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/careers/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setCareers((rows) => rows.filter((r) => r.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`career_del_${row.id}`]: false }));
+    }
+  };
+
+  const openAddProject = () => {
+    setEditingProject(null);
+    setProjectForm({ title: "", category: "", featured: true, description: "" });
+    setProjectFiles(null);
+    setProjectDialogOpen(true);
+  };
+
+  const openEditProject = (row: ProjectRow) => {
+    setEditingProject(row);
+    setProjectForm({
+      title: row.title ?? "",
+      category: row.category ?? "",
+      featured: row.featured !== false,
+      description: row.description ?? "",
+    });
+    setProjectFiles(null);
+    setProjectDialogOpen(true);
+  };
+
+  const refreshProjects = async () => {
+    const res = await apiFetch("/admin/projects");
+    if (!res.ok) return;
+    const json = (await res.json()) as { projects: ProjectRow[] };
+    setProjects(json.projects ?? []);
+  };
+
+  const saveProject = async () => {
+    const id = editingProject?.id;
+    setActing((m) => ({ ...m, project_save: true }));
+    try {
+      const urls = projectFiles ? await uploadImages(projectFiles, 1) : [];
+      const payload: any = {
+        title: projectForm.title.trim(),
+        category: projectForm.category.trim(),
+        featured: Boolean(projectForm.featured),
+        description: projectForm.description.trim(),
+      };
+      if (urls.length > 0) payload.image = urls[0];
+
+      const res = await apiFetch(id ? `/admin/projects/${id}` : "/admin/projects", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+      await refreshProjects();
+      setProjectDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, project_save: false }));
+    }
+  };
+
+  const toggleProject = async (row: ProjectRow) => {
+    setActing((m) => ({ ...m, [`proj_toggle_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/projects/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      if (!res.ok) return;
+      setProjects((rows) => rows.map((r) => (r.id === row.id ? { ...r, active: !r.active } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [`proj_toggle_${row.id}`]: false }));
+    }
+  };
+
+  const toggleFeatured = async (row: ProjectRow) => {
+    setActing((m) => ({ ...m, [`proj_feat_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/projects/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ featured: !row.featured }),
+      });
+      if (!res.ok) return;
+      setProjects((rows) => rows.map((r) => (r.id === row.id ? { ...r, featured: !r.featured } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [`proj_feat_${row.id}`]: false }));
+    }
+  };
+
+  const deleteProject = async (row: ProjectRow) => {
+    setActing((m) => ({ ...m, [`proj_del_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/projects/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setProjects((rows) => rows.filter((r) => r.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`proj_del_${row.id}`]: false }));
     }
   };
 
@@ -946,6 +1206,11 @@ export default function AdminPage() {
                     { label: t.adminPage.statInquiries, value: stats.inquiriesCount },
                     { label: t.adminPage.statUsers, value: stats.usersCount },
                     { label: t.adminPage.statAdmins, value: stats.adminUsersCount },
+                    { label: "Services (CMS)", value: stats.servicesCount ?? 0 },
+                    { label: "Opérations (CMS)", value: stats.operationsCount ?? 0 },
+                    { label: "Membres équipe", value: stats.teamMembersCount ?? 0 },
+                    { label: "Offres carrières", value: stats.careersCount ?? 0 },
+                    { label: "Carrières actives", value: stats.activeCareersCount ?? 0 },
                   ].map((card) => (
                     <div
                       key={card.label}
@@ -1107,6 +1372,16 @@ export default function AdminPage() {
                                   <div className="flex items-center gap-2">
                                     <Camera className="h-4 w-4 text-muted-foreground" aria-hidden />
                                     <span className="text-muted-foreground">{row.images?.length ?? 0}</span>
+                                    <div className="flex items-center gap-1">
+                                      {(row.images ?? []).slice(0, 3).map((src) => (
+                                        <img
+                                          key={src}
+                                          src={src}
+                                          alt=""
+                                          className="h-8 w-8 rounded object-cover border border-border bg-muted"
+                                        />
+                                      ))}
+                                    </div>
                                   </div>
                                 </td>
                                 <td className="px-4 py-3">
@@ -1192,6 +1467,16 @@ export default function AdminPage() {
                                   <div className="flex items-center gap-2">
                                     <Camera className="h-4 w-4 text-muted-foreground" aria-hidden />
                                     <span className="text-muted-foreground">{row.images?.length ?? 0}</span>
+                                    <div className="flex items-center gap-1">
+                                      {(row.images ?? []).slice(0, 4).map((src) => (
+                                        <img
+                                          key={src}
+                                          src={src}
+                                          alt=""
+                                          className="h-8 w-8 rounded object-cover border border-border bg-muted"
+                                        />
+                                      ))}
+                                    </div>
                                   </div>
                                 </td>
                                 <td className="px-4 py-3">
@@ -1474,17 +1759,333 @@ export default function AdminPage() {
               </Dialog>
             </div>
           ) : section === "careers" ? (
-            <CmsPlaceholder
-              title={t.adminPage.navCareers}
-              siteHref={homeHash("about")}
-              siteLabel={t.adminPage.cmsOpenSite}
-            />
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                  <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navCareers}</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Ajouter et publier des offres de carrière.</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button asChild variant="outline" className="rounded-md w-fit">
+                    <Link href="/careers">{t.adminPage.cmsOpenSite}</Link>
+                  </Button>
+                  <Button className="rounded-md bg-primary w-fit" onClick={openAddCareer}>
+                    <Plus className="h-4 w-4 mr-2" /> Ajouter
+                  </Button>
+                </div>
+              </div>
+
+              {careersError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">ID</th>
+                        <th className="px-4 py-3 font-semibold">Titre</th>
+                        <th className="px-4 py-3 font-semibold">Lieu</th>
+                        <th className="px-4 py-3 font-semibold">Contrat</th>
+                        <th className="px-4 py-3 font-semibold">E-mail</th>
+                        <th className="px-4 py-3 font-semibold">Statut</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {careers.length === 0 ? (
+                        <tr>
+                          <td className="px-4 py-4 text-muted-foreground" colSpan={7}>
+                            Aucune offre.
+                          </td>
+                        </tr>
+                      ) : (
+                        careers.map((row) => (
+                          <tr key={row.id} className="hover:bg-muted/30">
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{row.id.slice(-6)}</td>
+                            <td className="px-4 py-3 font-semibold text-primary">{row.title}</td>
+                            <td className="px-4 py-3">{row.location || "—"}</td>
+                            <td className="px-4 py-3">{row.contractType || "—"}</td>
+                            <td className="px-4 py-3 break-all">{row.applyEmail || "—"}</td>
+                            <td className="px-4 py-3">
+                              <span className={row.active ? "text-emerald-700" : "text-muted-foreground"}>
+                                {row.active ? "Actif" : "Inactif"}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="inline-flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                  onClick={() => openEditCareer(row)}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" aria-hidden />
+                                  Modifier
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`career_toggle_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                  onClick={() => void toggleCareer(row)}
+                                >
+                                  {row.active ? "Inactiver" : "Activer"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`career_del_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                  onClick={() => void deleteCareer(row)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                                  Supprimer
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <Dialog open={careerDialogOpen} onOpenChange={setCareerDialogOpen}>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingCareer ? "Modifier offre" : "Ajouter offre"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Titre</label>
+                      <Input
+                        value={careerForm.title}
+                        onChange={(e) => setCareerForm((s) => ({ ...s, title: e.target.value }))}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-primary">Lieu</label>
+                        <Input
+                          value={careerForm.location}
+                          onChange={(e) => setCareerForm((s) => ({ ...s, location: e.target.value }))}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-primary">Type de contrat</label>
+                        <Input
+                          value={careerForm.contractType}
+                          onChange={(e) => setCareerForm((s) => ({ ...s, contractType: e.target.value }))}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">E-mail candidature</label>
+                      <Input
+                        value={careerForm.applyEmail}
+                        onChange={(e) => setCareerForm((s) => ({ ...s, applyEmail: e.target.value }))}
+                        placeholder="ex. hr@gttsgroup.com"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Description</label>
+                      <Textarea
+                        value={careerForm.description}
+                        onChange={(e) => setCareerForm((s) => ({ ...s, description: e.target.value }))}
+                        rows={8}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setCareerDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button
+                      className="rounded-md bg-primary"
+                      disabled={acting.career_save === true}
+                      onClick={() => void saveCareer()}
+                    >
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
           ) : section === "projects" ? (
-            <CmsPlaceholder
-              title={t.adminPage.navProjects}
-              siteHref={homeHash("projects")}
-              siteLabel={t.adminPage.cmsOpenSite}
-            />
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                  <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navProjects}</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Ajouter et publier des projets (Home “Projets Phares”).</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button asChild variant="outline" className="rounded-md w-fit">
+                    <Link href="/projects">{t.adminPage.cmsOpenSite}</Link>
+                  </Button>
+                  <Button className="rounded-md bg-primary w-fit" onClick={openAddProject}>
+                    <Plus className="h-4 w-4 mr-2" /> Ajouter
+                  </Button>
+                </div>
+              </div>
+
+              {projectsError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">ID</th>
+                        <th className="px-4 py-3 font-semibold">Titre</th>
+                        <th className="px-4 py-3 font-semibold">Catégorie</th>
+                        <th className="px-4 py-3 font-semibold">Image</th>
+                        <th className="px-4 py-3 font-semibold">Featured</th>
+                        <th className="px-4 py-3 font-semibold">Statut</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {projects.length === 0 ? (
+                        <tr>
+                          <td className="px-4 py-4 text-muted-foreground" colSpan={7}>
+                            Aucun projet.
+                          </td>
+                        </tr>
+                      ) : (
+                        projects.map((row) => (
+                          <tr key={row.id} className="hover:bg-muted/30">
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{row.id.slice(-6)}</td>
+                            <td className="px-4 py-3 font-semibold text-primary">{row.title}</td>
+                            <td className="px-4 py-3">{row.category || "—"}</td>
+                            <td className="px-4 py-3">
+                              {row.image ? (
+                                <img
+                                  src={row.image}
+                                  alt=""
+                                  className="h-10 w-16 rounded object-cover border border-border bg-muted"
+                                />
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
+                              )}
+                            </td>
+                            <td className="px-4 py-3">
+                              <button
+                                type="button"
+                                disabled={acting[`proj_feat_${row.id}`] === true}
+                                className={`inline-flex items-center rounded-md border px-2.5 py-1.5 text-xs font-semibold ${
+                                  row.featured ? "border-emerald-300 text-emerald-700 bg-emerald-50" : "border-border text-muted-foreground bg-white"
+                                } disabled:opacity-60`}
+                                onClick={() => void toggleFeatured(row)}
+                              >
+                                {row.featured ? "Oui" : "Non"}
+                              </button>
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className={row.active ? "text-emerald-700" : "text-muted-foreground"}>
+                                {row.active ? "Actif" : "Inactif"}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="inline-flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                  onClick={() => openEditProject(row)}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" aria-hidden />
+                                  Modifier
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`proj_toggle_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                  onClick={() => void toggleProject(row)}
+                                >
+                                  {row.active ? "Inactiver" : "Activer"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`proj_del_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                  onClick={() => void deleteProject(row)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                                  Supprimer
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <Dialog open={projectDialogOpen} onOpenChange={setProjectDialogOpen}>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingProject ? "Modifier projet" : "Ajouter projet"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Titre</label>
+                      <Input
+                        value={projectForm.title}
+                        onChange={(e) => setProjectForm((s) => ({ ...s, title: e.target.value }))}
+                        placeholder="Ex. Corridor Djibouti — Addis-Abeba"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-primary">Catégorie</label>
+                        <Input
+                          value={projectForm.category}
+                          onChange={(e) => setProjectForm((s) => ({ ...s, category: e.target.value }))}
+                          placeholder="Ex. Infrastructure"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-primary">Featured (Home)</label>
+                        <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                          <input
+                            type="checkbox"
+                            checked={projectForm.featured}
+                            onChange={(e) => setProjectForm((s) => ({ ...s, featured: e.target.checked }))}
+                          />
+                          Afficher dans “Projets Phares”
+                        </label>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Description</label>
+                      <Textarea
+                        value={projectForm.description}
+                        onChange={(e) => setProjectForm((s) => ({ ...s, description: e.target.value }))}
+                        rows={8}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Image</label>
+                      <Input type="file" accept="image/*" onChange={(e) => setProjectFiles(e.target.files)} />
+                      <p className="text-xs text-muted-foreground">
+                        Si vous sélectionnez une image, elle remplacera l’image actuelle.
+                      </p>
+                    </div>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setProjectDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button
+                      className="rounded-md bg-primary"
+                      disabled={acting.project_save === true}
+                      onClick={() => void saveProject()}
+                    >
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
           ) : section === "users" ? (
             <div className="space-y-6">
               <div className="flex items-center justify-between gap-3">

@@ -9,6 +9,8 @@ import { User } from "../models/User";
 import { ActivityService } from "../models/ActivityService";
 import { ActivityOperation } from "../models/ActivityOperation";
 import { TeamMember } from "../models/TeamMember";
+import { CareerPost } from "../models/CareerPost";
+import { Project } from "../models/Project";
 import { Role } from "../models/Role";
 import { Permission } from "../models/Permission";
 import { requireAdmin, type AuthedRequest } from "../middleware/auth";
@@ -421,13 +423,203 @@ router.delete("/team-members/:id", async (req, res) => {
   res.json({ ok: true });
 });
 
+router.get("/careers", async (_req, res) => {
+  const list = await CareerPost.find().sort({ createdAt: -1 }).limit(500).lean();
+  res.json({
+    careers: list.map((row) => ({
+      id: String((row as any)._id),
+      title: String((row as any).title ?? ""),
+      location: String((row as any).location ?? ""),
+      contractType: String((row as any).contractType ?? ""),
+      description: String((row as any).description ?? ""),
+      applyEmail: String((row as any).applyEmail ?? ""),
+      active: Boolean((row as any).active),
+      createdAt: (row as any).createdAt,
+    })),
+  });
+});
+
+router.post("/careers", async (req, res) => {
+  const title = String(req.body?.title ?? "").trim().slice(0, 180);
+  const location = String(req.body?.location ?? "").trim().slice(0, 120);
+  const contractType = String(req.body?.contractType ?? "").trim().slice(0, 80);
+  const description = String(req.body?.description ?? "").trim().slice(0, 5000);
+  const applyEmail = String(req.body?.applyEmail ?? "").trim().slice(0, 200);
+  const active = req.body?.active === false ? false : true;
+  if (!title || !description) {
+    res.status(400).json({ error: "invalid_body" });
+    return;
+  }
+  const doc = await CareerPost.create({ title, location, contractType, description, applyEmail, active });
+  res.status(201).json({ id: doc._id.toString() });
+});
+
+router.patch("/careers/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  const title = String(req.body?.title ?? "").trim().slice(0, 180);
+  const location = typeof req.body?.location === "string" ? String(req.body.location).trim().slice(0, 120) : undefined;
+  const contractType =
+    typeof req.body?.contractType === "string" ? String(req.body.contractType).trim().slice(0, 80) : undefined;
+  const description = String(req.body?.description ?? "").trim().slice(0, 5000);
+  const applyEmail =
+    typeof req.body?.applyEmail === "string" ? String(req.body.applyEmail).trim().slice(0, 200) : undefined;
+  const active = typeof req.body?.active === "boolean" ? req.body.active : undefined;
+
+  const update: any = {};
+  if (title) update.title = title;
+  if (description) update.description = description;
+  if (location !== undefined) update.location = location;
+  if (contractType !== undefined) update.contractType = contractType;
+  if (applyEmail !== undefined) update.applyEmail = applyEmail;
+  if (active !== undefined) update.active = active;
+
+  const doc = await CareerPost.findByIdAndUpdate(id, { $set: update }, { new: true }).lean();
+  if (!doc) {
+    res.status(404).json({ error: "not_found" });
+    return;
+  }
+  res.json({ ok: true });
+});
+
+router.delete("/careers/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  await CareerPost.findByIdAndDelete(id);
+  res.json({ ok: true });
+});
+
+router.get("/projects", async (_req, res) => {
+  const list = await Project.find().sort({ createdAt: -1 }).limit(500).lean();
+  res.json({
+    projects: list.map((row) => ({
+      id: String((row as any)._id),
+      title: String((row as any).title ?? ""),
+      category: String((row as any).category ?? ""),
+      description: String((row as any).description ?? ""),
+      image: String((row as any).image ?? ""),
+      featured: Boolean((row as any).featured),
+      active: Boolean((row as any).active),
+      createdAt: (row as any).createdAt,
+    })),
+  });
+});
+
+router.post("/projects", async (req, res) => {
+  const title = String(req.body?.title ?? "").trim().slice(0, 200);
+  const category = String(req.body?.category ?? "").trim().slice(0, 80);
+  const description = String(req.body?.description ?? "").trim().slice(0, 5000);
+  const image = String(req.body?.image ?? "").trim().slice(0, 400);
+  const featured = typeof req.body?.featured === "boolean" ? req.body.featured : true;
+  const active = req.body?.active === false ? false : true;
+  if (!title || !description) {
+    res.status(400).json({ error: "invalid_body" });
+    return;
+  }
+  const doc = await Project.create({ title, category, description, image, featured, active });
+  res.status(201).json({ id: doc._id.toString() });
+});
+
+router.patch("/projects/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  const title = String(req.body?.title ?? "").trim().slice(0, 200);
+  const category = typeof req.body?.category === "string" ? String(req.body.category).trim().slice(0, 80) : undefined;
+  const description = String(req.body?.description ?? "").trim().slice(0, 5000);
+  const image = typeof req.body?.image === "string" ? String(req.body.image).trim().slice(0, 400) : undefined;
+  const featured = typeof req.body?.featured === "boolean" ? req.body.featured : undefined;
+  const active = typeof req.body?.active === "boolean" ? req.body.active : undefined;
+
+  const update: any = {};
+  if (title) update.title = title;
+  if (description) update.description = description;
+  if (category !== undefined) update.category = category;
+  if (image !== undefined) update.image = image;
+  if (featured !== undefined) update.featured = featured;
+  if (active !== undefined) update.active = active;
+
+  const doc = await Project.findByIdAndUpdate(id, { $set: update }, { new: true }).lean();
+  if (!doc) {
+    res.status(404).json({ error: "not_found" });
+    return;
+  }
+  res.json({ ok: true });
+});
+
+router.delete("/projects/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  await Project.findByIdAndDelete(id);
+  res.json({ ok: true });
+});
+
 router.get("/stats", async (_req, res) => {
-  const [inquiriesCount, usersCount, adminUsersCount] = await Promise.all([
+  const now = new Date();
+  const start7d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const [
+    inquiriesCount,
+    usersCount,
+    adminUsersCount,
+    servicesCount,
+    operationsCount,
+    teamMembersCount,
+    careersCount,
+    activeCareersCount,
+    projectsCount,
+    activeProjectsCount,
+    inquiriesLast7Days,
+  ] = await Promise.all([
     ContactInquiry.countDocuments(),
     User.countDocuments(),
     User.countDocuments({ role: "admin" }),
+    ActivityService.countDocuments(),
+    ActivityOperation.countDocuments(),
+    TeamMember.countDocuments(),
+    CareerPost.countDocuments(),
+    CareerPost.countDocuments({ active: true }),
+    Project.countDocuments(),
+    Project.countDocuments({ active: true }),
+    ContactInquiry.aggregate([
+      { $match: { createdAt: { $gte: start7d } } },
+      {
+        $group: {
+          _id: {
+            y: { $year: "$createdAt" },
+            m: { $month: "$createdAt" },
+            d: { $dayOfMonth: "$createdAt" },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { "_id.y": 1, "_id.m": 1, "_id.d": 1 } },
+    ]),
   ]);
-  res.json({ inquiriesCount, usersCount, adminUsersCount });
+
+  res.json({
+    inquiriesCount,
+    usersCount,
+    adminUsersCount,
+    servicesCount,
+    operationsCount,
+    teamMembersCount,
+    careersCount,
+    activeCareersCount,
+    projectsCount,
+    activeProjectsCount,
+    inquiriesLast7Days,
+  });
 });
 
 router.get("/inquiries", async (_req, res) => {

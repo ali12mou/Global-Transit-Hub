@@ -8,6 +8,10 @@ import ContactPage from "@/pages/contact";
 import LoginPage from "@/pages/login";
 import AdminPage from "@/pages/admin";
 import ActivitiesPage from "@/pages/activities";
+import TeamPage from "@/pages/team";
+import CompanyPage from "@/pages/company";
+import CareersPage from "@/pages/careers";
+import ProjectsPage from "@/pages/projects";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const queryClient = new QueryClient();
@@ -16,6 +20,10 @@ function Router() {
   return (
     <Switch>
       <Route path="/activities" component={ActivitiesPage} />
+      <Route path="/company" component={CompanyPage} />
+      <Route path="/team" component={TeamPage} />
+      <Route path="/careers" component={CareersPage} />
+      <Route path="/projects" component={ProjectsPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/admin/:section" component={AdminPage} />

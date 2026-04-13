@@ -15,7 +15,7 @@ export function Hero() {
   };
 
   return (
-    <section id="hero" className="relative min-h-[100dvh] flex items-center pt-32 sm:pt-36 overflow-hidden bg-primary">
+    <section id="hero" className="relative min-h-dvh flex items-center pt-32 sm:pt-36 overflow-hidden bg-primary">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -23,7 +23,7 @@ export function Hero() {
           alt="Cargo ship at sea"
           className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/80 to-primary/40" />
+        <div className="absolute inset-0 bg-linear-to-r from-primary/95 via-primary/80 to-primary/40" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4 md:px-6 py-12">
@@ -95,13 +95,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Decorative ISO badge — desktop only */}
-      <div className="absolute bottom-0 right-0 w-1/3 h-28 bg-secondary/80 backdrop-blur-sm hidden lg:flex items-center px-12 z-10 border-t-4 border-accent">
-        <div className="text-white">
-          <p className="text-4xl font-serif font-bold mb-1">ISO 9001</p>
-          <p className="text-sm uppercase tracking-wider opacity-80">Certified Maritime Operations</p>
-        </div>
-      </div>
+      {/* Decorative ISO badge removed */}
     </section>
   );
 }

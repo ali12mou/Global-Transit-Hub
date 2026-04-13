@@ -53,9 +53,9 @@ export function Footer() {
           <div>
             <h4 className="font-serif font-bold text-base mb-5">{t.nav.aboutUs}</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.ourCompany}</a></li>
-              <li><a href="#" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.ourTeam}</a></li>
-              <li><a href="#" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.careers}</a></li>
+              <li><Link href="/company" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.ourCompany}</Link></li>
+              <li><Link href="/team" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.ourTeam}</Link></li>
+              <li><Link href="/careers" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.careers}</Link></li>
             </ul>
           </div>
 

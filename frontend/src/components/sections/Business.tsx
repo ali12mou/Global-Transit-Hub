@@ -1,16 +1,59 @@
+import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { SITE_SERVICE_IDS, siteServiceImages } from "@/lib/siteServices";
+import { apiFetch } from "@/lib/api";
+
+type PublicService = {
+  id: string;
+  service: string;
+  description: string;
+  images: string[];
+  active: boolean;
+};
 
 export function Business() {
   const { t } = useLanguage();
 
-  const services = SITE_SERVICE_IDS.map((id) => ({
-    id,
-    title: t.services[id].title,
-    desc: t.services[id].desc,
-    img: siteServiceImages[id],
-  }));
+  const fallbackServices = useMemo(
+    () =>
+      SITE_SERVICE_IDS.map((id) => ({
+        id,
+        title: t.services[id].title,
+        desc: t.services[id].desc,
+        img: siteServiceImages[id],
+      })),
+    [t],
+  );
+
+  const [cmsServices, setCmsServices] = useState<PublicService[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/public/activities/services");
+        if (!res.ok) throw new Error("bad_status");
+        const json = (await res.json()) as { services: PublicService[] };
+        if (!cancelled) setCmsServices(json.services ?? []);
+      } catch {
+        if (!cancelled) setCmsServices([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const services =
+    cmsServices && cmsServices.length > 0
+      ? cmsServices.map((s) => ({
+          id: s.id,
+          title: s.service,
+          desc: s.description,
+          img: (s.images ?? [])[0] ?? "",
+        }))
+      : fallbackServices;
 
   return (
     <section id="business" className="py-16 md:py-24 bg-muted relative">
@@ -26,7 +69,7 @@ export function Business() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
-          {services.map((service, idx) => (
+          {services.map((service, idx: number) => (
             <motion.div
               key={service.id}
               initial={{ opacity: 0, y: 30 }}
@@ -36,11 +79,15 @@ export function Business() {
               className="group relative bg-white overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
             >
               <div className="aspect-video overflow-hidden relative">
-                <img
-                  src={service.img}
-                  alt={service.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+                {service.img ? (
+                  <img
+                    src={service.img}
+                    alt={service.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-muted" />
+                )}
                 <div className="absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors duration-500" />
               </div>
               <div className="p-5 sm:p-8 relative">

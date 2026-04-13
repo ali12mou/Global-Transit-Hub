@@ -1,37 +1,64 @@
+import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import p1Img from "../../assets/project-1.png";
-import p2Img from "../../assets/project-2.png";
-import shipImg from "@assets/image_1776015615848.png";
+import { Link } from "wouter";
+import { apiFetch } from "@/lib/api";
+
+type PublicProject = {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+  featured: boolean;
+};
 
 export function Projects() {
   const { t, language } = useLanguage();
   const isRtl = language === 'ar';
 
-  const projects = [
-    {
-      id: 'p1',
-      title: t.projects.p1.title,
-      desc: t.projects.p1.desc,
-      img: p1Img,
-      category: "Heavy Lift"
-    },
-    {
-      id: 'p2',
-      title: t.projects.p2.title,
-      desc: t.projects.p2.desc,
-      img: p2Img,
-      category: "Infrastructure"
-    },
-    {
-      id: 'p3',
-      title: t.projects.p3.title,
-      desc: t.projects.p3.desc,
-      img: shipImg,
-      category: "Intercontinental"
-    }
-  ];
+  const fallbackProjects = useMemo(
+    () => [
+      { id: "p1", title: t.projects.p1.title, desc: t.projects.p1.desc, img: "", category: "" },
+      { id: "p2", title: t.projects.p2.title, desc: t.projects.p2.desc, img: "", category: "" },
+      { id: "p3", title: t.projects.p3.title, desc: t.projects.p3.desc, img: "", category: "" },
+    ],
+    [t],
+  );
+
+  const [cmsProjects, setCmsProjects] = useState<PublicProject[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/public/projects");
+        if (!res.ok) throw new Error("bad_status");
+        const json = (await res.json()) as { projects: PublicProject[] };
+        if (!cancelled) setCmsProjects(json.projects ?? []);
+      } catch {
+        if (!cancelled) setCmsProjects([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const featured =
+    cmsProjects && cmsProjects.length > 0
+      ? cmsProjects
+          .filter((p) => p.featured !== false)
+          .slice(0, 3)
+          .map((p) => ({
+            id: p.id,
+            title: p.title,
+            desc: p.description,
+            img: p.image,
+            category: p.category || "Project",
+          }))
+      : fallbackProjects;
 
   return (
     <section id="projects" className="py-16 md:py-24 bg-primary text-white relative">
@@ -46,14 +73,17 @@ export function Projects() {
               {t.projects.title}
             </h2>
           </div>
-          <button className={`group flex items-center gap-2 text-secondary hover:text-white transition-colors font-bold self-start md:self-auto ${isRtl ? 'flex-row-reverse' : ''}`}>
+          <Link
+            href="/projects"
+            className={`group flex items-center gap-2 text-secondary hover:text-white transition-colors font-bold self-start md:self-auto ${isRtl ? 'flex-row-reverse' : ''}`}
+          >
             <span>{t.projects.viewAll}</span>
             <ArrowRight className={`h-5 w-5 transform group-hover:translate-x-1 transition-transform ${isRtl ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
-          </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, idx) => (
+          {featured.map((project, idx: number) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 40 }}
@@ -62,13 +92,17 @@ export function Projects() {
               transition={{ duration: 0.6, delay: idx * 0.15 }}
               className="group cursor-pointer"
             >
-              <div className="relative aspect-video sm:aspect-[4/3] lg:aspect-[4/5] overflow-hidden bg-muted mb-4 sm:mb-6">
-                <img
-                  src={project.img}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
+              <div className="relative aspect-video sm:aspect-4/3 lg:aspect-4/5 overflow-hidden bg-muted mb-4 sm:mb-6">
+                {project.img ? (
+                  <img
+                    src={project.img}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-muted" />
+                )}
+                <div className="absolute inset-0 bg-linear-to-t from-primary/90 via-primary/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
 
                 <div className="absolute bottom-0 left-0 w-full p-5 sm:p-8 sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform duration-300">
                   <div className="text-accent text-xs font-bold tracking-widest uppercase mb-2">

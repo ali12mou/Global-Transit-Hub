@@ -41,6 +41,11 @@ export function Navbar() {
     }
   };
 
+  const navigateTo = (href: string) => {
+    setMobileMenuOpen(false);
+    setLocation(href);
+  };
+
   const goHome = () => {
     setMobileMenuOpen(false);
     if (location === "/" || location === "") {
@@ -97,9 +102,27 @@ export function Navbar() {
                 {t.nav.aboutUs}
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-white border-none rounded-none shadow-xl min-w-[200px] mt-4">
-                <DropdownMenuItem className="cursor-pointer hover:bg-muted py-3 px-4 font-medium text-primary rounded-none" onClick={() => scrollTo('about')}>{t.nav.ourCompany}</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-muted py-3 px-4 font-medium text-primary rounded-none" onClick={() => scrollTo('about')}>{t.nav.ourTeam}</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-muted py-3 px-4 font-medium text-primary rounded-none" onClick={() => scrollTo('about')}>{t.nav.careers}</DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer hover:bg-muted py-3 px-4 font-medium text-primary rounded-none"
+                  onClick={() => navigateTo("/company")}
+                >
+                  {t.nav.ourCompany}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer hover:bg-muted py-3 px-4 font-medium text-primary rounded-none"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setLocation("/team");
+                  }}
+                >
+                  {t.nav.ourTeam}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer hover:bg-muted py-3 px-4 font-medium text-primary rounded-none"
+                  onClick={() => navigateTo("/careers")}
+                >
+                  {t.nav.careers}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -109,9 +132,12 @@ export function Navbar() {
             >
               {t.nav.ourBusiness}
             </Link>
-            <button onClick={() => scrollTo('projects')} className="text-white/90 hover:text-white transition-colors font-medium">
+            <Link
+              href="/projects"
+              className="text-white/90 hover:text-white transition-colors font-medium"
+            >
               {t.nav.ourProjects}
-            </button>
+            </Link>
             <Link
               href="/contact"
               className="text-white/90 hover:text-white transition-colors font-medium"
@@ -157,7 +183,7 @@ export function Navbar() {
         {/* Mobile Nav */}
         {mobileMenuOpen && (
           <div className="lg:hidden absolute top-full left-0 w-full bg-primary border-t border-white/10 shadow-xl flex flex-col p-4 z-50">
-            <button onClick={() => scrollTo('about')} className="text-left text-white py-4 border-b border-white/10 font-medium">
+            <button onClick={() => navigateTo('/company')} className="text-left text-white py-4 border-b border-white/10 font-medium">
               {t.nav.aboutUs}
             </button>
             <Link
@@ -167,15 +193,26 @@ export function Navbar() {
             >
               {t.nav.ourBusiness}
             </Link>
-            <button onClick={() => scrollTo('projects')} className="text-left text-white py-4 border-b border-white/10 font-medium">
+            <Link
+              href="/projects"
+              className="block text-left text-white py-4 border-b border-white/10 font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               {t.nav.ourProjects}
-            </button>
+            </Link>
             <Link
               href="/contact"
               className="block text-left text-white py-4 border-b border-white/10 font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
               {t.nav.contactUs}
+            </Link>
+            <Link
+              href="/careers"
+              className="block text-left text-white py-4 border-b border-white/10 font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t.nav.careers}
             </Link>
             <Link
               href="/login"
