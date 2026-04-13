@@ -2,9 +2,15 @@ import app from "./app";
 import { upsertAdminFromEnv } from "./lib/adminUser";
 import { logger } from "./lib/logger";
 import { connectMongo } from "./lib/mongo";
+import { seedRbacDefaults } from "./lib/rbacSeed";
 
 function shouldAutoSeedAdmin(): boolean {
   const v = process.env["AUTO_SEED_ADMIN"]?.toLowerCase();
+  return v === "1" || v === "true" || v === "yes";
+}
+
+function shouldAutoSeedRbac(): boolean {
+  const v = process.env["AUTO_SEED_RBAC"]?.toLowerCase();
   return v === "1" || v === "true" || v === "yes";
 }
 
@@ -30,6 +36,14 @@ async function main() {
       logger.info({ email }, "Bootstrap admin (AUTO_SEED_ADMIN)");
     } catch (err) {
       logger.error({ err }, "AUTO_SEED_ADMIN failed");
+    }
+  }
+  if (shouldAutoSeedRbac()) {
+    try {
+      await seedRbacDefaults();
+      logger.info("RBAC seed OK (AUTO_SEED_RBAC)");
+    } catch (err) {
+      logger.error({ err }, "AUTO_SEED_RBAC failed");
     }
   }
   app.listen(port, (err) => {

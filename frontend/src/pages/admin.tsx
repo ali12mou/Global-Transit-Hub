@@ -4,17 +4,30 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { apiFetch } from "@/lib/api";
 import { SITE_SERVICE_IDS } from "@/lib/siteServices";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   BarChart3,
   Briefcase,
+  Camera,
   CheckCircle2,
   Clipboard,
   FolderKanban,
   LogOut,
   Mail,
   Menu,
+  Pencil,
+  Plus,
   Settings,
   Ship,
+  Trash2,
   Users,
   X,
 } from "lucide-react";
@@ -40,6 +53,23 @@ type Stats = {
   adminUsersCount: number;
 };
 
+type CmsService = {
+  id: string;
+  service: string;
+  description: string;
+  images: string[];
+  active: boolean;
+  createdAt?: string;
+};
+
+type CmsOperation = {
+  id: string;
+  description: string;
+  images: string[];
+  active: boolean;
+  createdAt?: string;
+};
+
 const SECTIONS = [
   "stats",
   "activities",
@@ -48,9 +78,19 @@ const SECTIONS = [
   "projects",
   "contact",
   "settings",
+  "users",
+  "roles",
+  "permissions",
 ] as const;
 
 type AdminSection = (typeof SECTIONS)[number];
+
+type AdminUserRow = {
+  id: string;
+  email: string;
+  role: string;
+  createdAt?: string;
+};
 
 function parseSection(path: string): AdminSection {
   const trimmed = path.replace(/\/+$/, "");
@@ -99,6 +139,24 @@ export default function AdminPage() {
   const [statsError, setStatsError] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [acting, setActing] = useState<Record<string, boolean>>({});
+  const [cmsServices, setCmsServices] = useState<CmsService[]>([]);
+  const [cmsOperations, setCmsOperations] = useState<CmsOperation[]>([]);
+  const [cmsError, setCmsError] = useState(false);
+  const [users, setUsers] = useState<AdminUserRow[]>([]);
+  const [usersError, setUsersError] = useState(false);
+  const [createUserOpen, setCreateUserOpen] = useState(false);
+  const [createUserForm, setCreateUserForm] = useState({ email: "", password: "", role: "user" });
+
+  const [serviceDialogOpen, setServiceDialogOpen] = useState(false);
+  const [operationDialogOpen, setOperationDialogOpen] = useState(false);
+  const [editingService, setEditingService] = useState<CmsService | null>(null);
+  const [editingOperation, setEditingOperation] = useState<CmsOperation | null>(null);
+  const [serviceForm, setServiceForm] = useState({ service: "", description: "" });
+  const [operationForm, setOperationForm] = useState({ description: "" });
+  const [serviceFiles, setServiceFiles] = useState<FileList | null>(null);
+  const [operationFiles, setOperationFiles] = useState<FileList | null>(null);
+
+  const isAdmin = me?.role === "admin";
 
   const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
   const homeHash = (hash: string) => `${basePath || ""}/#${hash}`;
@@ -141,6 +199,56 @@ export default function AdminPage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (section !== "activities") return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const [sRes, oRes] = await Promise.all([
+          apiFetch("/admin/activity-services"),
+          apiFetch("/admin/activity-operations"),
+        ]);
+        if (cancelled) return;
+        if (!sRes.ok || !oRes.ok) {
+          setCmsError(true);
+          return;
+        }
+        const sJson = (await sRes.json()) as { services: CmsService[] };
+        const oJson = (await oRes.json()) as { operations: CmsOperation[] };
+        setCmsServices(sJson.services ?? []);
+        setCmsOperations(oJson.operations ?? []);
+      } catch {
+        if (!cancelled) setCmsError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, section]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (section !== "users") return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/admin/users");
+        if (!res.ok) {
+          if (!cancelled) setUsersError(true);
+          return;
+        }
+        const json = (await res.json()) as { users: AdminUserRow[] };
+        if (!cancelled) setUsers(json.users ?? []);
+      } catch {
+        if (!cancelled) setUsersError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, section]);
+
   const logout = async () => {
     await apiFetch("/auth/logout", { method: "POST" });
     setMe(null);
@@ -169,7 +277,191 @@ export default function AdminPage() {
     }
   };
 
-  const isAdmin = me?.role === "admin";
+  const uploadImages = async (files: FileList, max: number) => {
+    const fd = new FormData();
+    const toSend = Array.from(files).slice(0, max);
+    for (const f of toSend) fd.append("images", f);
+    const res = await apiFetch("/admin/uploads", { method: "POST", body: fd });
+    if (!res.ok) return [];
+    const json = (await res.json()) as { urls: string[] };
+    return json.urls ?? [];
+  };
+
+  const openAddService = () => {
+    setEditingService(null);
+    setServiceForm({ service: "", description: "" });
+    setServiceFiles(null);
+    setServiceDialogOpen(true);
+  };
+
+  const openEditService = (row: CmsService) => {
+    setEditingService(row);
+    setServiceForm({ service: row.service, description: row.description });
+    setServiceFiles(null);
+    setServiceDialogOpen(true);
+  };
+
+  const saveService = async () => {
+    const id = editingService?.id;
+    setActing((m) => ({ ...m, service_save: true }));
+    try {
+      const urls = serviceFiles ? await uploadImages(serviceFiles, 3) : [];
+      const payload: any = {
+        service: serviceForm.service.trim(),
+        description: serviceForm.description.trim(),
+      };
+      if (urls.length > 0) payload.images = urls;
+      const res = await apiFetch(id ? `/admin/activity-services/${id}` : "/admin/activity-services", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+      // reload list
+      const sRes = await apiFetch("/admin/activity-services");
+      if (sRes.ok) {
+        const sJson = (await sRes.json()) as { services: CmsService[] };
+        setCmsServices(sJson.services ?? []);
+      }
+      setServiceDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, service_save: false }));
+    }
+  };
+
+  const toggleService = async (row: CmsService) => {
+    setActing((m) => ({ ...m, [row.id]: true }));
+    try {
+      await apiFetch(`/admin/activity-services/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      setCmsServices((rows) => rows.map((r) => (r.id === row.id ? { ...r, active: !r.active } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [row.id]: false }));
+    }
+  };
+
+  const deleteService = async (row: CmsService) => {
+    setActing((m) => ({ ...m, [`del_${row.id}`]: true }));
+    try {
+      await apiFetch(`/admin/activity-services/${row.id}`, { method: "DELETE" });
+      setCmsServices((rows) => rows.filter((r) => r.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`del_${row.id}`]: false }));
+    }
+  };
+
+  const openAddOperation = () => {
+    setEditingOperation(null);
+    setOperationForm({ description: "" });
+    setOperationFiles(null);
+    setOperationDialogOpen(true);
+  };
+
+  const openEditOperation = (row: CmsOperation) => {
+    setEditingOperation(row);
+    setOperationForm({ description: row.description });
+    setOperationFiles(null);
+    setOperationDialogOpen(true);
+  };
+
+  const saveOperation = async () => {
+    const id = editingOperation?.id;
+    setActing((m) => ({ ...m, op_save: true }));
+    try {
+      const urls = operationFiles ? await uploadImages(operationFiles, 12) : [];
+      const payload: any = { description: operationForm.description.trim() };
+      if (urls.length > 0) payload.images = urls;
+      const res = await apiFetch(id ? `/admin/activity-operations/${id}` : "/admin/activity-operations", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+      const oRes = await apiFetch("/admin/activity-operations");
+      if (oRes.ok) {
+        const oJson = (await oRes.json()) as { operations: CmsOperation[] };
+        setCmsOperations(oJson.operations ?? []);
+      }
+      setOperationDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, op_save: false }));
+    }
+  };
+
+  const toggleOperation = async (row: CmsOperation) => {
+    setActing((m) => ({ ...m, [row.id]: true }));
+    try {
+      await apiFetch(`/admin/activity-operations/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      setCmsOperations((rows) => rows.map((r) => (r.id === row.id ? { ...r, active: !r.active } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [row.id]: false }));
+    }
+  };
+
+  const deleteOperation = async (row: CmsOperation) => {
+    setActing((m) => ({ ...m, [`del_${row.id}`]: true }));
+    try {
+      await apiFetch(`/admin/activity-operations/${row.id}`, { method: "DELETE" });
+      setCmsOperations((rows) => rows.filter((r) => r.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`del_${row.id}`]: false }));
+    }
+  };
+
+  const refreshUsers = async () => {
+    const res = await apiFetch("/admin/users");
+    if (!res.ok) return;
+    const json = (await res.json()) as { users: AdminUserRow[] };
+    setUsers(json.users ?? []);
+  };
+
+  const openCreateUser = () => {
+    setCreateUserForm({ email: "", password: "", role: "user" });
+    setCreateUserOpen(true);
+  };
+
+  const createUser = async () => {
+    setActing((m) => ({ ...m, create_user: true }));
+    try {
+      const res = await apiFetch("/admin/users", {
+        method: "POST",
+        body: JSON.stringify(createUserForm),
+      });
+      if (!res.ok) return;
+      await refreshUsers();
+      setCreateUserOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, create_user: false }));
+    }
+  };
+
+  const setUserRole = async (row: AdminUserRow, role: "admin" | "user") => {
+    setActing((m) => ({ ...m, [`role_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/users/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ role }),
+      });
+      if (!res.ok) return;
+      setUsers((rows) => rows.map((u) => (u.id === row.id ? { ...u, role } : u)));
+    } finally {
+      setActing((m) => ({ ...m, [`role_${row.id}`]: false }));
+    }
+  };
+
+  const deleteUser = async (row: AdminUserRow) => {
+    setActing((m) => ({ ...m, [`del_user_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/users/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setUsers((rows) => rows.filter((u) => u.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`del_user_${row.id}`]: false }));
+    }
+  };
 
   const navItems: { id: AdminSection; label: string; icon: typeof BarChart3 }[] = [
     { id: "stats", label: t.adminPage.navStats, icon: BarChart3 },
@@ -179,6 +471,12 @@ export default function AdminPage() {
     { id: "projects", label: t.adminPage.navProjects, icon: FolderKanban },
     { id: "contact", label: t.adminPage.navContact, icon: Mail },
     { id: "settings", label: t.adminPage.navSettings, icon: Settings },
+  ];
+
+  const settingsSub = [
+    { id: "users" as const, label: t.adminPage.navUsers },
+    { id: "roles" as const, label: t.adminPage.navRoles },
+    { id: "permissions" as const, label: t.adminPage.navPermissions },
   ];
 
   const closeNav = () => setNavOpen(false);
@@ -224,24 +522,70 @@ export default function AdminPage() {
         </div>
 
         <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-0.5">
-          {navItems.map(({ id, label, icon: Icon }) => (
-            <Link
-              key={id}
-              href={id === "stats" ? "/admin" : `/admin/${id}`}
-              onClick={closeNav}
-              className={`
-                flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors
-                ${
-                  section === id
-                    ? "bg-white/15 text-white"
-                    : "text-white/85 hover:bg-white/10 hover:text-white"
-                }
-              `}
-            >
-              <Icon className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
-              {label}
-            </Link>
-          ))}
+          {navItems.map(({ id, label, icon: Icon }) => {
+            if (id !== "settings") {
+              return (
+                <Link
+                  key={id}
+                  href={id === "stats" ? "/admin" : `/admin/${id}`}
+                  onClick={closeNav}
+                  className={`
+                    flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors
+                    ${
+                      section === id
+                        ? "bg-white/15 text-white"
+                        : "text-white/85 hover:bg-white/10 hover:text-white"
+                    }
+                  `}
+                >
+                  <Icon className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                  {label}
+                </Link>
+              );
+            }
+
+            const settingsActive =
+              section === "settings" || section === "users" || section === "roles" || section === "permissions";
+
+            return (
+              <div key={id} className="pt-2">
+                <Link
+                  href="/admin/settings"
+                  onClick={closeNav}
+                  className={`
+                    flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors
+                    ${
+                      settingsActive
+                        ? "bg-white/15 text-white"
+                        : "text-white/85 hover:bg-white/10 hover:text-white"
+                    }
+                  `}
+                >
+                  <Icon className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                  {label}
+                </Link>
+                <div className="mt-1 space-y-0.5">
+                  {settingsSub.map((s) => (
+                    <Link
+                      key={s.id}
+                      href={`/admin/${s.id}`}
+                      onClick={closeNav}
+                      className={`
+                        ms-7 flex items-center px-3 py-2 rounded-md text-sm transition-colors
+                        ${
+                          section === s.id
+                            ? "bg-white/15 text-white"
+                            : "text-white/75 hover:bg-white/10 hover:text-white"
+                        }
+                      `}
+                    >
+                      {s.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </nav>
 
         <div className="p-3 border-t border-white/15 space-y-1">
@@ -422,27 +766,290 @@ export default function AdminPage() {
               )}
             </div>
           ) : section === "activities" ? (
-            <div className="space-y-6">
+            <div className="space-y-10">
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div>
                   <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navActivities}</h2>
-                  <p className="text-sm text-muted-foreground mt-1">{t.services.title}</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Gestion du contenu (admin) → mise à jour du site public.
+                  </p>
                 </div>
                 <Button asChild variant="outline" className="rounded-md w-fit">
                   <Link href="/activities">{t.adminPage.cmsOpenSite}</Link>
                 </Button>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {SITE_SERVICE_IDS.map((id) => (
-                  <div
-                    key={id}
-                    className="rounded-xl border border-border bg-white p-5 shadow-sm"
-                  >
-                    <h3 className="font-semibold text-primary mb-2">{t.services[id].title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{t.services[id].desc}</p>
+
+              {cmsError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <>
+                  <section className="space-y-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <h3 className="font-serif text-lg font-bold text-primary">Nos services</h3>
+                        <p className="text-sm text-muted-foreground">Max 3 images par service.</p>
+                      </div>
+                      <Button className="rounded-md bg-primary" onClick={openAddService}>
+                        <Plus className="h-4 w-4 mr-2" /> Ajouter
+                      </Button>
+                    </div>
+                    <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                      <table className="w-full text-sm text-left">
+                        <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                          <tr>
+                            <th className="px-4 py-3 font-semibold">ID</th>
+                            <th className="px-4 py-3 font-semibold">Service</th>
+                            <th className="px-4 py-3 font-semibold">Description</th>
+                            <th className="px-4 py-3 font-semibold">Images</th>
+                            <th className="px-4 py-3 font-semibold">Statut</th>
+                            <th className="px-4 py-3 font-semibold text-right">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-border">
+                          {cmsServices.length === 0 ? (
+                            <tr>
+                              <td className="px-4 py-4 text-muted-foreground" colSpan={6}>
+                                Aucun service.
+                              </td>
+                            </tr>
+                          ) : (
+                            cmsServices.map((row) => (
+                              <tr key={row.id} className="hover:bg-muted/30">
+                                <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
+                                  {row.id.slice(-6)}
+                                </td>
+                                <td className="px-4 py-3 font-semibold text-primary">{row.service}</td>
+                                <td className="px-4 py-3 max-w-lg">
+                                  <span className="line-clamp-2 text-muted-foreground">{row.description}</span>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <div className="flex items-center gap-2">
+                                    <Camera className="h-4 w-4 text-muted-foreground" aria-hidden />
+                                    <span className="text-muted-foreground">{row.images?.length ?? 0}</span>
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <span className={row.active ? "text-emerald-700" : "text-muted-foreground"}>
+                                    {row.active ? "Actif" : "Inactif"}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3 text-right whitespace-nowrap">
+                                  <div className="inline-flex items-center gap-2">
+                                    <button
+                                      type="button"
+                                      className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                      onClick={() => openEditService(row)}
+                                    >
+                                      <Pencil className="h-3.5 w-3.5" aria-hidden />
+                                      Modifier
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={acting[row.id] === true}
+                                      className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                      onClick={() => void toggleService(row)}
+                                    >
+                                      {row.active ? "Inactiver" : "Activer"}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={acting[`del_${row.id}`] === true}
+                                      className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                      onClick={() => void deleteService(row)}
+                                    >
+                                      <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                                      Supprimer
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+
+                  <section className="space-y-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <h3 className="font-serif text-lg font-bold text-primary">Nos opérations en images</h3>
+                        <p className="text-sm text-muted-foreground">Plusieurs images possibles.</p>
+                      </div>
+                      <Button className="rounded-md bg-primary" onClick={openAddOperation}>
+                        <Plus className="h-4 w-4 mr-2" /> Ajouter
+                      </Button>
+                    </div>
+                    <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                      <table className="w-full text-sm text-left">
+                        <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                          <tr>
+                            <th className="px-4 py-3 font-semibold">ID</th>
+                            <th className="px-4 py-3 font-semibold">Description</th>
+                            <th className="px-4 py-3 font-semibold">Images</th>
+                            <th className="px-4 py-3 font-semibold">Statut</th>
+                            <th className="px-4 py-3 font-semibold text-right">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-border">
+                          {cmsOperations.length === 0 ? (
+                            <tr>
+                              <td className="px-4 py-4 text-muted-foreground" colSpan={5}>
+                                Aucune opération.
+                              </td>
+                            </tr>
+                          ) : (
+                            cmsOperations.map((row) => (
+                              <tr key={row.id} className="hover:bg-muted/30">
+                                <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
+                                  {row.id.slice(-6)}
+                                </td>
+                                <td className="px-4 py-3 max-w-2xl">
+                                  <span className="line-clamp-2 text-muted-foreground">{row.description}</span>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <div className="flex items-center gap-2">
+                                    <Camera className="h-4 w-4 text-muted-foreground" aria-hidden />
+                                    <span className="text-muted-foreground">{row.images?.length ?? 0}</span>
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <span className={row.active ? "text-emerald-700" : "text-muted-foreground"}>
+                                    {row.active ? "Actif" : "Inactif"}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3 text-right whitespace-nowrap">
+                                  <div className="inline-flex items-center gap-2">
+                                    <button
+                                      type="button"
+                                      className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                      onClick={() => openEditOperation(row)}
+                                    >
+                                      <Pencil className="h-3.5 w-3.5" aria-hidden />
+                                      Modifier
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={acting[row.id] === true}
+                                      className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                      onClick={() => void toggleOperation(row)}
+                                    >
+                                      {row.active ? "Inactiver" : "Activer"}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={acting[`del_${row.id}`] === true}
+                                      className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                      onClick={() => void deleteOperation(row)}
+                                    >
+                                      <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                                      Supprimer
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                </>
+              )}
+
+              <Dialog open={serviceDialogOpen} onOpenChange={setServiceDialogOpen}>
+                <DialogContent className="max-w-xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingService ? "Modifier service" : "Ajouter service"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Service</label>
+                      <Input
+                        value={serviceForm.service}
+                        onChange={(e) => setServiceForm((s) => ({ ...s, service: e.target.value }))}
+                        placeholder="Ex. Clearance"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Description</label>
+                      <Textarea
+                        value={serviceForm.description}
+                        onChange={(e) => setServiceForm((s) => ({ ...s, description: e.target.value }))}
+                        placeholder="Description…"
+                        rows={5}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Images (max 3)</label>
+                      <Input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={(e) => setServiceFiles(e.target.files)}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Si vous sélectionnez des images, elles remplaceront les images actuelles.
+                      </p>
+                    </div>
                   </div>
-                ))}
-              </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setServiceDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button
+                      className="rounded-md bg-primary"
+                      disabled={acting.service_save === true}
+                      onClick={() => void saveService()}
+                    >
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+
+              <Dialog open={operationDialogOpen} onOpenChange={setOperationDialogOpen}>
+                <DialogContent className="max-w-xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingOperation ? "Modifier opération" : "Ajouter opération"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Description</label>
+                      <Textarea
+                        value={operationForm.description}
+                        onChange={(e) => setOperationForm({ description: e.target.value })}
+                        placeholder="Description…"
+                        rows={5}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Images</label>
+                      <Input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={(e) => setOperationFiles(e.target.files)}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Si vous sélectionnez des images, elles remplaceront les images actuelles.
+                      </p>
+                    </div>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setOperationDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button
+                      className="rounded-md bg-primary"
+                      disabled={acting.op_save === true}
+                      onClick={() => void saveOperation()}
+                    >
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           ) : section === "team" ? (
             <CmsPlaceholder
@@ -462,6 +1069,143 @@ export default function AdminPage() {
               siteHref={homeHash("projects")}
               siteLabel={t.adminPage.cmsOpenSite}
             />
+          ) : section === "users" ? (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navUsers}</h2>
+                  <p className="text-sm text-muted-foreground">Gestion des comptes et des rôles.</p>
+                </div>
+                <Button className="rounded-md bg-primary" onClick={openCreateUser}>
+                  <Plus className="h-4 w-4 mr-2" /> Ajouter
+                </Button>
+              </div>
+
+              {usersError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">ID</th>
+                        <th className="px-4 py-3 font-semibold">{t.adminPage.colEmail}</th>
+                        <th className="px-4 py-3 font-semibold">Rôle</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {users.length === 0 ? (
+                        <tr>
+                          <td className="px-4 py-4 text-muted-foreground" colSpan={4}>
+                            Aucun utilisateur.
+                          </td>
+                        </tr>
+                      ) : (
+                        users.map((u) => (
+                          <tr key={u.id} className="hover:bg-muted/30">
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
+                              {u.id.slice(-6)}
+                            </td>
+                            <td className="px-4 py-3 break-all">{u.email}</td>
+                            <td className="px-4 py-3">{u.role}</td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="inline-flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  disabled={acting[`role_${u.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted disabled:opacity-60"
+                                  onClick={() => void setUserRole(u, u.role === "admin" ? "user" : "admin")}
+                                >
+                                  {u.role === "admin" ? "Passer user" : "Passer admin"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`del_user_${u.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                  onClick={() => void deleteUser(u)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" aria-hidden /> Supprimer
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <Dialog open={createUserOpen} onOpenChange={setCreateUserOpen}>
+                <DialogContent className="max-w-xl">
+                  <DialogHeader>
+                    <DialogTitle>Ajouter utilisateur</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">E-mail</label>
+                      <Input
+                        value={createUserForm.email}
+                        onChange={(e) => setCreateUserForm((s) => ({ ...s, email: e.target.value }))}
+                        placeholder="ex. user@domaine.com"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Mot de passe</label>
+                      <Input
+                        type="password"
+                        value={createUserForm.password}
+                        onChange={(e) => setCreateUserForm((s) => ({ ...s, password: e.target.value }))}
+                        placeholder="••••••••"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Rôle</label>
+                      <Input
+                        value={createUserForm.role}
+                        onChange={(e) => setCreateUserForm((s) => ({ ...s, role: e.target.value }))}
+                        placeholder="admin ou user"
+                      />
+                      <p className="text-xs text-muted-foreground">Valeurs : admin | user</p>
+                    </div>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setCreateUserOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button
+                      className="rounded-md bg-primary"
+                      disabled={acting.create_user === true}
+                      onClick={() => void createUser()}
+                    >
+                      Créer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          ) : section === "roles" ? (
+            <div className="rounded-xl border border-border bg-white p-8 shadow-sm max-w-3xl space-y-2">
+              <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navRoles}</h2>
+              <p className="text-sm text-muted-foreground">
+                Rôles disponibles : <span className="font-medium text-foreground">admin</span>,{" "}
+                <span className="font-medium text-foreground">user</span>.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                (Vous pourrez étendre cette page pour gérer des rôles personnalisés.)
+              </p>
+            </div>
+          ) : section === "permissions" ? (
+            <div className="rounded-xl border border-border bg-white p-8 shadow-sm max-w-3xl space-y-2">
+              <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navPermissions}</h2>
+              <p className="text-sm text-muted-foreground">
+                Modèle actuel : les admins ont accès total, les users n’ont pas accès à l’admin.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                (On peut ensuite brancher une vraie matrice rôles/permissions si vous le souhaitez.)
+              </p>
+            </div>
           ) : (
             <div className="rounded-xl border border-border bg-white p-8 shadow-sm max-w-xl">
               <h2 className="font-serif text-xl font-bold text-primary mb-3">{t.adminPage.settingsTitle}</h2>
