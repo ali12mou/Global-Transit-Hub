@@ -207,8 +207,215 @@ export const translations: Record<Language, any> = {
       links: ["Politique de Confidentialité", "Termes & Conditions", "Conformité Douanière"]
     }
   },
-  // English fallback: keep UI usable without duplicating every string.
-  en: {},
+  en: {
+    nav: {
+      aboutUs: "About",
+      ourCompany: "Our Company",
+      ourTeam: "Our Team",
+      careers: "Careers",
+      ourBusiness: "Our Activities",
+      ourProjects: "Our Projects",
+      contactUs: "Contact us",
+      login: "Login",
+      admin: "Admin",
+      language: "English",
+    },
+    hero: {
+      headline: "Your Gateway to Djibouti, Ethiopia & East Africa",
+      subheadline:
+        "Your trusted partner for import-export between Europe, Asia and East Africa — via the strategic port of Djibouti.",
+      cta: "Explore our services",
+    },
+    about: {
+      title: "Specialist of the Djibouti — Ethiopia Corridor",
+      description:
+        "Global Transit and Transport Services orchestrates freight flows between global markets and East Africa. Based in Djibouti — the key gateway to Ethiopia and the East African corridor — we master customs clearance, port logistics and the regional supply chain with unmatched expertise.",
+      missionTitle: "Our Mission",
+      missionText:
+        "Enable Ethiopian and East African importers and exporters to access global markets by delivering reliable, fast logistics solutions tailored to local realities.",
+      stats: [
+        { value: "Djibouti", label: "Strategic hub" },
+        { value: "Ethiopia", label: "Primary market" },
+        { value: "15+", label: "East African countries served" },
+      ],
+    },
+    regions: {
+      title: "Coverage Area",
+      subtitle: "Djibouti, Ethiopia and East Africa",
+      djibouti: {
+        name: "Djibouti",
+        role: "Strategic maritime hub",
+        desc: "Djibouti is East Africa’s maritime gateway. Our headquarters coordinates port operations, customs transit and warehousing.",
+      },
+      ethiopia: {
+        name: "Ethiopia",
+        role: "Key import market",
+        desc: "A landlocked country of 120M people, Ethiopia relies on the port of Djibouti for 95% of its trade. We manage imports of goods, equipment and raw materials.",
+      },
+      eastAfrica: {
+        name: "East Africa",
+        role: "Regional expansion",
+        desc: "Somalia, Kenya, Sudan, Eritrea, Uganda, Rwanda — our regional network spans East Africa for borderless logistics.",
+      },
+    },
+    services: {
+      title: "Our services",
+      clearance: {
+        title: "Clearance",
+        desc: "Import/export customs clearance, formalities and declarations at the Port of Djibouti and across regional corridors.",
+      },
+      logistics: {
+        title: "Logistics",
+        desc: "End-to-end logistics: handling, warehousing, transport and door-to-door flow coordination.",
+      },
+      transit: {
+        title: "Transit",
+        desc: "Cargo transit along the Djibouti — Ethiopia corridor and across East Africa: tracking, forwarding and delivery.",
+      },
+      customs: {
+        title: "Customs system",
+        desc: "Customs support: regulatory compliance, classification, taxation and relationships with administrations.",
+      },
+      documents: {
+        title: "Documents",
+        desc: "File preparation and follow-up: bills of lading, invoices, certificates of origin and administrative documents.",
+      },
+    },
+    projects: {
+      title: "Featured Projects",
+      p1: {
+        title: "Djibouti — Addis Ababa Corridor",
+        desc: "End-to-end supply chain management for an Ethiopian industrial equipment importer — from the Port of Shanghai to warehouses in Addis Ababa.",
+      },
+      p2: {
+        title: "Expansion of the Port of Djibouti",
+        desc: "Logistics contribution to the modernization of Doraleh Multi-Purpose Port — container terminal, handling and flow management.",
+      },
+      p3: {
+        title: "East Africa Humanitarian Relay",
+        desc: "Transport of food, medicines and emergency equipment for international NGOs in Ethiopia, Somalia and Sudan.",
+      },
+      viewAll: "View all projects",
+    },
+    contact: {
+      title: "Let’s discuss your project",
+      form: {
+        name: "Full name",
+        email: "Email address",
+        service: "Desired service",
+        message: "Describe your logistics need",
+        submit: "Request a quote",
+      },
+      info: {
+        title: "Head office — Djibouti",
+        address: "Avenue du Général de Gaulle, PO Box 2450, Djibouti City",
+        phone: "+253 77 82 18 32 | +253 21 34 17 16 | +253 77 69 61 30",
+        email: "info@gttsgroup.com",
+      },
+    },
+    contactPage: {
+      eyebrow: "GET IN TOUCH",
+      headline: "Kick off your logistics project.",
+      intro:
+        "Describe your needs: cargo type, volumes, corridors (Djibouti, Ethiopia, etc.), timelines. We reply within 24–48 business hours.",
+      officeLabel: "OFFICE",
+      office: "Djibouti",
+      phoneLabel: "DIRECT LINE",
+      phoneDisplay: "+253 21 34 17 16",
+      emailLabel: "E-MAIL",
+      emailDisplay: "info@gttsgroup.com",
+      formTitle: "Send a request",
+      firstName: "First name",
+      lastName: "Last name",
+      email: "Email",
+      phone: "Phone",
+      interestLabel: "I’m interested in…",
+      otherService: "Other / to be defined",
+      destinationsLabel: "Preferred corridor / destination",
+      destinationsPlaceholder: "e.g., Port of Djibouti, Addis Ababa, land corridor…",
+      messageLabel: "Message",
+      messagePlaceholder: "Volumes, cargo type, timeline…",
+      submit: "SEND REQUEST",
+      toastTitle: "Request saved",
+      toastDesc: "We’ll contact you shortly.",
+      sendError: "Unable to send. Check your connection or try again later.",
+    },
+    activitiesPage: {
+      eyebrow: "OUR ACTIVITIES",
+      title: "On the ground, in Djibouti and East Africa",
+      subtitle: "Port handling, road transport, warehousing and the Djibouti — Ethiopia corridor.",
+      intro:
+        "Our teams operate across terminals, logistics zones and strategic routes: clearance, logistics, transit, customs system and documents. Discover our five business pillars and a glimpse of our operations.",
+      pillarsTitle: "Our five business pillars",
+      galleryTitle: "Operations in pictures",
+      cta: "Discuss your logistics flow",
+      cap1: "Sea freight and transit via the Port of Djibouti.",
+      cap2: "Land transport — Djibouti — Ethiopia corridor.",
+      cap3: "Supply chain and secure warehousing.",
+      cap4: "Industrial projects and heavy equipment.",
+      cap5: "Logistics infrastructure and port handling.",
+      cap6: "International maritime links and regional flows.",
+    },
+    login: {
+      title: "Login",
+      user: "User",
+      userPlaceholder: "globaltransit or your email",
+      password: "Password",
+      passwordPlaceholder: "••••••••",
+      submit: "Sign in",
+      error: "Invalid credentials.",
+      backHome: "Back to home",
+    },
+    adminPage: {
+      title: "Administration",
+      subtitle: "Dashboard",
+      noInquiries: "No requests yet.",
+      colId: "ID",
+      colDate: "Date",
+      colName: "Name",
+      colEmail: "Email",
+      colPhone: "Phone",
+      colInterest: "Service",
+      colDescription: "Description",
+      colMessage: "Message",
+      colReviewer: "Handled by",
+      colAction: "Action",
+      logout: "Logout",
+      loginRequired: "Admins only area.",
+      goLogin: "Login",
+      loadError: "Loading error.",
+      backToSite: "Back to site",
+      menu: "Menu",
+      navStats: "Website statistics",
+      navActivities: "Our activities",
+      navTeam: "Our team",
+      navCareers: "Careers",
+      navProjects: "Our projects",
+      navContact: "Contact",
+      navSettings: "Settings",
+      navUsers: "Users",
+      navRoles: "Roles",
+      navPermissions: "Permissions",
+      statsTitle: "Indicators",
+      statInquiries: "Contact requests",
+      statUsers: "User accounts",
+      statAdmins: "Administrators",
+      statsHint: "Data from MongoDB.",
+      inquiriesTitle: "Received requests",
+      cmsTitle: "Website content",
+      cmsBody:
+        "Content management for this section can be added here. For now, open the corresponding public page.",
+      cmsOpenSite: "View on site",
+      settingsTitle: "Settings",
+      settingsAccount: "Logged-in account",
+      settingsBody:
+        "Advanced options (password, notifications, etc.) can be added here later.",
+    },
+    footer: {
+      copyright: "© 2025 Global Transit and Transport Services. All rights reserved. | Djibouti & Ethiopia",
+      links: ["Privacy Policy", "Terms & Conditions", "Customs Compliance"],
+    },
+  },
   ar: {
     nav: {
       aboutUs: "معلومات عنا",
@@ -1215,5 +1422,3 @@ export const translations: Record<Language, any> = {
     }
   }
 };
-
-translations.en = translations.fr;
