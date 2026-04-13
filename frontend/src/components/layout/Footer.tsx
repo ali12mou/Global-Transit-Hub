@@ -7,7 +7,7 @@ export function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-[#080d26] text-white pt-12 md:pt-16 pb-8 border-t-[4px] border-secondary">
+    <footer className="bg-[#080d26] text-white pt-12 md:pt-16 pb-8 border-t-4 border-secondary">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
 
@@ -22,14 +22,29 @@ export function Footer() {
               {t.hero.subheadline}
             </p>
             <div className="flex gap-3">
-              <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors">
-                <Linkedin className="h-4 w-4" />
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors"
+              >
+                <Linkedin className="h-4 w-4" aria-hidden="true" />
+                <span className="sr-only">LinkedIn</span>
               </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors">
-                <Twitter className="h-4 w-4" />
+              <a
+                href="#"
+                aria-label="Twitter"
+                className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors"
+              >
+                <Twitter className="h-4 w-4" aria-hidden="true" />
+                <span className="sr-only">Twitter</span>
               </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors">
-                <Facebook className="h-4 w-4" />
+              <a
+                href="#"
+                aria-label="Facebook"
+                className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors"
+              >
+                <Facebook className="h-4 w-4" aria-hidden="true" />
+                <span className="sr-only">Facebook</span>
               </a>
             </div>
           </div>

@@ -5,6 +5,7 @@
   "scripts": {
     "preinstall": "node -e \"const u=process.env.npm_config_user_agent||'';if(!u.includes('pnpm')){console.error('Ce dépôt utilise pnpm : corepack enable pnpm ou npm i -g pnpm');process.exit(1)}\"",
     "dev": "npx pnpm@9 --filter @workspace/frontend run dev",
+    "lint": "corepack pnpm -r --if-present run lint",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./frontend\" --filter \"./backend\" --filter \"./mockup-sandbox\" --filter \"./scripts\" --if-present run typecheck"

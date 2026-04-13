@@ -8,6 +8,7 @@ import { ContactInquiry } from "../models/ContactInquiry";
 import { User } from "../models/User";
 import { ActivityService } from "../models/ActivityService";
 import { ActivityOperation } from "../models/ActivityOperation";
+import { TeamMember } from "../models/TeamMember";
 import { Role } from "../models/Role";
 import { Permission } from "../models/Permission";
 import { requireAdmin, type AuthedRequest } from "../middleware/auth";
@@ -351,6 +352,72 @@ router.patch("/activity-operations/:id", async (req, res) => {
 router.delete("/activity-operations/:id", async (req, res) => {
   const id = String(req.params["id"] ?? "").trim();
   await ActivityOperation.findByIdAndDelete(id);
+  res.json({ ok: true });
+});
+
+router.get("/team-members", async (_req, res) => {
+  const list = await TeamMember.find().sort({ createdAt: -1 }).limit(500).lean();
+  res.json({
+    members: list.map((row) => ({
+      id: String((row as any)._id),
+      name: String((row as any).name ?? ""),
+      title: String((row as any).title ?? ""),
+      description: String((row as any).description ?? ""),
+      image: String((row as any).image ?? ""),
+      active: Boolean((row as any).active),
+      createdAt: (row as any).createdAt,
+    })),
+  });
+});
+
+router.post("/team-members", async (req, res) => {
+  const name = String(req.body?.name ?? "").trim().slice(0, 120);
+  const title = String(req.body?.title ?? "").trim().slice(0, 160);
+  const description = String(req.body?.description ?? "").trim().slice(0, 2000);
+  const image = String(req.body?.image ?? "").trim().slice(0, 400);
+  const active = req.body?.active === false ? false : true;
+  if (!name || !title || !description) {
+    res.status(400).json({ error: "invalid_body" });
+    return;
+  }
+  const doc = await TeamMember.create({ name, title, description, image, active });
+  res.status(201).json({ id: doc._id.toString() });
+});
+
+router.patch("/team-members/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  const name = String(req.body?.name ?? "").trim().slice(0, 120);
+  const title = String(req.body?.title ?? "").trim().slice(0, 160);
+  const description = String(req.body?.description ?? "").trim().slice(0, 2000);
+  const image = typeof req.body?.image === "string" ? String(req.body.image).trim().slice(0, 400) : undefined;
+  const active = typeof req.body?.active === "boolean" ? req.body.active : undefined;
+
+  const update: any = {};
+  if (name) update.name = name;
+  if (title) update.title = title;
+  if (description) update.description = description;
+  if (image !== undefined) update.image = image;
+  if (active !== undefined) update.active = active;
+
+  const doc = await TeamMember.findByIdAndUpdate(id, { $set: update }, { new: true }).lean();
+  if (!doc) {
+    res.status(404).json({ error: "not_found" });
+    return;
+  }
+  res.json({ ok: true });
+});
+
+router.delete("/team-members/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  await TeamMember.findByIdAndDelete(id);
   res.json({ ok: true });
 });
 

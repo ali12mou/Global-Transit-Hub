@@ -70,6 +70,16 @@ type CmsOperation = {
   createdAt?: string;
 };
 
+type TeamMemberRow = {
+  id: string;
+  name: string;
+  title: string;
+  description: string;
+  image: string;
+  active: boolean;
+  createdAt?: string;
+};
+
 const SECTIONS = [
   "stats",
   "activities",
@@ -90,6 +100,21 @@ type AdminUserRow = {
   email: string;
   role: string;
   createdAt?: string;
+};
+
+type RoleRow = {
+  id: string;
+  key: string;
+  label: string;
+  permissions: string[];
+  active: boolean;
+};
+
+type PermissionRow = {
+  id: string;
+  key: string;
+  label: string;
+  active: boolean;
 };
 
 function parseSection(path: string): AdminSection {
@@ -146,6 +171,15 @@ export default function AdminPage() {
   const [usersError, setUsersError] = useState(false);
   const [createUserOpen, setCreateUserOpen] = useState(false);
   const [createUserForm, setCreateUserForm] = useState({ email: "", password: "", role: "user" });
+  const [roles, setRoles] = useState<RoleRow[]>([]);
+  const [perms, setPerms] = useState<PermissionRow[]>([]);
+  const [rbacError, setRbacError] = useState(false);
+  const [roleDialogOpen, setRoleDialogOpen] = useState(false);
+  const [permDialogOpen, setPermDialogOpen] = useState(false);
+  const [editingRole, setEditingRole] = useState<RoleRow | null>(null);
+  const [editingPerm, setEditingPerm] = useState<PermissionRow | null>(null);
+  const [roleForm, setRoleForm] = useState({ key: "", label: "", permissions: "" });
+  const [permForm, setPermForm] = useState({ key: "", label: "" });
 
   const [serviceDialogOpen, setServiceDialogOpen] = useState(false);
   const [operationDialogOpen, setOperationDialogOpen] = useState(false);
@@ -155,6 +189,13 @@ export default function AdminPage() {
   const [operationForm, setOperationForm] = useState({ description: "" });
   const [serviceFiles, setServiceFiles] = useState<FileList | null>(null);
   const [operationFiles, setOperationFiles] = useState<FileList | null>(null);
+
+  const [teamMembers, setTeamMembers] = useState<TeamMemberRow[]>([]);
+  const [teamError, setTeamError] = useState(false);
+  const [teamDialogOpen, setTeamDialogOpen] = useState(false);
+  const [editingTeam, setEditingTeam] = useState<TeamMemberRow | null>(null);
+  const [teamForm, setTeamForm] = useState({ name: "", title: "", description: "" });
+  const [teamFiles, setTeamFiles] = useState<FileList | null>(null);
 
   const isAdmin = me?.role === "admin";
 
@@ -229,6 +270,29 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (!isAdmin) return;
+    if (section !== "team") return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/admin/team-members");
+        if (cancelled) return;
+        if (!res.ok) {
+          setTeamError(true);
+          return;
+        }
+        const json = (await res.json()) as { members: TeamMemberRow[] };
+        setTeamMembers(json.members ?? []);
+      } catch {
+        if (!cancelled) setTeamError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, section]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
     if (section !== "users") return;
     let cancelled = false;
     (async () => {
@@ -242,6 +306,31 @@ export default function AdminPage() {
         if (!cancelled) setUsers(json.users ?? []);
       } catch {
         if (!cancelled) setUsersError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, section]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (section !== "roles" && section !== "permissions") return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const [rRes, pRes] = await Promise.all([apiFetch("/admin/roles"), apiFetch("/admin/permissions")]);
+        if (cancelled) return;
+        if (!rRes.ok || !pRes.ok) {
+          setRbacError(true);
+          return;
+        }
+        const rJson = (await rRes.json()) as { roles: RoleRow[] };
+        const pJson = (await pRes.json()) as { permissions: PermissionRow[] };
+        setRoles(rJson.roles ?? []);
+        setPerms(pJson.permissions ?? []);
+      } catch {
+        if (!cancelled) setRbacError(true);
       }
     })();
     return () => {
@@ -411,6 +500,74 @@ export default function AdminPage() {
     }
   };
 
+  const openAddTeam = () => {
+    setEditingTeam(null);
+    setTeamForm({ name: "", title: "", description: "" });
+    setTeamFiles(null);
+    setTeamDialogOpen(true);
+  };
+
+  const openEditTeam = (row: TeamMemberRow) => {
+    setEditingTeam(row);
+    setTeamForm({ name: row.name, title: row.title, description: row.description });
+    setTeamFiles(null);
+    setTeamDialogOpen(true);
+  };
+
+  const saveTeam = async () => {
+    const id = editingTeam?.id;
+    setActing((m) => ({ ...m, team_save: true }));
+    try {
+      const urls = teamFiles ? await uploadImages(teamFiles, 1) : [];
+      const payload: any = {
+        name: teamForm.name.trim(),
+        title: teamForm.title.trim(),
+        description: teamForm.description.trim(),
+      };
+      if (urls.length > 0) payload.image = urls[0];
+
+      const res = await apiFetch(id ? `/admin/team-members/${id}` : "/admin/team-members", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+
+      const listRes = await apiFetch("/admin/team-members");
+      if (listRes.ok) {
+        const json = (await listRes.json()) as { members: TeamMemberRow[] };
+        setTeamMembers(json.members ?? []);
+      }
+      setTeamDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, team_save: false }));
+    }
+  };
+
+  const toggleTeam = async (row: TeamMemberRow) => {
+    setActing((m) => ({ ...m, [row.id]: true }));
+    try {
+      const res = await apiFetch(`/admin/team-members/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      if (!res.ok) return;
+      setTeamMembers((rows) => rows.map((r) => (r.id === row.id ? { ...r, active: !r.active } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [row.id]: false }));
+    }
+  };
+
+  const deleteTeam = async (row: TeamMemberRow) => {
+    setActing((m) => ({ ...m, [`del_team_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/team-members/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setTeamMembers((rows) => rows.filter((r) => r.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`del_team_${row.id}`]: false }));
+    }
+  };
+
   const refreshUsers = async () => {
     const res = await apiFetch("/admin/users");
     if (!res.ok) return;
@@ -460,6 +617,130 @@ export default function AdminPage() {
       setUsers((rows) => rows.filter((u) => u.id !== row.id));
     } finally {
       setActing((m) => ({ ...m, [`del_user_${row.id}`]: false }));
+    }
+  };
+
+  const refreshRbac = async () => {
+    const [rRes, pRes] = await Promise.all([apiFetch("/admin/roles"), apiFetch("/admin/permissions")]);
+    if (rRes.ok) {
+      const rJson = (await rRes.json()) as { roles: RoleRow[] };
+      setRoles(rJson.roles ?? []);
+    }
+    if (pRes.ok) {
+      const pJson = (await pRes.json()) as { permissions: PermissionRow[] };
+      setPerms(pJson.permissions ?? []);
+    }
+  };
+
+  const openCreateRole = () => {
+    setEditingRole(null);
+    setRoleForm({ key: "", label: "", permissions: "" });
+    setRoleDialogOpen(true);
+  };
+
+  const openEditRole = (row: RoleRow) => {
+    setEditingRole(row);
+    setRoleForm({ key: row.key, label: row.label, permissions: (row.permissions ?? []).join(", ") });
+    setRoleDialogOpen(true);
+  };
+
+  const saveRole = async () => {
+    setActing((m) => ({ ...m, role_save: true }));
+    try {
+      const permsArr = roleForm.permissions
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const payload = { key: roleForm.key.trim(), label: roleForm.label.trim(), permissions: permsArr };
+      const id = editingRole?.id;
+      const res = await apiFetch(id ? `/admin/roles/${id}` : "/admin/roles", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+      await refreshRbac();
+      setRoleDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, role_save: false }));
+    }
+  };
+
+  const toggleRole = async (row: RoleRow) => {
+    setActing((m) => ({ ...m, [`role_toggle_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/roles/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      if (!res.ok) return;
+      setRoles((rows) => rows.map((r) => (r.id === row.id ? { ...r, active: !r.active } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [`role_toggle_${row.id}`]: false }));
+    }
+  };
+
+  const deleteRole = async (row: RoleRow) => {
+    setActing((m) => ({ ...m, [`role_del_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/roles/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setRoles((rows) => rows.filter((r) => r.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`role_del_${row.id}`]: false }));
+    }
+  };
+
+  const openCreatePerm = () => {
+    setEditingPerm(null);
+    setPermForm({ key: "", label: "" });
+    setPermDialogOpen(true);
+  };
+
+  const openEditPerm = (row: PermissionRow) => {
+    setEditingPerm(row);
+    setPermForm({ key: row.key, label: row.label });
+    setPermDialogOpen(true);
+  };
+
+  const savePerm = async () => {
+    setActing((m) => ({ ...m, perm_save: true }));
+    try {
+      const payload = { key: permForm.key.trim(), label: permForm.label.trim() };
+      const id = editingPerm?.id;
+      const res = await apiFetch(id ? `/admin/permissions/${id}` : "/admin/permissions", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+      await refreshRbac();
+      setPermDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, perm_save: false }));
+    }
+  };
+
+  const togglePerm = async (row: PermissionRow) => {
+    setActing((m) => ({ ...m, [`perm_toggle_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/permissions/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      if (!res.ok) return;
+      setPerms((rows) => rows.map((p) => (p.id === row.id ? { ...p, active: !p.active } : p)));
+    } finally {
+      setActing((m) => ({ ...m, [`perm_toggle_${row.id}`]: false }));
+    }
+  };
+
+  const deletePerm = async (row: PermissionRow) => {
+    setActing((m) => ({ ...m, [`perm_del_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/permissions/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setPerms((rows) => rows.filter((p) => p.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`perm_del_${row.id}`]: false }));
     }
   };
 
@@ -1052,11 +1333,146 @@ export default function AdminPage() {
               </Dialog>
             </div>
           ) : section === "team" ? (
-            <CmsPlaceholder
-              title={t.adminPage.navTeam}
-              siteHref={homeHash("about")}
-              siteLabel={t.adminPage.cmsOpenSite}
-            />
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                  <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navTeam}</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Ajouter et gérer les membres de l’équipe.</p>
+                </div>
+                <Button className="rounded-md bg-primary w-fit" onClick={openAddTeam}>
+                  <Plus className="h-4 w-4 mr-2" /> Ajouter
+                </Button>
+              </div>
+
+              {teamError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">ID</th>
+                        <th className="px-4 py-3 font-semibold">Nom</th>
+                        <th className="px-4 py-3 font-semibold">Titre</th>
+                        <th className="px-4 py-3 font-semibold">Description</th>
+                        <th className="px-4 py-3 font-semibold">Image</th>
+                        <th className="px-4 py-3 font-semibold">Statut</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {teamMembers.length === 0 ? (
+                        <tr>
+                          <td className="px-4 py-4 text-muted-foreground" colSpan={7}>
+                            Aucun membre.
+                          </td>
+                        </tr>
+                      ) : (
+                        teamMembers.map((row) => (
+                          <tr key={row.id} className="hover:bg-muted/30">
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{row.id.slice(-6)}</td>
+                            <td className="px-4 py-3 font-semibold text-primary">{row.name}</td>
+                            <td className="px-4 py-3">{row.title}</td>
+                            <td className="px-4 py-3 max-w-lg">
+                              <span className="line-clamp-2 text-muted-foreground">{row.description}</span>
+                            </td>
+                            <td className="px-4 py-3">
+                              {row.image ? (
+                                <img
+                                  src={row.image}
+                                  alt=""
+                                  className="h-10 w-10 rounded-full object-cover border border-border"
+                                />
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
+                              )}
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className={row.active ? "text-emerald-700" : "text-muted-foreground"}>
+                                {row.active ? "Actif" : "Inactif"}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="inline-flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                  onClick={() => openEditTeam(row)}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" aria-hidden />
+                                  Modifier
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[row.id] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                  onClick={() => void toggleTeam(row)}
+                                >
+                                  {row.active ? "Inactiver" : "Activer"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`del_team_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                  onClick={() => void deleteTeam(row)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                                  Supprimer
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <Dialog open={teamDialogOpen} onOpenChange={setTeamDialogOpen}>
+                <DialogContent className="max-w-xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingTeam ? "Modifier membre" : "Ajouter membre"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Nom</label>
+                      <Input value={teamForm.name} onChange={(e) => setTeamForm((s) => ({ ...s, name: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Titre</label>
+                      <Input
+                        value={teamForm.title}
+                        onChange={(e) => setTeamForm((s) => ({ ...s, title: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Description</label>
+                      <Textarea
+                        value={teamForm.description}
+                        onChange={(e) => setTeamForm((s) => ({ ...s, description: e.target.value }))}
+                        rows={5}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Image</label>
+                      <Input type="file" accept="image/*" onChange={(e) => setTeamFiles(e.target.files)} />
+                      <p className="text-xs text-muted-foreground">
+                        Si vous sélectionnez une image, elle remplacera l’image actuelle.
+                      </p>
+                    </div>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setTeamDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button className="rounded-md bg-primary" disabled={acting.team_save === true} onClick={() => void saveTeam()}>
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
           ) : section === "careers" ? (
             <CmsPlaceholder
               title={t.adminPage.navCareers}
@@ -1186,25 +1602,224 @@ export default function AdminPage() {
               </Dialog>
             </div>
           ) : section === "roles" ? (
-            <div className="rounded-xl border border-border bg-white p-8 shadow-sm max-w-3xl space-y-2">
-              <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navRoles}</h2>
-              <p className="text-sm text-muted-foreground">
-                Rôles disponibles : <span className="font-medium text-foreground">admin</span>,{" "}
-                <span className="font-medium text-foreground">user</span>.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                (Vous pourrez étendre cette page pour gérer des rôles personnalisés.)
-              </p>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navRoles}</h2>
+                  <p className="text-sm text-muted-foreground">Créer et gérer les rôles.</p>
+                </div>
+                <Button className="rounded-md bg-primary" onClick={openCreateRole}>
+                  <Plus className="h-4 w-4 mr-2" /> Ajouter
+                </Button>
+              </div>
+
+              {rbacError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">Key</th>
+                        <th className="px-4 py-3 font-semibold">Label</th>
+                        <th className="px-4 py-3 font-semibold">Permissions</th>
+                        <th className="px-4 py-3 font-semibold">Statut</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {roles.length === 0 ? (
+                        <tr>
+                          <td className="px-4 py-4 text-muted-foreground" colSpan={5}>
+                            Aucun rôle.
+                          </td>
+                        </tr>
+                      ) : (
+                        roles.map((r) => (
+                          <tr key={r.id} className="hover:bg-muted/30">
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{r.key}</td>
+                            <td className="px-4 py-3">{r.label}</td>
+                            <td className="px-4 py-3 max-w-xl">
+                              <span className="line-clamp-2 text-muted-foreground">
+                                {(r.permissions ?? []).join(", ") || "—"}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className={r.active ? "text-emerald-700" : "text-muted-foreground"}>
+                                {r.active ? "Actif" : "Inactif"}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="inline-flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                  onClick={() => openEditRole(r)}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" aria-hidden /> Modifier
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`role_toggle_${r.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                  onClick={() => void toggleRole(r)}
+                                >
+                                  {r.active ? "Inactiver" : "Activer"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`role_del_${r.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                  onClick={() => void deleteRole(r)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" aria-hidden /> Supprimer
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <Dialog open={roleDialogOpen} onOpenChange={setRoleDialogOpen}>
+                <DialogContent className="max-w-xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingRole ? "Modifier rôle" : "Ajouter rôle"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Key</label>
+                      <Input value={roleForm.key} onChange={(e) => setRoleForm((s) => ({ ...s, key: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Label</label>
+                      <Input value={roleForm.label} onChange={(e) => setRoleForm((s) => ({ ...s, label: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Permissions (séparées par virgules)</label>
+                      <Textarea
+                        value={roleForm.permissions}
+                        onChange={(e) => setRoleForm((s) => ({ ...s, permissions: e.target.value }))}
+                        rows={4}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setRoleDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button className="rounded-md bg-primary" disabled={acting.role_save === true} onClick={() => void saveRole()}>
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           ) : section === "permissions" ? (
-            <div className="rounded-xl border border-border bg-white p-8 shadow-sm max-w-3xl space-y-2">
-              <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navPermissions}</h2>
-              <p className="text-sm text-muted-foreground">
-                Modèle actuel : les admins ont accès total, les users n’ont pas accès à l’admin.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                (On peut ensuite brancher une vraie matrice rôles/permissions si vous le souhaitez.)
-              </p>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="font-serif text-xl font-bold text-primary">{t.adminPage.navPermissions}</h2>
+                  <p className="text-sm text-muted-foreground">Créer et gérer les permissions.</p>
+                </div>
+                <Button className="rounded-md bg-primary" onClick={openCreatePerm}>
+                  <Plus className="h-4 w-4 mr-2" /> Ajouter
+                </Button>
+              </div>
+
+              {rbacError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">Key</th>
+                        <th className="px-4 py-3 font-semibold">Label</th>
+                        <th className="px-4 py-3 font-semibold">Statut</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {perms.length === 0 ? (
+                        <tr>
+                          <td className="px-4 py-4 text-muted-foreground" colSpan={4}>
+                            Aucune permission.
+                          </td>
+                        </tr>
+                      ) : (
+                        perms.map((p) => (
+                          <tr key={p.id} className="hover:bg-muted/30">
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{p.key}</td>
+                            <td className="px-4 py-3">{p.label}</td>
+                            <td className="px-4 py-3">
+                              <span className={p.active ? "text-emerald-700" : "text-muted-foreground"}>
+                                {p.active ? "Actif" : "Inactif"}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="inline-flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                  onClick={() => openEditPerm(p)}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" aria-hidden /> Modifier
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`perm_toggle_${p.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                  onClick={() => void togglePerm(p)}
+                                >
+                                  {p.active ? "Inactiver" : "Activer"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`perm_del_${p.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                  onClick={() => void deletePerm(p)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" aria-hidden /> Supprimer
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <Dialog open={permDialogOpen} onOpenChange={setPermDialogOpen}>
+                <DialogContent className="max-w-xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingPerm ? "Modifier permission" : "Ajouter permission"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Key</label>
+                      <Input value={permForm.key} onChange={(e) => setPermForm((s) => ({ ...s, key: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Label</label>
+                      <Input value={permForm.label} onChange={(e) => setPermForm((s) => ({ ...s, label: e.target.value }))} />
+                    </div>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setPermDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button className="rounded-md bg-primary" disabled={acting.perm_save === true} onClick={() => void savePerm()}>
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           ) : (
             <div className="rounded-xl border border-border bg-white p-8 shadow-sm max-w-xl">

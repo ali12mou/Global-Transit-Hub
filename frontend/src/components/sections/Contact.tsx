@@ -98,10 +98,17 @@ export function Contact() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-primary uppercase tracking-wide">
+                <label
+                  htmlFor="contact_service"
+                  className="text-xs font-bold text-primary uppercase tracking-wide"
+                >
                   {t.contact.form.service}
                 </label>
-                <select className="w-full p-3 sm:p-4 bg-white border border-border focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all appearance-none rounded-none text-sm">
+                <select
+                  id="contact_service"
+                  name="service"
+                  className="w-full p-3 sm:p-4 bg-white border border-border focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all appearance-none rounded-none text-sm"
+                >
                   {SITE_SERVICE_IDS.map((id) => (
                     <option key={id}>{t.services[id].title}</option>
                   ))}
