@@ -1220,7 +1220,7 @@ export default function AdminPage() {
               </DropdownMenuContent>
             </DropdownMenu>
             {isAdmin && (
-              <p className="hidden sm:block text-xs text-muted-foreground truncate max-w-[200px] md:max-w-xs text-end">
+              <p className="hidden sm:block text-xs text-muted-foreground truncate max-w-50 md:max-w-xs text-end">
                 {me?.email}
               </p>
             )}
@@ -1288,7 +1288,7 @@ export default function AdminPage() {
                         <th className="px-4 py-3 font-semibold">{t.adminPage.colPhone}</th>
                         <th className="px-4 py-3 font-semibold">{t.adminPage.colInterest}</th>
                         <th className="px-4 py-3 font-semibold">{t.adminPage.colDescription}</th>
-                        <th className="px-4 py-3 font-semibold min-w-[260px]">{t.adminPage.colMessage}</th>
+                        <th className="px-4 py-3 font-semibold min-w-65">{t.adminPage.colMessage}</th>
                         <th className="px-4 py-3 font-semibold">{t.adminPage.colReviewer}</th>
                         <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
                       </tr>
