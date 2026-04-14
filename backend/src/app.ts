@@ -8,6 +8,8 @@ import { ensureUploadsDir } from "./lib/uploads";
 
 const app: Express = express();
 
+app.set("trust proxy", true);
+
 const frontendOrigins = (
   process.env["FRONTEND_ORIGIN"] ?? "http://127.0.0.1:5173,http://localhost:5173"
 )

@@ -1,9 +1,17 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const currentFilePath = fileURLToPath(import.meta.url);
+const currentFileDir = path.dirname(currentFilePath);
 
 export function getUploadsDir(): string {
-  // When started via `pnpm -C backend`, cwd is backend/
-  return process.env["UPLOAD_DIR"] ?? path.resolve(process.cwd(), "uploads");
+  if (process.env["UPLOAD_DIR"]?.trim()) {
+    return path.resolve(process.env["UPLOAD_DIR"]!.trim());
+  }
+  // Default to backend/uploads relative to this file,
+  // even if the process is started from a different cwd.
+  return path.resolve(currentFileDir, "../../uploads");
 }
 
 export function ensureUploadsDir(): string {

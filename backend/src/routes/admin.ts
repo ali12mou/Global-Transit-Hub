@@ -41,8 +41,9 @@ function toPublicUrl(req: any, src: string) {
   if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:")) {
     return url;
   }
-  const host = req.get("host") ?? "127.0.0.1:8080";
-  const protocol = req.protocol || "http";
+  const forwardedProto = String(req.headers["x-forwarded-proto"] ?? "").split(",")[0].trim();
+  const protocol = forwardedProto || (req.secure ? "https" : "http");
+  const host = String(req.headers["x-forwarded-host"] ?? req.headers["host"] ?? "127.0.0.1:8080").trim();
   return `${protocol}://${host}${url}`;
 }
 
@@ -266,14 +267,14 @@ router.delete("/permissions/:id", async (req, res) => {
   res.json({ ok: true });
 });
 
-router.get("/activity-services", async (_req, res) => {
+router.get("/activity-services", async (req, res) => {
   const list = await ActivityService.find().sort({ createdAt: -1 }).limit(500).lean();
   res.json({
     services: list.map((row) => ({
       id: String((row as any)._id),
       service: String((row as any).service ?? ""),
       description: String((row as any).description ?? ""),
-      images: ((row as any).images ?? []) as string[],
+      images: (((row as any).images ?? []) as string[]).map((src) => toPublicUrl(req, src)),
       active: Boolean((row as any).active),
       createdAt: (row as any).createdAt,
     })),
@@ -319,13 +320,13 @@ router.delete("/activity-services/:id", async (req, res) => {
   res.json({ ok: true });
 });
 
-router.get("/activity-operations", async (_req, res) => {
+router.get("/activity-operations", async (req, res) => {
   const list = await ActivityOperation.find().sort({ createdAt: -1 }).limit(800).lean();
   res.json({
     operations: list.map((row) => ({
       id: String((row as any)._id),
       description: String((row as any).description ?? ""),
-      images: ((row as any).images ?? []) as string[],
+      images: (((row as any).images ?? []) as string[]).map((src) => toPublicUrl(req, src)),
       active: Boolean((row as any).active),
       createdAt: (row as any).createdAt,
     })),
@@ -368,7 +369,7 @@ router.delete("/activity-operations/:id", async (req, res) => {
   res.json({ ok: true });
 });
 
-router.get("/team-members", async (_req, res) => {
+router.get("/team-members", async (req, res) => {
   const list = await TeamMember.find().sort({ createdAt: -1 }).limit(500).lean();
   res.json({
     members: list.map((row) => ({
@@ -376,7 +377,7 @@ router.get("/team-members", async (_req, res) => {
       name: String((row as any).name ?? ""),
       title: String((row as any).title ?? ""),
       description: String((row as any).description ?? ""),
-      image: String((row as any).image ?? ""),
+      image: toPublicUrl(req, String((row as any).image ?? "")),
       active: Boolean((row as any).active),
       createdAt: (row as any).createdAt,
     })),
@@ -506,15 +507,15 @@ router.delete("/careers/:id", async (req, res) => {
   res.json({ ok: true });
 });
 
-router.get("/projects", async (_req, res) => {
-  const list = await Project.find().sort({ createdAt: -1 }).limit(500).lean();
+router.get("/projects", async (req, res) => {
+  const list = await Project.find().sort({ createdAt: -1 }).limit(300).lean();
   res.json({
     projects: list.map((row) => ({
       id: String((row as any)._id),
       title: String((row as any).title ?? ""),
       category: String((row as any).category ?? ""),
       description: String((row as any).description ?? ""),
-      image: String((row as any).image ?? ""),
+      image: toPublicUrl(req, String((row as any).image ?? "")),
       featured: Boolean((row as any).featured),
       active: Boolean((row as any).active),
       createdAt: (row as any).createdAt,
