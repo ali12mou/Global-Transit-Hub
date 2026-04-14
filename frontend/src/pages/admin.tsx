@@ -7,6 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Dialog,
   DialogContent,
   DialogFooter,
@@ -20,6 +26,7 @@ import {
   CheckCircle2,
   Clipboard,
   FolderKanban,
+  Globe,
   LogOut,
   Mail,
   Menu,
@@ -31,6 +38,16 @@ import {
   Users,
   X,
 } from "lucide-react";
+
+const ADMIN_LANGUAGES: { code: string; label: string; name: string }[] = [
+  { code: "fr", label: "FR", name: "Français" },
+  { code: "en", label: "EN", name: "English" },
+  { code: "ar", label: "AR", name: "العربية" },
+  { code: "am", label: "AM", name: "አማርኛ" },
+  { code: "sw", label: "SW", name: "Kiswahili" },
+  { code: "so", label: "SO", name: "Soomaali" },
+  { code: "orm", label: "OR", name: "Afaan Oromoo" },
+];
 
 type MeUser = { id: string; email: string; role: string } | null;
 
@@ -180,7 +197,7 @@ function CmsPlaceholder({
 }
 
 export default function AdminPage() {
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const [location] = useLocation();
   const section = useMemo(() => parseSection(location), [location]);
 
@@ -1044,12 +1061,17 @@ export default function AdminPage() {
         <div className="p-5 border-b border-white/15 flex items-center justify-between gap-2">
           <Link
             href="/"
-            className="font-serif font-bold text-sm leading-tight hover:opacity-90"
+            className="font-serif font-bold text-sm leading-tight hover:opacity-90 flex items-center gap-2"
             onClick={closeNav}
           >
-            Global Transit
-            <span className="block text-[10px] font-sans font-normal opacity-80 uppercase tracking-wider">
-              {t.adminPage.subtitle}
+            <span className="bg-white rounded-md px-2 py-1 shrink-0">
+              <img src="/logo.png" alt="Global Transit" className="h-7 w-auto" />
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate">Global Transit</span>
+              <span className="block text-[10px] font-sans font-normal opacity-80 uppercase tracking-wider truncate">
+                {t.adminPage.subtitle}
+              </span>
             </span>
           </Link>
           <button
@@ -1173,11 +1195,36 @@ export default function AdminPage() {
               </p>
             </div>
           </div>
-          {isAdmin && (
-            <p className="hidden sm:block text-xs text-muted-foreground truncate max-w-[200px] md:max-w-xs text-end">
-              {me?.email}
-            </p>
-          )}
+          <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-md bg-white text-primary border-border"
+                >
+                  <Globe className="h-4 w-4 mr-2" aria-hidden />
+                  {(ADMIN_LANGUAGES.find((l) => l.code === language)?.label ?? "FR").toUpperCase()}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-white">
+                {ADMIN_LANGUAGES.map((l) => (
+                  <DropdownMenuItem
+                    key={l.code}
+                    className={language === (l.code as any) ? "font-bold" : undefined}
+                    onClick={() => setLanguage(l.code as any)}
+                  >
+                    {l.name}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            {isAdmin && (
+              <p className="hidden sm:block text-xs text-muted-foreground truncate max-w-[200px] md:max-w-xs text-end">
+                {me?.email}
+              </p>
+            )}
+          </div>
         </header>
 
         <main className="flex-1 p-4 md:p-8 overflow-x-auto">
@@ -1273,7 +1320,7 @@ export default function AdminPage() {
                               : "—"}
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-right">
-                            <div className="inline-flex items-center gap-2">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                               <button
                                 type="button"
                                 className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
@@ -1390,7 +1437,7 @@ export default function AdminPage() {
                                   </span>
                                 </td>
                                 <td className="px-4 py-3 text-right whitespace-nowrap">
-                                  <div className="inline-flex items-center gap-2">
+                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                                     <button
                                       type="button"
                                       className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
@@ -1485,7 +1532,7 @@ export default function AdminPage() {
                                   </span>
                                 </td>
                                 <td className="px-4 py-3 text-right whitespace-nowrap">
-                                  <div className="inline-flex items-center gap-2">
+                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                                     <button
                                       type="button"
                                       className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
@@ -1678,7 +1725,7 @@ export default function AdminPage() {
                               </span>
                             </td>
                             <td className="px-4 py-3 text-right whitespace-nowrap">
-                              <div className="inline-flex items-center gap-2">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                                 <button
                                   type="button"
                                   className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
@@ -1812,7 +1859,7 @@ export default function AdminPage() {
                               </span>
                             </td>
                             <td className="px-4 py-3 text-right whitespace-nowrap">
-                              <div className="inline-flex items-center gap-2">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                                 <button
                                   type="button"
                                   className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
@@ -1984,7 +2031,7 @@ export default function AdminPage() {
                               </span>
                             </td>
                             <td className="px-4 py-3 text-right whitespace-nowrap">
-                              <div className="inline-flex items-center gap-2">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                                 <button
                                   type="button"
                                   className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
@@ -2127,7 +2174,7 @@ export default function AdminPage() {
                             <td className="px-4 py-3 break-all">{u.email}</td>
                             <td className="px-4 py-3">{u.role}</td>
                             <td className="px-4 py-3 text-right whitespace-nowrap">
-                              <div className="inline-flex items-center gap-2">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                                 <button
                                   type="button"
                                   disabled={acting[`role_${u.id}`] === true}
@@ -2251,7 +2298,7 @@ export default function AdminPage() {
                               </span>
                             </td>
                             <td className="px-4 py-3 text-right whitespace-nowrap">
-                              <div className="inline-flex items-center gap-2">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                                 <button
                                   type="button"
                                   className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
@@ -2362,7 +2409,7 @@ export default function AdminPage() {
                               </span>
                             </td>
                             <td className="px-4 py-3 text-right whitespace-nowrap">
-                              <div className="inline-flex items-center gap-2">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
                                 <button
                                   type="button"
                                   className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
