@@ -15,6 +15,7 @@ import { Role } from "../models/Role";
 import { Permission } from "../models/Permission";
 import { requireAdmin, type AuthedRequest } from "../middleware/auth";
 import { ensureUploadsDir } from "../lib/uploads";
+import { toPublicUrl } from "../lib/publicUrl";
 
 const router: IRouter = Router();
 
@@ -34,18 +35,6 @@ const upload = multer({
   storage,
   limits: { fileSize: 7 * 1024 * 1024 },
 });
-
-function toPublicUrl(req: any, src: string) {
-  const url = String(src ?? "").trim();
-  if (!url) return "";
-  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:")) {
-    return url;
-  }
-  const forwardedProto = String(req.headers["x-forwarded-proto"] ?? "").split(",")[0].trim();
-  const protocol = forwardedProto || (req.secure ? "https" : "http");
-  const host = String(req.headers["x-forwarded-host"] ?? req.headers["host"] ?? "127.0.0.1:8080").trim();
-  return `${protocol}://${host}${url}`;
-}
 
 router.post("/uploads", upload.array("images", 12), (req, res) => {
   const files = (req.files as Express.Multer.File[] | undefined) ?? [];
