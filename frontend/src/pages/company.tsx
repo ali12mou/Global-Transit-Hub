@@ -33,7 +33,9 @@ export default function CompanyPage() {
               className="lg:col-span-2 rounded-xl border border-border bg-white shadow-sm p-7 md:p-8"
             >
               <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-4">{t.about.title}</h2>
-              <p className="text-muted-foreground leading-relaxed">{t.about.description}</p>
+              <p className="text-muted-foreground leading-relaxed mb-6">{t.about.description}</p>
+
+              <p className="text-muted-foreground leading-relaxed text-sm mb-8">{t.about.backgroundText}</p>
 
               <div className="mt-8 rounded-lg bg-muted border border-border p-6">
                 <h3 className="font-serif text-lg font-bold text-primary mb-2">{t.about.missionTitle}</h3>

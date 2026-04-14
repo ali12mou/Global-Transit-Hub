@@ -109,7 +109,20 @@ export function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <p className="text-white/50 text-xs sm:text-sm">{t.footer.copyright}</p>
+          <div>
+            <p className="text-white/50 text-xs sm:text-sm">{t.footer.copyright}</p>
+            <p className="text-white/40 text-xs mt-1">
+              {t.footer.developer && (
+                <>
+                  {t.footer.developer}
+                  {" "}
+                  <a href="https://geosomtech.fr" target="_blank" rel="noopener noreferrer" className="text-secondary hover:text-secondary/90 transition-colors">
+                    geosomtech.fr
+                  </a>
+                </>
+              )}
+            </p>
+          </div>
           <div className="flex flex-wrap justify-center md:justify-center items-center gap-4 sm:gap-6 text-xs sm:text-sm">
             <Link
               href="/login?next=/admin"

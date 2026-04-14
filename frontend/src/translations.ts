@@ -22,6 +22,7 @@ export const translations: Record<Language, any> = {
     about: {
       title: "Spécialiste du Corridor Djibouti — Éthiopie",
       description: "Global Transit and Transport Services orchestre les flux de marchandises entre les marchés mondiaux et l'Afrique de l'Est. Implantés à Djibouti, porte d'entrée incontournable de l'Éthiopie et du corridor est-africain, nous maîtrisons les dédouanements, la logistique portuaire et la chaîne d'approvisionnement régionale avec une expertise inégalée.",
+      backgroundText: "Depuis 2012, Global Transit and Transport Services accompagne les entreprises, les commerçants et les opérateurs économiques avec des solutions professionnelles en transit, transport, logistique et dédouanement. Fort de son expertise, de sa présence stratégique à Djibouti, de sa connexion opérationnelle avec l'Éthiopie et de sa vision régionale en Afrique de l'Est, l'entreprise s'est établie comme un partenaire fiable, structuré et engagé. Animée par une équipe compétente et une culture de service axée sur la satisfaction des clients, Global Transit and Transport Services continue sa croissance avec une ambition claire : livrer des services de qualité, faciliter le commerce et contribuer activement à la performance logistique de ses clients.",
       missionTitle: "Notre Mission",
       missionText: "Faciliter l'accès des importateurs et exportateurs éthiopiens et est-africains aux marchés mondiaux, en offrant des solutions logistiques fiables, rapides et adaptées aux réalités locales.",
       stats: [
@@ -204,6 +205,7 @@ export const translations: Record<Language, any> = {
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. Tous droits réservés. | Djibouti & Éthiopie",
+      developer: "Développé par GEOSOM Technologies",
       links: ["Politique de Confidentialité", "Termes & Conditions", "Conformité Douanière"]
     }
   },
@@ -230,6 +232,7 @@ export const translations: Record<Language, any> = {
       title: "Specialist of the Djibouti — Ethiopia Corridor",
       description:
         "Global Transit and Transport Services orchestrates freight flows between global markets and East Africa. Based in Djibouti — the key gateway to Ethiopia and the East African corridor — we master customs clearance, port logistics and the regional supply chain with unmatched expertise.",
+      backgroundText: "Since 2012, Global Transit and Transport Services has been supporting businesses, traders, and economic operators with professional solutions in transit, transportation, logistics, and customs clearance. Through its expertise, its strategic presence in Djibouti, its operational connection with Ethiopia, and its regional vision across East Africa, the company has established itself as a reliable, structured, and committed partner. Driven by a competent team and a service culture focused on client satisfaction, Global Transit and Transport Services continues to grow with a clear ambition, to deliver quality services, facilitate trade, and actively contribute to the logistical performance of its clients.",
       missionTitle: "Our Mission",
       missionText:
         "Enable Ethiopian and East African importers and exporters to access global markets by delivering reliable, fast logistics solutions tailored to local realities.",
@@ -413,6 +416,7 @@ export const translations: Record<Language, any> = {
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. All rights reserved. | Djibouti & Ethiopia",
+      developer: "Developed by GEOSOM Technologies",
       links: ["Privacy Policy", "Terms & Conditions", "Customs Compliance"],
     },
   },
@@ -437,6 +441,7 @@ export const translations: Record<Language, any> = {
     about: {
       title: "متخصصون في ممر جيبوتي — إثيوبيا",
       description: "تنسق شركة Global Transit حركة البضائع بين الأسواق العالمية وشرق أفريقيا. بوجودنا في جيبوتي، بوابة إثيوبيا والممر الأفريقي الشرقي، نتقن إجراءات الجمارك، واللوجستيات الميناءية، وسلسلة التوريد الإقليمية بخبرة لا مثيل لها.",
+      backgroundText: "منذ عام 2012، تدعم شركة Global Transit and Transport Services الشركات والتجار والعاملين الاقتصاديين بحلول احترافية في مجالات النقل واللوجستيات والتخليص الجمركي. بفضل خبرتها والحضور الاستراتيجي في جيبوتي والارتباط العملياتي بإثيوبيا والرؤية الإقليمية في شرق أفريقيا، أصبحت الشركة شريكاً موثوقاً ومنظماً وملتزماً. بقيادة فريق كفء وثقافة خدمة تركز على رضا العملاء، تستمر Global Transit and Transport Services في النمو برغبة واضحة لتقديم خدمات عالية الجودة وتسهيل التجارة والمساهمة الفعالة في الأداء اللوجستي لعملائها.",
       missionTitle: "مهمتنا",
       missionText: "تيسير وصول المستوردين والمصدرين الإثيوبيين وشرق أفريقيا إلى الأسواق العالمية، مع تقديم حلول لوجستية موثوقة وسريعة تتكيف مع الواقع المحلي.",
       stats: [
@@ -613,6 +618,7 @@ export const translations: Record<Language, any> = {
       settingsBody: "خيارات متقدمة (كلمة المرور، الإشعارات…) لاحقًا."
     },
     footer: {
+      developer: "تم التطوير بواسطة GEOSOM Technologies",
       copyright: "© 2025 Global Transit and Transport Services. جميع الحقوق محفوظة. | جيبوتي وإثيوبيا",
       links: ["سياسة الخصوصية", "الشروط والأحكام", "الامتثال الجمركي"]
     }
@@ -637,6 +643,7 @@ export const translations: Record<Language, any> = {
     },
     about: {
       title: "በጅቡቲ — ኢትዮጵያ ኮሪደር ላይ ባለሙያዎች",
+      backgroundText: "ከ2012 ጀምሮ ኩባንያ Global Transit and Transport Services ትግበራ፣ ትራንስፖርት፣ ሎጂስቲክስ እና ጉምሩክ ማስፈቀዳ ሙያዊ ስራዎች ለቅንጅቶች፣ ነጋዴዎች እና ኢኮኖሚ ተሠራተኞች ደግፈዋል። በወጣ ተማሪ ስራ፣ በጅቡቲ ስትራቴጂካዊ ቦታ፣ በኢትዮጵያ ስራ ግንኙነት እና በምስራቅ አፍሪካ ክልላዊ ራእይ፣ ኩባንያው አስተሳሰብ ባለሙያ፣ ከተዋቀረ እና ታሳቢ አዋቃቂ ሆናለች። በሰከነ ቡድን እና በደንበኛ 족족족족족족족ን የታተቀ ስራ ባህል ሞዴል በ Global Transit and Transport Services ከፍተኛ ደረጃ ሎጂስቲክስ ስራ፣ ንግድ ማቅለልና የደንበኛ ሎጂስቲክስ አፈፃፀም ለማሻሻል ግልጽ ምኞት ያለበት ዕድገት።",
       description: "Global Transit ከዓለም ገበያዎች ወደ ምስራቅ አፍሪካ የሚደረጉ የዕቃ ዝውውሮችን ያስተባብራል። በኢትዮጵያ እና በምስራቅ አፍሪካ ኮሪደር ዋና መዳረሻ በሆነው ጅቡቲ ተቀምጠን፣ ጉምሩክ ማስፈቀጃ፣ ወደብ ሎጂስቲክስ እና ክልላዊ አቅርቦት ሰንሰለትን ቁጥጥር ወደር በሌለው ሙያ እናካሂዳለን።",
       missionTitle: "ተልእኳችን",
       missionText: "ኢትዮጵያዊያን እና ምስራቅ አፍሪካዊያን አስመጪዎች እና ላኪዎች ወደ ዓለም ገበያዎች እንዲደርሱ ማመቻቸት — አስተማማኝ፣ ፈጣን እና ለአካባቢ ሁኔታ የተስማሙ ሎጂስቲክስ መፍትሄዎች በማቅረብ።",
@@ -814,6 +821,7 @@ export const translations: Record<Language, any> = {
       settingsBody: "የላቀ አማራጮች በኋላ።"
     },
     footer: {
+      developer: "በGEOSOM Technologies ተዘጋጀ",
       copyright: "© 2025 Global Transit and Transport Services. መብቱ በህግ የተጠበቀ ነው። | ጅቡቲ እና ኢትዮጵያ",
       links: ["የግላዊነት ፖሊሲ", "ውሎች እና ሁኔታዎች", "የጉምሩክ ህጎች"]
     }
@@ -838,6 +846,7 @@ export const translations: Record<Language, any> = {
     },
     about: {
       title: "Wataalamu wa Njia ya Djibouti — Ethiopia",
+      backgroundText: "Tangu 2012, Global Transit and Transport Services imesaada biashara, wanabiashara, na waendeshaji wa kiuchumi kwa suluhisho za kitaalamu katika usafirishaji, usafiri, mantiki, na ufutaji wa forodha. Kupitia ujuzi wake, kuwepo kwa kimkakati Djibouti, uunganisho wa uendeshaji na Ethiopia, na maoni ya kikanda yanayoenea Afrika Mashariki, kampuni imejifanya kama mshirika wa kuaminika, wenye muundo, na wenye majibu. Ikioongezwa na timu yenye ustadi na utamaduni wa huduma unaozingatia kuridhika kwa ajili, Global Transit and Transport Services inaendelea kukua kwa makusudi wazi ya kutoa huduma za kipekee, kurahisisha biashara, na kuchangia kwa bidii katika utendaji wa mantiki wa wateja wake.",
       description: "Global Transit inaratibu mtiririko wa bidhaa kati ya masoko ya kimataifa na Afrika Mashariki. Tukiwa Djibouti, lango kuu la Ethiopia na ukanda wa Afrika Mashariki, tunamiliki utaratibu wa forodha, mantiki ya bandari, na mnyororo wa usambazaji wa kikanda kwa utaalamu usio na kifani.",
       missionTitle: "Dhamira Yetu",
       missionText: "Kurahisisha ufikiaji wa waingizaji na wasafirishaji wa Ethiopia na Afrika Mashariki kwenye masoko ya kimataifa, kwa kutoa suluhisho za usafirishaji zinazotegemewa, za haraka na zinazofaa hali ya hewa ya ndani.",
@@ -1014,7 +1023,8 @@ export const translations: Record<Language, any> = {
       settingsAccount: "Akaunti iliyounganishwa",
       settingsBody: "Chaguo za hali ya juu baadaye."
     },
-    footer: {
+    fodeveloper: "Iliwezeshwa na GEOSOM Technologies",
+      oter: {
       copyright: "© 2025 Global Transit and Transport Services. Haki zote zimehifadhiwa. | Djibouti & Ethiopia",
       links: ["Sera ya Faragha", "Vigezo na Masharti", "Utekelezaji wa Forodha"]
     }
@@ -1038,8 +1048,9 @@ export const translations: Record<Language, any> = {
       cta: "Ogow Adeegyadeena"
     },
     about: {
-      title: "Xirfadlayaasha Wadada Jabuuti — Itoobiya",
-      description: "Global Transit waxay horumariso socdaalka alaabta u dhexeeya suuqyada caalamiga ah iyo Bariga Afrika. Iyaga oo ku yaalaan Jabuuti, albaabka Itoobiya iyo wadada Bariga Afrika, waxaan si fiican u garannaa habraacyada jamaarada, shaqaynta dekedda, iyo silsilada saadka gobolka oo khibrad aan la mid lahayn.",
+      backgroundText: "Intii laga bilaabay 2012, Global Transit and Transport Services waxay taageersatay ganacsiyo, ganacsatoyaal, iyo maliyeyaal oo kale iyada oo la bixiya xallinta xirfadlaysiinta ah ee marinta, gaadiidka, saadka, iyo jamaarada. Iyada oo ay leedahay khibrad, joog istiraatiijiyad Jabuuti, xiriir hawl loo yeesho Itoobiya, iyo aragtiyaha gobolka ee loo dhaaftay Afrika Mashariki, kampaniga waxay noo muujinaysaa inay tahay xibiil ammaan, mid taban, iyo mid iska caabinta. Waxaa lagu daray kooxda xirfadlaysan iyo agab shuruudda oo diirada saaray qofka loo rabbo, Global Transit and Transport Services waxay sii wadi karaan kor u qaadida iyada oo qofka loo rabba mid cad in bixinayso caasimad qalac, sahansanin ganacsiga, iyo bixin iska waxyaabaha hawl looga yeesho saadka ee looga yaabay.",
+      missionTitle: "Hadafkeena",
+      missionText: "Fududaynta helitaanka soo dejiyeyaasha iyo diriyeyaasha Itoobiyaanka iyo Bariga Afrika ee suuqyada adduunka, iyaga oo la siinayo xalalka saadka ee laydin ammaan ahaan, degdeg ahaan iyo midka u eg dunida haweenkaa Afrika, waxaan si fiican u garannaa habraacyada jamaarada, shaqaynta dekedda, iyo silsilada saadka gobolka oo khibrad aan la mid lahayn.",
       missionTitle: "Hadafkeena",
       missionText: "Fududaynta helitaanka soo dejiyeyaasha iyo diriyeyaasha Itoobiyaanka iyo Bariga Afrika ee suuqyada adduunka, iyaga oo la siinayo xalalka saadka ee la믿믿믿 믿믿믿믿 믿믿믿믿믿믿믿.",
       stats: [
@@ -1217,6 +1228,7 @@ export const translations: Record<Language, any> = {
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. Dhammaan xuquuqaha waa la xafiday. | Jabuuti & Itoobiya",
+      developer: "Waxaa lagu samaynayay GEOSOM Technologies",
       links: ["Siyaasadda Khaaska ah", "Shuruudaha & Xaaladaha", "Xeerka Jamaarada"]
     }
   },
@@ -1241,8 +1253,9 @@ export const translations: Record<Language, any> = {
     about: {
       title: "Ogeeyyii Daandii Jibuutii — Itoophiyaa",
       description: "Global Transit socha meeshaalee gabaa addunyaa fi Baha Afriikaa gidduutti ni qindeessa. Jibuutii, balbala guddaa Itoophiyaa fi daandii Baha Afriikaatti argamnee, gurgurtaa gumrukaa, loojistiiksii buufataa, fi raabsii dhiyeessii naannoo muuxannoo qabuun ni bulchina.",
+      backgroundText: "Jalqabee 2012 irraa, Global Transit and Transport Services dhaabbilee, gadaatota fi hojjechiisa ekonomikaa tajaajilawwan ogeeyyii irratti gargaara ture. Muuxannoo isaa, jiru strategii Jibuutiitti, walitti dhufeenya hojii Itoophiyaa waliin, fi hubannoo naannoo Baha Afriikaa irratti, dhaabbatni kaayyoo tajaajila itti fe'uu, miccaa gaarii, fi hirmaannaa dhaabbaa tajaajila dandeettii loojistiiksii namaa gidduutti ni jiraata. Garee ogeessa fi harkaawwan tajaajila cunqursaa irratti jiidhaaf Global Transit and Transport Services itti fufiinsa babal'ina tajaajila gaarii kennuu, gurgurtaa salphiisuu, fi hirmaannaa tajaajila loojistiiksii namaa gidduutti hojjechuun itti fufa.",
       missionTitle: "Ergama Keenya",
-      missionText: "Importing and exporting businesses from Ethiopia and East Africa to access global markets through reliable, fast logistics solutions tailored to local realities.",
+      missionText: "Futaachuu fi erguu dhaabbilee Itoophiyaa fi Baha Afriikaa gabaa addunyaa irra akka gahuuf gargaaruu tajaajilawwan loojistiiksii itti fe'uu jalqabu, saffisa fi gaar biiroon muuxannoo keessaa itti fufiinsa qabuun.",
       stats: [
         { value: "Jibuutii", label: "Buufata Strategii" },
         { value: "Itoophiyaa", label: "Gabaa Gurguddoo" },
@@ -1418,6 +1431,7 @@ export const translations: Record<Language, any> = {
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. Mirgi hunduu seeraan eegamaadha. | Jibuutii & Itoophiyaa",
+      developer: "Kan yoophaa ta'e GEOSOM Technologies",
       links: ["Imaammata Iccitii", "Haalawwan & Dambiiwwan", "Seeraa Gumrukaa"]
     }
   }
