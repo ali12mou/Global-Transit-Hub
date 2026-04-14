@@ -15,6 +15,9 @@ const frontendOrigins = (
   .map((s) => s.trim())
   .filter(Boolean);
 
+const isDev = process.env["NODE_ENV"] !== "production";
+const localDevOriginRegex = /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/;
+
 app.use(
   pinoHttp({
     logger,
@@ -42,6 +45,10 @@ app.use(
         return;
       }
       if (frontendOrigins.includes(origin)) {
+        cb(null, true);
+        return;
+      }
+      if (isDev && localDevOriginRegex.test(origin)) {
         cb(null, true);
         return;
       }

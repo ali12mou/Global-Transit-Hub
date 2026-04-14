@@ -35,9 +35,20 @@ const upload = multer({
   limits: { fileSize: 7 * 1024 * 1024 },
 });
 
+function toPublicUrl(req: any, src: string) {
+  const url = String(src ?? "").trim();
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:")) {
+    return url;
+  }
+  const host = req.get("host") ?? "127.0.0.1:8080";
+  const protocol = req.protocol || "http";
+  return `${protocol}://${host}${url}`;
+}
+
 router.post("/uploads", upload.array("images", 12), (req, res) => {
   const files = (req.files as Express.Multer.File[] | undefined) ?? [];
-  const urls = files.map((f) => `/uploads/${f.filename}`);
+  const urls = files.map((f) => toPublicUrl(req, `/uploads/${f.filename}`));
   res.json({ urls });
 });
 
