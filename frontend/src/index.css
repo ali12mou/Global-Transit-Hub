@@ -111,3 +111,16 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+@keyframes clients-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+.clients-marquee {
+  animation: clients-marquee 28s linear infinite;
+}

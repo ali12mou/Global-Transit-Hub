@@ -13,6 +13,7 @@ import TeamPage from "@/pages/team";
 import CompanyPage from "@/pages/company";
 import CareersPage from "@/pages/careers";
 import ProjectsPage from "@/pages/projects";
+import NewsPage from "@/pages/news";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/team" component={TeamPage} />
       <Route path="/careers" component={CareersPage} />
       <Route path="/projects" component={ProjectsPage} />
+      <Route path="/news" component={NewsPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/admin/:section" component={AdminPage} />

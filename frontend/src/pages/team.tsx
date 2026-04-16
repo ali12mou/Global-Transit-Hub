@@ -49,12 +49,12 @@ export default function TeamPage() {
 
       <section className="pt-32 md:pt-40 pb-10 border-b border-border">
         <div className={`container mx-auto px-4 md:px-6 ${isRtl ? "text-right" : ""}`}>
-          <p className="text-secondary font-bold tracking-[0.2em] text-xs md:text-sm mb-3">NOTRE ÉQUIPE</p>
+          <p className="text-secondary font-bold tracking-[0.2em] text-xs md:text-sm mb-3">{t.ui.teamEyebrow}</p>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-primary mb-4 leading-tight">
             {t.nav.ourTeam}
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-3xl">
-            Une équipe engagée pour sécuriser vos opérations logistiques, du port de Djibouti jusqu’aux corridors régionaux.
+            {t.ui.teamIntro}
           </p>
         </div>
       </section>
@@ -62,9 +62,9 @@ export default function TeamPage() {
       <section className="py-14 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
           {loadError ? (
-            <p className="text-sm text-destructive">Erreur de chargement. Réessayez plus tard.</p>
+            <p className="text-sm text-destructive">{t.ui.loadErrorTryLater}</p>
           ) : members.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Aucun membre n’est encore publié.</p>
+            <p className="text-sm text-muted-foreground">{t.ui.noTeamMembers}</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
               {members.map((m, idx) => (
@@ -102,7 +102,7 @@ export default function TeamPage() {
       <section className="py-14 bg-primary text-white mt-auto">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <Button asChild variant="secondary" className="rounded-none px-8 py-6 text-base font-bold">
-            <Link href="/contact">Contactez-nous</Link>
+            <Link href="/contact">{t.ui.contactUsShort}</Link>
           </Button>
         </div>
       </section>

@@ -11,6 +11,9 @@ import { ActivityOperation } from "../models/ActivityOperation";
 import { TeamMember } from "../models/TeamMember";
 import { CareerPost } from "../models/CareerPost";
 import { Project } from "../models/Project";
+import { News } from "../models/News";
+import { Client } from "../models/Client";
+import { Partner } from "../models/Partner";
 import { Role } from "../models/Role";
 import { Permission } from "../models/Permission";
 import { requireAdmin, type AuthedRequest } from "../middleware/auth";
@@ -566,6 +569,207 @@ router.delete("/projects/:id", async (req, res) => {
   res.json({ ok: true });
 });
 
+router.get("/clients", async (req, res) => {
+  const list = await Client.find().sort({ createdAt: -1 }).limit(500).lean();
+  res.json({
+    clients: list.map((row) => ({
+      id: String((row as any)._id),
+      name: String((row as any).name ?? ""),
+      images: (((row as any).images ?? []) as string[]).map((src) => toPublicUrl(req, src)),
+      active: Boolean((row as any).active),
+      createdAt: (row as any).createdAt,
+    })),
+  });
+});
+
+router.post("/clients", async (req, res) => {
+  const name = String(req.body?.name ?? "").trim().slice(0, 160);
+  const images = Array.isArray(req.body?.images) ? req.body.images : [];
+  const cleanImages = images.map(String).slice(0, 8);
+  const active = req.body?.active === false ? false : true;
+  if (!name) {
+    res.status(400).json({ error: "invalid_body" });
+    return;
+  }
+  const doc = await Client.create({ name, images: cleanImages, active });
+  res.status(201).json({ id: doc._id.toString() });
+});
+
+router.patch("/clients/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  const update: any = {};
+  if (typeof req.body?.name === "string") update.name = String(req.body.name).trim().slice(0, 160);
+  if (Array.isArray(req.body?.images)) update.images = req.body.images.map(String).slice(0, 8);
+  if (typeof req.body?.active === "boolean") update.active = req.body.active;
+  const doc = await Client.findByIdAndUpdate(id, { $set: update }, { new: true }).lean();
+  if (!doc) {
+    res.status(404).json({ error: "not_found" });
+    return;
+  }
+  res.json({ ok: true });
+});
+
+router.delete("/clients/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  await Client.findByIdAndDelete(id);
+  res.json({ ok: true });
+});
+
+router.get("/partners", async (req, res) => {
+  const list = await Partner.find().sort({ type: 1, createdAt: -1 }).limit(500).lean();
+  res.json({
+    partners: list.map((row) => ({
+      id: String((row as any)._id),
+      name: String((row as any).name ?? ""),
+      type: String((row as any).type ?? ""),
+      images: (((row as any).images ?? []) as string[]).map((src) => toPublicUrl(req, src)),
+      active: Boolean((row as any).active),
+      createdAt: (row as any).createdAt,
+    })),
+  });
+});
+
+router.post("/partners", async (req, res) => {
+  const name = String(req.body?.name ?? "").trim().slice(0, 180);
+  const type = String(req.body?.type ?? "").trim().slice(0, 80);
+  const images = Array.isArray(req.body?.images) ? req.body.images : [];
+  const cleanImages = images.map(String).slice(0, 8);
+  const active = req.body?.active === false ? false : true;
+  if (!name || !type) {
+    res.status(400).json({ error: "invalid_body" });
+    return;
+  }
+  const doc = await Partner.create({ name, type, images: cleanImages, active });
+  res.status(201).json({ id: doc._id.toString() });
+});
+
+router.patch("/partners/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  const update: any = {};
+  if (typeof req.body?.name === "string") update.name = String(req.body.name).trim().slice(0, 180);
+  if (typeof req.body?.type === "string") update.type = String(req.body.type).trim().slice(0, 80);
+  if (Array.isArray(req.body?.images)) update.images = req.body.images.map(String).slice(0, 8);
+  if (typeof req.body?.active === "boolean") update.active = req.body.active;
+  const doc = await Partner.findByIdAndUpdate(id, { $set: update }, { new: true }).lean();
+  if (!doc) {
+    res.status(404).json({ error: "not_found" });
+    return;
+  }
+  res.json({ ok: true });
+});
+
+router.delete("/partners/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  await Partner.findByIdAndDelete(id);
+  res.json({ ok: true });
+});
+
+router.get("/news", async (req, res) => {
+  const list = await News.find().sort({ publishedAt: -1, createdAt: -1 }).limit(500).populate("createdBy", "email").lean();
+  res.json({
+    news: list.map((row) => ({
+      id: String((row as any)._id),
+      name: String((row as any).name ?? ""),
+      description: String((row as any).description ?? ""),
+      publishedAt: (row as any).publishedAt,
+      images: (((row as any).images ?? []) as string[]).map((src) => toPublicUrl(req, src)),
+      likesCount: Number((row as any).likesCount ?? 0),
+      commentsCount: Number((row as any).commentsCount ?? 0),
+      showInMoreToRead: Boolean((row as any).showInMoreToRead ?? true),
+      active: Boolean((row as any).active),
+      user: String((row as any)?.createdBy?.email ?? ""),
+      createdAt: (row as any).createdAt,
+    })),
+  });
+});
+
+router.post("/news", async (req: AuthedRequest, res) => {
+  const name = String(req.body?.name ?? "").trim().slice(0, 220);
+  const description = String(req.body?.description ?? "").trim().slice(0, 6000);
+  const publishedAtInput = req.body?.publishedAt;
+  const images = Array.isArray(req.body?.images) ? req.body.images : [];
+  const cleanImages = images.map(String).slice(0, 8);
+  const active = req.body?.active === false ? false : true;
+  const likesCount = Math.max(0, Number(req.body?.likesCount ?? 0) || 0);
+  const commentsCount = Math.max(0, Number(req.body?.commentsCount ?? 0) || 0);
+  const showInMoreToRead = req.body?.showInMoreToRead === false ? false : true;
+  const publishedAt = new Date(typeof publishedAtInput === "string" ? publishedAtInput : Date.now());
+  if (!name || !description || Number.isNaN(publishedAt.getTime())) {
+    res.status(400).json({ error: "invalid_body" });
+    return;
+  }
+  const doc = await News.create({
+    name,
+    description,
+    publishedAt,
+    images: cleanImages,
+    likesCount,
+    commentsCount,
+    showInMoreToRead,
+    active,
+    createdBy: req.auth?.sub ?? undefined,
+  });
+  res.status(201).json({ id: doc._id.toString() });
+});
+
+router.patch("/news/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  const update: any = {};
+  if (typeof req.body?.name === "string") update.name = String(req.body.name).trim().slice(0, 220);
+  if (typeof req.body?.description === "string") update.description = String(req.body.description).trim().slice(0, 6000);
+  if (typeof req.body?.publishedAt === "string") {
+    const d = new Date(req.body.publishedAt);
+    if (Number.isNaN(d.getTime())) {
+      res.status(400).json({ error: "invalid_body" });
+      return;
+    }
+    update.publishedAt = d;
+  }
+  if (Array.isArray(req.body?.images)) update.images = req.body.images.map(String).slice(0, 8);
+  if (typeof req.body?.likesCount !== "undefined") update.likesCount = Math.max(0, Number(req.body.likesCount) || 0);
+  if (typeof req.body?.commentsCount !== "undefined")
+    update.commentsCount = Math.max(0, Number(req.body.commentsCount) || 0);
+  if (typeof req.body?.showInMoreToRead === "boolean") update.showInMoreToRead = req.body.showInMoreToRead;
+  if (typeof req.body?.active === "boolean") update.active = req.body.active;
+
+  const doc = await News.findByIdAndUpdate(id, { $set: update }, { new: true }).lean();
+  if (!doc) {
+    res.status(404).json({ error: "not_found" });
+    return;
+  }
+  res.json({ ok: true });
+});
+
+router.delete("/news/:id", async (req, res) => {
+  const id = String(req.params["id"] ?? "").trim();
+  if (!id) {
+    res.status(400).json({ error: "invalid_id" });
+    return;
+  }
+  await News.findByIdAndDelete(id);
+  res.json({ ok: true });
+});
+
 router.get("/stats", async (_req, res) => {
   const now = new Date();
   const start7d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -580,6 +784,8 @@ router.get("/stats", async (_req, res) => {
     activeCareersCount,
     projectsCount,
     activeProjectsCount,
+    newsCount,
+    activeNewsCount,
     inquiriesLast7Days,
   ] = await Promise.all([
     ContactInquiry.countDocuments(),
@@ -592,6 +798,8 @@ router.get("/stats", async (_req, res) => {
     CareerPost.countDocuments({ active: true }),
     Project.countDocuments(),
     Project.countDocuments({ active: true }),
+    News.countDocuments(),
+    News.countDocuments({ active: true }),
     ContactInquiry.aggregate([
       { $match: { createdAt: { $gte: start7d } } },
       {
@@ -619,6 +827,8 @@ router.get("/stats", async (_req, res) => {
     activeCareersCount,
     projectsCount,
     activeProjectsCount,
+    newsCount,
+    activeNewsCount,
     inquiriesLast7Days,
   });
 });

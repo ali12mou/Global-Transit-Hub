@@ -1,5 +1,5 @@
 import maritimeImg from "../assets/service-maritime.png";
-import landImg from "../assets/service-land.png";
+import landImg from "../assets/service-air.png";
 import supplyImg from "../assets/service-supply.png";
 import p1Img from "../assets/project-1.png";
 import p2Img from "../assets/project-2.png";

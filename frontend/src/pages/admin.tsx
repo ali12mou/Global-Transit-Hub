@@ -27,6 +27,7 @@ import {
   Clipboard,
   FolderKanban,
   Globe,
+  Newspaper,
   LogOut,
   Mail,
   Menu,
@@ -73,6 +74,8 @@ type Stats = {
   teamMembersCount?: number;
   careersCount?: number;
   activeCareersCount?: number;
+  newsCount?: number;
+  activeNewsCount?: number;
 };
 
 type CmsService = {
@@ -124,12 +127,46 @@ type ProjectRow = {
   createdAt?: string;
 };
 
+type ClientRow = {
+  id: string;
+  name: string;
+  images: string[];
+  active: boolean;
+  createdAt?: string;
+};
+
+type PartnerRow = {
+  id: string;
+  name: string;
+  type: string;
+  images: string[];
+  active: boolean;
+  createdAt?: string;
+};
+
+type NewsRow = {
+  id: string;
+  name: string;
+  description: string;
+  publishedAt: string;
+  images: string[];
+  user: string;
+  likesCount: number;
+  commentsCount: number;
+  showInMoreToRead: boolean;
+  active: boolean;
+  createdAt?: string;
+};
+
 const SECTIONS = [
   "stats",
   "activities",
   "team",
   "careers",
   "projects",
+  "clients",
+  "partners",
+  "news",
   "contact",
   "settings",
   "users",
@@ -167,6 +204,14 @@ function parseSection(path: string): AdminSection {
   if (parts[0] !== "admin") return "stats";
   const raw = parts[1] ?? "stats";
   return SECTIONS.includes(raw as AdminSection) ? (raw as AdminSection) : "stats";
+}
+
+function toLocalDateTimeInput(value?: string): string {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 function CmsPlaceholder({
@@ -264,6 +309,34 @@ export default function AdminPage() {
     description: "",
   });
   const [projectFiles, setProjectFiles] = useState<FileList | null>(null);
+
+  const [clients, setClients] = useState<ClientRow[]>([]);
+  const [clientsError, setClientsError] = useState(false);
+  const [clientDialogOpen, setClientDialogOpen] = useState(false);
+  const [editingClient, setEditingClient] = useState<ClientRow | null>(null);
+  const [clientForm, setClientForm] = useState({ name: "" });
+  const [clientFiles, setClientFiles] = useState<FileList | null>(null);
+
+  const [partners, setPartners] = useState<PartnerRow[]>([]);
+  const [partnersError, setPartnersError] = useState(false);
+  const [partnerDialogOpen, setPartnerDialogOpen] = useState(false);
+  const [editingPartner, setEditingPartner] = useState<PartnerRow | null>(null);
+  const [partnerForm, setPartnerForm] = useState({ name: "", type: "ports" });
+  const [partnerFiles, setPartnerFiles] = useState<FileList | null>(null);
+
+  const [news, setNews] = useState<NewsRow[]>([]);
+  const [newsError, setNewsError] = useState(false);
+  const [newsDialogOpen, setNewsDialogOpen] = useState(false);
+  const [editingNews, setEditingNews] = useState<NewsRow | null>(null);
+  const [newsForm, setNewsForm] = useState({
+    name: "",
+    description: "",
+    publishedAt: "",
+    likesCount: 0,
+    commentsCount: 0,
+    showInMoreToRead: true,
+  });
+  const [newsFiles, setNewsFiles] = useState<FileList | null>(null);
 
   const isAdmin = me?.role === "admin";
 
@@ -398,6 +471,79 @@ export default function AdminPage() {
         setProjects(json.projects ?? []);
       } catch {
         if (!cancelled) setProjectsError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, section]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (section !== "news") return;
+    setNewsError(false);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/admin/news");
+        if (cancelled) return;
+        if (!res.ok) {
+          setNewsError(true);
+          return;
+        }
+        const json = (await res.json()) as { news: NewsRow[] };
+        setNews(json.news ?? []);
+        setNewsError(false);
+      } catch {
+        if (!cancelled) setNewsError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, section]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (section !== "clients") return;
+    setClientsError(false);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/admin/clients");
+        if (cancelled) return;
+        if (!res.ok) {
+          setClientsError(true);
+          return;
+        }
+        const json = (await res.json()) as { clients: ClientRow[] };
+        setClients(json.clients ?? []);
+      } catch {
+        if (!cancelled) setClientsError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, section]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (section !== "partners") return;
+    setPartnersError(false);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/admin/partners");
+        if (cancelled) return;
+        if (!res.ok) {
+          setPartnersError(true);
+          return;
+        }
+        const json = (await res.json()) as { partners: PartnerRow[] };
+        setPartners(json.partners ?? []);
+      } catch {
+        if (!cancelled) setPartnersError(true);
       }
     })();
     return () => {
@@ -845,6 +991,227 @@ export default function AdminPage() {
     }
   };
 
+  const openAddClient = () => {
+    setEditingClient(null);
+    setClientForm({ name: "" });
+    setClientFiles(null);
+    setClientDialogOpen(true);
+  };
+
+  const openEditClient = (row: ClientRow) => {
+    setEditingClient(row);
+    setClientForm({ name: row.name ?? "" });
+    setClientFiles(null);
+    setClientDialogOpen(true);
+  };
+
+  const refreshClients = async () => {
+    const res = await apiFetch("/admin/clients");
+    if (!res.ok) return;
+    const json = (await res.json()) as { clients: ClientRow[] };
+    setClients(json.clients ?? []);
+  };
+
+  const saveClient = async () => {
+    const id = editingClient?.id;
+    setActing((m) => ({ ...m, client_save: true }));
+    try {
+      const urls = clientFiles ? await uploadImages(clientFiles, 8) : [];
+      const payload: any = { name: clientForm.name.trim(), active: true };
+      if (urls.length > 0) payload.images = urls;
+      const res = await apiFetch(id ? `/admin/clients/${id}` : "/admin/clients", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+      await refreshClients();
+      setClientDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, client_save: false }));
+    }
+  };
+
+  const toggleClient = async (row: ClientRow) => {
+    setActing((m) => ({ ...m, [`client_toggle_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/clients/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      if (!res.ok) return;
+      setClients((rows) => rows.map((r) => (r.id === row.id ? { ...r, active: !r.active } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [`client_toggle_${row.id}`]: false }));
+    }
+  };
+
+  const deleteClient = async (row: ClientRow) => {
+    setActing((m) => ({ ...m, [`client_del_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/clients/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setClients((rows) => rows.filter((r) => r.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`client_del_${row.id}`]: false }));
+    }
+  };
+
+  const openAddPartner = () => {
+    setEditingPartner(null);
+    setPartnerForm({ name: "", type: "ports" });
+    setPartnerFiles(null);
+    setPartnerDialogOpen(true);
+  };
+
+  const openEditPartner = (row: PartnerRow) => {
+    setEditingPartner(row);
+    setPartnerForm({ name: row.name ?? "", type: row.type ?? "ports" });
+    setPartnerFiles(null);
+    setPartnerDialogOpen(true);
+  };
+
+  const refreshPartners = async () => {
+    const res = await apiFetch("/admin/partners");
+    if (!res.ok) return;
+    const json = (await res.json()) as { partners: PartnerRow[] };
+    setPartners(json.partners ?? []);
+  };
+
+  const savePartner = async () => {
+    const id = editingPartner?.id;
+    setActing((m) => ({ ...m, partner_save: true }));
+    try {
+      const urls = partnerFiles ? await uploadImages(partnerFiles, 8) : [];
+      const payload: any = {
+        name: partnerForm.name.trim(),
+        type: partnerForm.type.trim(),
+        active: true,
+      };
+      if (urls.length > 0) payload.images = urls;
+      const res = await apiFetch(id ? `/admin/partners/${id}` : "/admin/partners", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+      await refreshPartners();
+      setPartnerDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, partner_save: false }));
+    }
+  };
+
+  const togglePartner = async (row: PartnerRow) => {
+    setActing((m) => ({ ...m, [`partner_toggle_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/partners/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      if (!res.ok) return;
+      setPartners((rows) => rows.map((r) => (r.id === row.id ? { ...r, active: !r.active } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [`partner_toggle_${row.id}`]: false }));
+    }
+  };
+
+  const deletePartner = async (row: PartnerRow) => {
+    setActing((m) => ({ ...m, [`partner_del_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/partners/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setPartners((rows) => rows.filter((r) => r.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`partner_del_${row.id}`]: false }));
+    }
+  };
+
+  const openAddNews = () => {
+    setEditingNews(null);
+    setNewsForm({
+      name: "",
+      description: "",
+      publishedAt: toLocalDateTimeInput(new Date().toISOString()),
+      likesCount: 0,
+      commentsCount: 0,
+      showInMoreToRead: true,
+    });
+    setNewsFiles(null);
+    setNewsDialogOpen(true);
+  };
+
+  const openEditNews = (row: NewsRow) => {
+    setEditingNews(row);
+    setNewsForm({
+      name: row.name ?? "",
+      description: row.description ?? "",
+      publishedAt: toLocalDateTimeInput(row.publishedAt),
+      likesCount: Number(row.likesCount ?? 0),
+      commentsCount: Number(row.commentsCount ?? 0),
+      showInMoreToRead: row.showInMoreToRead !== false,
+    });
+    setNewsFiles(null);
+    setNewsDialogOpen(true);
+  };
+
+  const refreshNews = async () => {
+    const res = await apiFetch("/admin/news");
+    if (!res.ok) return;
+    const json = (await res.json()) as { news: NewsRow[] };
+    setNews(json.news ?? []);
+  };
+
+  const saveNews = async () => {
+    const id = editingNews?.id;
+    setActing((m) => ({ ...m, news_save: true }));
+    try {
+      const urls = newsFiles ? await uploadImages(newsFiles, 8) : [];
+      const payload: any = {
+        name: newsForm.name.trim(),
+        description: newsForm.description.trim(),
+        publishedAt: newsForm.publishedAt,
+        likesCount: Number(newsForm.likesCount) || 0,
+        commentsCount: Number(newsForm.commentsCount) || 0,
+        showInMoreToRead: newsForm.showInMoreToRead,
+        active: true,
+      };
+      if (urls.length > 0) payload.images = urls;
+      const res = await apiFetch(id ? `/admin/news/${id}` : "/admin/news", {
+        method: id ? "PATCH" : "POST",
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) return;
+      await refreshNews();
+      setNewsDialogOpen(false);
+    } finally {
+      setActing((m) => ({ ...m, news_save: false }));
+    }
+  };
+
+  const toggleNews = async (row: NewsRow) => {
+    setActing((m) => ({ ...m, [`news_toggle_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/news/${row.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active: !row.active }),
+      });
+      if (!res.ok) return;
+      setNews((rows) => rows.map((r) => (r.id === row.id ? { ...r, active: !r.active } : r)));
+    } finally {
+      setActing((m) => ({ ...m, [`news_toggle_${row.id}`]: false }));
+    }
+  };
+
+  const deleteNews = async (row: NewsRow) => {
+    setActing((m) => ({ ...m, [`news_del_${row.id}`]: true }));
+    try {
+      const res = await apiFetch(`/admin/news/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      setNews((rows) => rows.filter((r) => r.id !== row.id));
+    } finally {
+      setActing((m) => ({ ...m, [`news_del_${row.id}`]: false }));
+    }
+  };
+
   const refreshUsers = async () => {
     const res = await apiFetch("/admin/users");
     if (!res.ok) return;
@@ -1027,6 +1394,9 @@ export default function AdminPage() {
     { id: "team", label: t.adminPage.navTeam, icon: Users },
     { id: "careers", label: t.adminPage.navCareers, icon: Briefcase },
     { id: "projects", label: t.adminPage.navProjects, icon: FolderKanban },
+    { id: "clients", label: "Clients", icon: Globe },
+    { id: "partners", label: "Partenaires", icon: Globe },
+    { id: "news", label: "News", icon: Newspaper },
     { id: "contact", label: t.adminPage.navContact, icon: Mail },
     { id: "settings", label: t.adminPage.navSettings, icon: Settings },
   ];
@@ -2127,6 +2497,454 @@ export default function AdminPage() {
                       disabled={acting.project_save === true}
                       onClick={() => void saveProject()}
                     >
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          ) : section === "clients" ? (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                  <h2 className="font-serif text-xl font-bold text-primary">Clients</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Gestion des logos et noms affiches sur la home.</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button asChild variant="outline" className="rounded-md w-fit">
+                    <Link href="/">{t.adminPage.cmsOpenSite}</Link>
+                  </Button>
+                  <Button className="rounded-md bg-primary w-fit" onClick={openAddClient}>
+                    <Plus className="h-4 w-4 mr-2" /> Ajouter
+                  </Button>
+                </div>
+              </div>
+
+              {clientsError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">ID</th>
+                        <th className="px-4 py-3 font-semibold">Nom</th>
+                        <th className="px-4 py-3 font-semibold">Images</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {clients.length === 0 ? (
+                        <tr>
+                          <td className="px-4 py-4 text-muted-foreground" colSpan={4}>
+                            Aucun client.
+                          </td>
+                        </tr>
+                      ) : (
+                        clients.map((row) => (
+                          <tr key={row.id} className="hover:bg-muted/30">
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{row.id.slice(-6)}</td>
+                            <td className="px-4 py-3 font-semibold text-primary">{row.name}</td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center gap-2">
+                                <span className="text-muted-foreground">{row.images?.length ?? 0}</span>
+                                <div className="flex items-center gap-1">
+                                  {(row.images ?? []).slice(0, 3).map((src) => (
+                                    <img
+                                      key={src}
+                                      src={src}
+                                      alt=""
+                                      className="h-8 w-8 rounded object-cover border border-border bg-muted"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                  onClick={() => openEditClient(row)}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" aria-hidden />
+                                  Modifier
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`client_toggle_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                  onClick={() => void toggleClient(row)}
+                                >
+                                  {row.active ? "Inactiver" : "Activer"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`client_del_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                  onClick={() => void deleteClient(row)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                                  Supprimer
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <Dialog open={clientDialogOpen} onOpenChange={setClientDialogOpen}>
+                <DialogContent className="max-w-xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingClient ? "Modifier client" : "Ajouter client"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Nom</label>
+                      <Input value={clientForm.name} onChange={(e) => setClientForm({ name: e.target.value })} />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Images</label>
+                      <Input type="file" multiple accept="image/*" onChange={(e) => setClientFiles(e.target.files)} />
+                      <p className="text-xs text-muted-foreground">
+                        Vous pouvez televerser plusieurs images. Si vous modifiez, les nouvelles images remplacent les anciennes.
+                      </p>
+                    </div>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setClientDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button className="rounded-md bg-primary" disabled={acting.client_save === true} onClick={() => void saveClient()}>
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          ) : section === "partners" ? (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                  <h2 className="font-serif text-xl font-bold text-primary">Partenaires</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Gestion des ports, shipping lines et free zones affiches sur la home.</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button asChild variant="outline" className="rounded-md w-fit">
+                    <Link href="/">{t.adminPage.cmsOpenSite}</Link>
+                  </Button>
+                  <Button className="rounded-md bg-primary w-fit" onClick={openAddPartner}>
+                    <Plus className="h-4 w-4 mr-2" /> Ajouter
+                  </Button>
+                </div>
+              </div>
+
+              {partnersError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">Nom</th>
+                        <th className="px-4 py-3 font-semibold">Type</th>
+                        <th className="px-4 py-3 font-semibold">Logo / Images</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {partners.length === 0 ? (
+                        <tr>
+                          <td className="px-4 py-4 text-muted-foreground" colSpan={4}>
+                            Aucun partenaire.
+                          </td>
+                        </tr>
+                      ) : (
+                        partners.map((row) => (
+                          <tr key={row.id} className="hover:bg-muted/30">
+                            <td className="px-4 py-3 font-semibold text-primary">{row.name}</td>
+                            <td className="px-4 py-3">{row.type}</td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center gap-2">
+                                <span className="text-muted-foreground">{row.images?.length ?? 0}</span>
+                                <div className="flex items-center gap-1">
+                                  {(row.images ?? []).slice(0, 3).map((src) => (
+                                    <img
+                                      key={src}
+                                      src={src}
+                                      alt=""
+                                      className="h-8 w-8 rounded object-cover border border-border bg-muted"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                  onClick={() => openEditPartner(row)}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" aria-hidden />
+                                  Modifier
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`partner_toggle_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                  onClick={() => void togglePartner(row)}
+                                >
+                                  {row.active ? "Inactiver" : "Activer"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`partner_del_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                  onClick={() => void deletePartner(row)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                                  Supprimer
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <Dialog open={partnerDialogOpen} onOpenChange={setPartnerDialogOpen}>
+                <DialogContent className="max-w-xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingPartner ? "Modifier partenaire" : "Ajouter partenaire"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Nom</label>
+                      <Input
+                        value={partnerForm.name}
+                        onChange={(e) => setPartnerForm((s) => ({ ...s, name: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Type</label>
+                      <select
+                        value={partnerForm.type}
+                        onChange={(e) => setPartnerForm((s) => ({ ...s, type: e.target.value }))}
+                        aria-label="Type de partenaire"
+                        title="Type de partenaire"
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      >
+                        <option value="ports">ports</option>
+                        <option value="shipping line">shipping line</option>
+                        <option value="free zone">free zone</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Logo ou images</label>
+                      <Input type="file" multiple accept="image/*" onChange={(e) => setPartnerFiles(e.target.files)} />
+                    </div>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setPartnerDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button className="rounded-md bg-primary" disabled={acting.partner_save === true} onClick={() => void savePartner()}>
+                      Enregistrer
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          ) : section === "news" ? (
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                  <h2 className="font-serif text-xl font-bold text-primary">News</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Publication d'actualites avec images multiples.</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button asChild variant="outline" className="rounded-md w-fit">
+                    <Link href="/news">{t.adminPage.cmsOpenSite}</Link>
+                  </Button>
+                  <Button className="rounded-md bg-primary w-fit" onClick={openAddNews}>
+                    <Plus className="h-4 w-4 mr-2" /> Ajouter
+                  </Button>
+                </div>
+              </div>
+
+              {newsError ? (
+                <p className="text-destructive text-sm">{t.adminPage.loadError}</p>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-muted/80 text-xs uppercase tracking-wide text-muted-foreground">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">ID</th>
+                        <th className="px-4 py-3 font-semibold">Nom</th>
+                        <th className="px-4 py-3 font-semibold">Description</th>
+                        <th className="px-4 py-3 font-semibold">Date</th>
+                        <th className="px-4 py-3 font-semibold">Images</th>
+                        <th className="px-4 py-3 font-semibold">Users</th>
+                        <th className="px-4 py-3 font-semibold">Nombre like</th>
+                        <th className="px-4 py-3 font-semibold">Commentaires</th>
+                        <th className="px-4 py-3 font-semibold">More to read</th>
+                        <th className="px-4 py-3 font-semibold">Statut</th>
+                        <th className="px-4 py-3 font-semibold text-right">{t.adminPage.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {news.length === 0 ? (
+                        <tr>
+                          <td className="px-4 py-4 text-muted-foreground" colSpan={11}>
+                            Aucune news.
+                          </td>
+                        </tr>
+                      ) : (
+                        news.map((row) => (
+                          <tr key={row.id} className="hover:bg-muted/30">
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{row.id.slice(-6)}</td>
+                            <td className="px-4 py-3 font-semibold text-primary">{row.name}</td>
+                            <td className="px-4 py-3 max-w-lg">
+                              <span className="line-clamp-2 text-muted-foreground">{row.description}</span>
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {row.publishedAt ? new Date(row.publishedAt).toLocaleString() : "—"}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center gap-2">
+                                <span className="text-muted-foreground">{row.images?.length ?? 0}</span>
+                                <div className="flex items-center gap-1">
+                                  {(row.images ?? []).slice(0, 3).map((src) => (
+                                    <img
+                                      key={src}
+                                      src={src}
+                                      alt=""
+                                      className="h-8 w-8 rounded object-cover border border-border bg-muted"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-4 py-3">{row.user || "—"}</td>
+                            <td className="px-4 py-3">{row.likesCount ?? 0}</td>
+                            <td className="px-4 py-3">{row.commentsCount ?? 0}</td>
+                            <td className="px-4 py-3">{row.showInMoreToRead ? "Oui" : "Non"}</td>
+                            <td className="px-4 py-3">
+                              <span className={row.active ? "text-emerald-700" : "text-muted-foreground"}>
+                                {row.active ? "Actif" : "Inactif"}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-white px-2.5 py-1.5 text-xs text-primary hover:bg-muted"
+                                  onClick={() => openEditNews(row)}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" aria-hidden />
+                                  Modifier
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`news_toggle_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+                                  onClick={() => void toggleNews(row)}
+                                >
+                                  {row.active ? "Inactiver" : "Activer"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={acting[`news_del_${row.id}`] === true}
+                                  className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-white px-2.5 py-1.5 text-xs text-destructive hover:bg-destructive/5 disabled:opacity-60"
+                                  onClick={() => void deleteNews(row)}
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                                  Supprimer
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <Dialog open={newsDialogOpen} onOpenChange={setNewsDialogOpen}>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>{editingNews ? "Modifier news" : "Ajouter news"}</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Nom</label>
+                      <Input value={newsForm.name} onChange={(e) => setNewsForm((s) => ({ ...s, name: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-primary">Description</label>
+                      <Textarea
+                        value={newsForm.description}
+                        onChange={(e) => setNewsForm((s) => ({ ...s, description: e.target.value }))}
+                        rows={7}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="space-y-2 sm:col-span-2">
+                        <label className="text-sm font-medium text-primary">Date / Heure</label>
+                        <Input
+                          type="datetime-local"
+                          value={newsForm.publishedAt}
+                          onChange={(e) => setNewsForm((s) => ({ ...s, publishedAt: e.target.value }))}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-primary">Likes</label>
+                        <Input
+                          type="number"
+                          min={0}
+                          value={newsForm.likesCount}
+                          onChange={(e) => setNewsForm((s) => ({ ...s, likesCount: Number(e.target.value) || 0 }))}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-primary">Commentaires</label>
+                        <Input
+                          type="number"
+                          min={0}
+                          value={newsForm.commentsCount}
+                          onChange={(e) => setNewsForm((s) => ({ ...s, commentsCount: Number(e.target.value) || 0 }))}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-primary">Images (plus de 2 possible)</label>
+                        <Input type="file" multiple accept="image/*" onChange={(e) => setNewsFiles(e.target.files)} />
+                      </div>
+                    </div>
+                    <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                      <input
+                        type="checkbox"
+                        checked={newsForm.showInMoreToRead}
+                        onChange={(e) => setNewsForm((s) => ({ ...s, showInMoreToRead: e.target.checked }))}
+                      />
+                      Afficher dans "More to read"
+                    </label>
+                  </div>
+                  <DialogFooter className="gap-2">
+                    <Button variant="outline" className="rounded-md" onClick={() => setNewsDialogOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button className="rounded-md bg-primary" disabled={acting.news_save === true} onClick={() => void saveNews()}>
                       Enregistrer
                     </Button>
                   </DialogFooter>

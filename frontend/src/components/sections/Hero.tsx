@@ -1,11 +1,25 @@
+import { useEffect, useState } from "react";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { ArrowRight, MessageCircle, Phone } from "lucide-react";
 import heroBg from "../../assets/hero-bg.png";
+import heroSlide1 from "../../assets/hero-slide-1.png";
+import heroSlide2 from "../../assets/hero-slide-2.png";
+import heroSlide3 from "../../assets/service-maritime.png";
 
 export function Hero() {
   const { t, language } = useLanguage();
   const isRtl = language === 'ar';
+  const heroSlides = [heroSlide1, heroSlide2, heroSlide3, heroBg];
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % heroSlides.length);
+    }, 5000);
+
+    return () => window.clearInterval(interval);
+  }, [heroSlides.length]);
 
   const scrollTo = (id: string) => {
     const element = document.getElementById(id);
@@ -18,11 +32,14 @@ export function Hero() {
     <section id="hero" className="relative min-h-dvh flex items-center pt-32 sm:pt-36 overflow-hidden bg-primary">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={heroBg}
-          alt="Cargo ship at sea"
-          className="w-full h-full object-cover object-center"
-        />
+        {heroSlides.map((slide, index) => (
+          <img
+            key={slide}
+            src={slide}
+            alt="Infrastructure logistique et portuaire"
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ${activeSlide === index ? "opacity-100" : "opacity-0"}`}
+          />
+        ))}
         <div className="absolute inset-0 bg-linear-to-r from-primary/95 via-primary/80 to-primary/40" />
       </div>
 

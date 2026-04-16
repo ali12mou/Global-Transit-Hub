@@ -7,18 +7,24 @@ export function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-[#080d26] text-white pt-12 md:pt-16 pb-8 border-t-4 border-secondary">
+    <footer className="bg-[#081229] text-white pt-14 md:pt-20 pb-8 border-t border-white/10">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 mb-12">
 
           {/* Logo + Social */}
-          <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center mb-5">
-              <div className="bg-white rounded-md px-3 py-2">
-                <img src="/logo.png" alt="Global Transit and Transport Services" className="h-14 w-auto" />
+          <div className="lg:col-span-4">
+            <div className="flex items-center gap-4 mb-5">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white shadow-lg">
+                <img src="/logo.png" alt="Global Transit and Transport Services" className="max-h-14 w-auto" />
+              </div>
+              <div>
+                <h3 className="font-serif text-xl font-bold text-white">Global Transit</h3>
+                <p className="text-[11px] uppercase tracking-[0.28em] text-white/55">
+                  Transport & Logistics
+                </p>
               </div>
             </div>
-            <p className="text-white/60 mb-6 text-sm leading-relaxed max-w-xs">
+            <p className="text-white/65 mb-6 text-sm leading-relaxed max-w-md">
               {t.hero.subheadline}
             </p>
             <div className="flex gap-3">
@@ -50,7 +56,7 @@ export function Footer() {
           </div>
 
           {/* Nav links */}
-          <div>
+          <div className="lg:col-span-2">
             <h4 className="font-serif font-bold text-base mb-5">{t.nav.aboutUs}</h4>
             <ul className="space-y-3">
               <li><Link href="/company" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.ourCompany}</Link></li>
@@ -59,7 +65,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
+          <div className="lg:col-span-3">
             <h4 className="font-serif font-bold text-base mb-5">
               <Link href="/activities" className="hover:text-secondary transition-colors">
                 {t.nav.ourBusiness}
@@ -80,7 +86,7 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
+          <div className="lg:col-span-3">
             <h4 className="font-serif font-bold text-base mb-5">{t.contact.info.title}</h4>
             <address className="not-italic text-white/60 space-y-3">
               <div className="flex items-start gap-2">
@@ -108,7 +114,7 @@ export function Footer() {
 
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+        <div className="border-t border-white/10 pt-8 flex flex-col lg:flex-row items-center justify-between gap-4 text-center lg:text-left">
           <div>
             <p className="text-white/50 text-xs sm:text-sm">{t.footer.copyright}</p>
             <p className="text-white/40 text-xs mt-1">

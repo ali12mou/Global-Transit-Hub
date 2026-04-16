@@ -54,7 +54,7 @@ export default function ProjectsPage() {
             {t.projects.title}
           </h1>
           <p className="text-white/80 text-base md:text-lg max-w-3xl">
-            Découvrez nos projets et opérations phares.
+            {t.ui.projectsIntro}
           </p>
         </div>
       </section>
@@ -62,9 +62,9 @@ export default function ProjectsPage() {
       <section className="py-14 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
           {loadError ? (
-            <p className="text-sm text-destructive">Erreur de chargement. Réessayez plus tard.</p>
+            <p className="text-sm text-destructive">{t.ui.loadErrorTryLater}</p>
           ) : projects.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Aucun projet n’est publié pour le moment.</p>
+            <p className="text-sm text-muted-foreground">{t.ui.noProjects}</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((p, idx) => (
@@ -89,7 +89,7 @@ export default function ProjectsPage() {
                     <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/10 to-transparent" />
                     <div className="absolute top-4 left-4">
                       <span className="inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-primary">
-                        {p.category || "Project"}
+                        {p.category || t.ui.projectGeneric}
                       </span>
                     </div>
                   </div>

@@ -9,7 +9,10 @@
     "start": "node --enable-source-maps ./dist/index.mjs",
     "lint": "tsc -p tsconfig.json --noEmit",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "seed:admin": "tsx ./scripts/seed-admin.ts"
+    "seed:admin": "tsx ./scripts/seed-admin.ts",
+    "create:news": "tsx ./scripts/create-news-table.ts",
+    "create:clients": "tsx ./scripts/create-clients-table.ts",
+    "create:partners": "tsx ./scripts/create-partners-table.ts"
   },
   "dependencies": {
     "@workspace/api-zod": "workspace:*",
