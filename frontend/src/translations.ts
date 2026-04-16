@@ -709,7 +709,10 @@ export const translations: Record<Language, any> = {
       cmsOpenSite: "عرض على الموقع",
       settingsTitle: "الإعدادات",
       settingsAccount: "الحساب المتصل",
-      settingsBody: "خيارات متقدمة (كلمة المرور، الإشعارات…) لاحقًا."
+      settingsBody: "خيارات متقدمة (كلمة المرور، الإشعارات…) لاحقًا.",
+      navUsers: "المستخدمون",
+      navRoles: "الأدوار",
+      navPermissions: "الصلاحيات"
     },
     footer: {
       developer: "تم التطوير بواسطة GEOSOM Technologies",
@@ -737,7 +740,7 @@ export const translations: Record<Language, any> = {
     },
     about: {
       title: "በጅቡቲ — ኢትዮጵያ ኮሪደር ላይ ባለሙያዎች",
-      backgroundText: "ከ2012 ጀምሮ ኩባንያ Global Transit and Transport Services ትግበራ፣ ትራንስፖርት፣ ሎጂስቲክስ እና ጉምሩክ ማስፈቀዳ ሙያዊ ስራዎች ለቅንጅቶች፣ ነጋዴዎች እና ኢኮኖሚ ተሠራተኞች ደግፈዋል። በወጣ ተማሪ ስራ፣ በጅቡቲ ስትራቴጂካዊ ቦታ፣ በኢትዮጵያ ስራ ግንኙነት እና በምስራቅ አፍሪካ ክልላዊ ራእይ፣ ኩባንያው አስተሳሰብ ባለሙያ፣ ከተዋቀረ እና ታሳቢ አዋቃቂ ሆናለች። በሰከነ ቡድን እና በደንበኛ 족족족족족족족ን የታተቀ ስራ ባህል ሞዴል በ Global Transit and Transport Services ከፍተኛ ደረጃ ሎጂስቲክስ ስራ፣ ንግድ ማቅለልና የደንበኛ ሎጂስቲክስ አፈፃፀም ለማሻሻል ግልጽ ምኞት ያለበት ዕድገት።",
+      backgroundText: "ከ2012 ጀምሮ ኩባንያ Global Transit and Transport Services ትግበራ፣ ትራንስፖርት፣ ሎጂስቲክስ እና ጉምሩክ ማስፈቀዳ ሙያዊ ስራዎች ለቅንጅቶች፣ ነጋዴዎች እና ኢኮኖሚ ተሠራተኞች ደግፈዋል። በወጣ ተማሪ ስራ፣ በጅቡቲ ስትራቴጂካዊ ቦታ፣ በኢትዮጵያ ስራ ግንኙነት እና በምስራቅ አፍሪካ ክልላዊ ራእይ፣ ኩባንያው አስተሳሰብ ባለሙያ፣ ከተዋቀረ እና ታሳቢ አዋቃቂ ሆናለች። በልልሆ ቡጅንን ለንግጋ በደንበኛ ለርከታ ላይ የተሰነረሮራ የሀገልግሎት ባህል በ በ Global Transit and Transport Services ከፍተኛ ደረጃ ሎጂስቲክስ ስራ፣ ንግድ ማቅለልና የደንበኛ ሎጂስቲክስ አፈፃፀም ለማሻሻል ግልጽ ምኞት ያለበት ዕድገት።",
       description: "Global Transit ከዓለም ገበያዎች ወደ ምስራቅ አፍሪካ የሚደረጉ የዕቃ ዝውውሮችን ያስተባብራል። በኢትዮጵያ እና በምስራቅ አፍሪካ ኮሪደር ዋና መዳረሻ በሆነው ጅቡቲ ተቀምጠን፣ ጉምሩክ ማስፈቀጃ፣ ወደብ ሎጂስቲክስ እና ክልላዊ አቅርቦት ሰንሰለትን ቁጥጥር ወደር በሌለው ሙያ እናካሂዳለን።",
       missionTitle: "ተልእኳችን",
       missionText: "ኢትዮጵያዊያን እና ምስራቅ አፍሪካዊያን አስመጪዎች እና ላኪዎች ወደ ዓለም ገበያዎች እንዲደርሱ ማመቻቸት — አስተማማኝ፣ ፈጣን እና ለአካባቢ ሁኔታ የተስማሙ ሎጂስቲክስ መፍትሄዎች በማቅረብ።",
@@ -942,7 +945,10 @@ export const translations: Record<Language, any> = {
       cmsOpenSite: "በጣቢያ ላይ ይመልከቱ",
       settingsTitle: "ቅንብሮች",
       settingsAccount: "የተገናኘ መለያ",
-      settingsBody: "የላቀ አማራጮች በኋላ።"
+      settingsBody: "የላቀ አማራጮች በኋላ።",
+      navUsers: "ተረትላግርች",
+      navRoles: "ምንላች",
+      navPermissions: "ግታላሎች"
     },
     footer: {
       developer: "በGEOSOM Technologies ተዘጋጀ",
@@ -1175,10 +1181,13 @@ export const translations: Record<Language, any> = {
       cmsOpenSite: "Tazama kwenye tovuti",
       settingsTitle: "Mipangilio",
       settingsAccount: "Akaunti iliyounganishwa",
-      settingsBody: "Chaguo za hali ya juu baadaye."
+      settingsBody: "Chaguo za hali ya juu baadaye.",
+      navUsers: "Watumiaji",
+      navRoles: "Majukumu",
+      navPermissions: "Ruhusa"
     },
-    fodeveloper: "Iliwezeshwa na GEOSOM Technologies",
-      oter: {
+    footer: {
+      developer: "Iliwezeshwa na GEOSOM Technologies",
       copyright: "© 2025 Global Transit and Transport Services. Haki zote zimehifadhiwa. | Djibouti & Ethiopia",
       links: ["Sera ya Faragha", "Vigezo na Masharti", "Utekelezaji wa Forodha"]
     }
@@ -1202,7 +1211,10 @@ export const translations: Record<Language, any> = {
       cta: "Ogow Adeegyadeena"
     },
     about: {
-      backgroundText: "Intii laga bilaabay 2012, Global Transit and Transport Services waxay taageersatay ganacsiyo, ganacsatoyaal, iyo maliyeyaal oo kale iyada oo la bixiya xallinta xirfadlaysiinta ah ee marinta, gaadiidka, saadka, iyo jamaarada. Iyada oo ay leedahay khibrad, joog istiraatiijiyad Jabuuti, xiriir hawl loo yeesho Itoobiya, iyo aragtiyaha gobolka ee loo dhaaftay Afrika Mashariki, kampaniga waxay noo muujinaysaa inay tahay xibiil ammaan, mid taban, iyo mid iska caabinta. Waxaa lagu daray kooxda xirfadlaysan iyo agab shuruudda oo diirada saaray qofka loo rabbo, Global Transit and Transport Services waxay sii wadi karaan kor u qaadida iyada oo qofka loo rabba mid cad in bixinayso caasimad qalac, sahansanin ganacsiga, iyo bixin iska waxyaabaha hawl looga yeesho saadka ee looga yaabay.",
+      title: "Khabiirada marinka Jabuuti — Itoobiya",
+      description:
+        "Global Transit waxay isku xiraysaa suuqyada adduunka iyo Bariga Afrika. Iyadoo xarunteedu tahay Jabuuti — albaabka Itoobiya iyo marinnada Bariga Afrika — waxaan ku takhasusnay jamaarada, saadka dekedda, iyo silsilada saadka gobolka.",
+      backgroundText: "Intii laga bilaabay 2012, Global Transit and Transport Services waxay taageersatay ganacsiyo, ganacsatoyaal, iyo maliyeyaal oo kale iyada oo la bixiya xallinta xirfadlaysiinta ah ee marinta, gaadiidka, saadka, iyo jamaarada. Iyada oo ay leedahay khibrad, joog istiraatiijiyad Jabuuti, xiriir hawl loo yeesho Itoobiya, iyo aragtiyaha gobolka ee loo dhaaftay Afrika Mashariki, kampanigu wuxuu noqday wadaag lagu kalsoon yahay oo habaysan. Koox xirfad leh iyo dhaqan adeeg oo diiradda saaraya qanacsiga macaamiisha, Global Transit and Transport Services waxay sii wadaysaa inay bixiso adeegyo tayo leh, fududeyso ganacsiga, waxayna gacan ka geysato waxqabadka saadka macaamiisheeda.",
       missionTitle: "Hadafkeena",
       missionText: "Fududaynta helitaanka soo dejiyeyaasha iyo diriyeyaasha Itoobiyaanka iyo Bariga Afrika ee suuqyada adduunka, iyaga oo la siinayo xalalka saadka ee laydin ammaan ahaan, degdeg ahaan iyo midka u eg dunida haweenkaa Afrika, waxaan si fiican u garannaa habraacyada jamaarada, shaqaynta dekedda, iyo silsilada saadka gobolka oo khibrad aan la mid lahayn.",
       stats: [
@@ -1406,7 +1418,10 @@ export const translations: Record<Language, any> = {
       cmsOpenSite: "Ku eeg bogga",
       settingsTitle: "Dejinta",
       settingsAccount: "Akoonka ku xiran",
-      settingsBody: "Xulashooyin horumarsan markale."
+      settingsBody: "Xulashooyin horumarsan markale.",
+      navUsers: "Isticmaaleyaasha",
+      navRoles: "Doorka",
+      navPermissions: "Ogolaanshaha"
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. Dhammaan xuquuqaha waa la xafiday. | Jabuuti & Itoobiya",
@@ -1639,7 +1654,10 @@ export const translations: Record<Language, any> = {
       cmsOpenSite: "Marsariitii irratti ilaali",
       settingsTitle: "Qindaa'ina",
       settingsAccount: "Akkaawuntii walitti qabame",
-      settingsBody: "Filannoo ol'aanaa booda."
+      settingsBody: "Filannoo ol'aanaa booda.",
+      navUsers: "Fayyadamtoota",
+      navRoles: "Gahee",
+      navPermissions: "Hayyama"
     },
     footer: {
       copyright: "© 2025 Global Transit and Transport Services. Mirgi hunduu seeraan eegamaadha. | Jibuutii & Itoophiyaa",
