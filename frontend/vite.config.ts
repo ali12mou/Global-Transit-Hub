@@ -2,54 +2,54 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
-export default defineConfig(async ({ mode }) => {
-  const env = loadEnv(mode, import.meta.dirname, "");
-  // Avoid clashing with backend's PORT env var (often set to 8080).
-  // We intentionally ignore env.PORT here.
-  const rawPort = env.VITE_PORT ?? process.env.VITE_PORT ?? "5173";
-  const port = Number(rawPort);
-  if (Number.isNaN(port) || port <= 0) {
-    throw new Error(`Invalid PORT value: "${rawPort}"`);
-  }
-  const basePath = env.BASE_PATH ?? process.env.BASE_PATH ?? "/";
-  const apiProxyTarget =
-    env.VITE_API_PROXY_TARGET ?? process.env.VITE_API_PROXY_TARGET ?? "http://127.0.0.1:8080";
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
 
-  const replitPlugins =
-    process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer({
-              root: path.resolve(import.meta.dirname, ".."),
-            }),
-          ),
-          await import("@replit/vite-plugin-dev-banner").then((m) =>
-            m.devBanner(),
-          ),
-        ]
-      : [];
+  const port = Number(env.VITE_PORT || 5173);
+  const basePath = env.BASE_PATH || "/";
+  const apiProxyTarget = env.VITE_API_PROXY_TARGET || "http://127.0.0.1:8080";
 
   return {
     base: basePath,
-    plugins: [react(), tailwindcss(), runtimeErrorOverlay(), ...replitPlugins],
+
+    plugins: [
+      react(),
+      tailwindcss(),
+      // ❌ supprimé runtimeErrorOverlay en prod
+    ],
+
     resolve: {
       alias: {
-        "@": path.resolve(import.meta.dirname, "src"),
-        "@assets": path.resolve(import.meta.dirname, "..", "attached_assets"),
+        "@": path.resolve(__dirname, "src"),
+        "@assets": path.resolve(__dirname, "attached_assets"),
       },
       dedupe: ["react", "react-dom"],
     },
-    root: path.resolve(import.meta.dirname),
+
     build: {
-      outDir: path.resolve(import.meta.dirname, "dist"),
+      outDir: "dist",
       emptyOutDir: true,
+
+      // ✅ corrige ton warning sourcemap
+      sourcemap: false,
+
+      // ✅ évite warning chunk size
+      chunkSizeWarningLimit: 1000,
+
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ["react", "react-dom"],
+          },
+        },
+      },
     },
+
     server: {
       port,
       host: "0.0.0.0",
-      allowedHosts: true,
+
       proxy: {
         "/api": {
           target: apiProxyTarget,
@@ -60,15 +60,11 @@ export default defineConfig(async ({ mode }) => {
           changeOrigin: true,
         },
       },
-      fs: {
-        strict: true,
-        deny: ["**/.*"],
-      },
     },
+
     preview: {
       port,
       host: "0.0.0.0",
-      allowedHosts: true,
     },
   };
 });
