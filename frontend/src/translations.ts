@@ -149,7 +149,7 @@ export const translations: Record<Language, any> = {
       cap6: "Liaisons maritimes internationales et flux régionaux."
     },
     ui: {
-      brandTagline: "Transport & Logistique",
+      brandTagline: "Transport & Service",
       navClients: "Nos Clients",
       navNews: "Actualités",
       selectLanguage: "Choisir la langue",
@@ -392,7 +392,7 @@ export const translations: Record<Language, any> = {
       cap6: "International maritime links and regional flows.",
     },
     ui: {
-      brandTagline: "Transport & Logistics",
+      brandTagline: "Transport & Service",
       navClients: "Our Clients",
       navNews: "News",
       selectLanguage: "Select Language",
@@ -632,7 +632,7 @@ export const translations: Record<Language, any> = {
       cap6: "روابط بحرية دولية وتدفقات إقليمية."
     },
     ui: {
-      brandTagline: "النقل والخدمات اللوجستية",
+      brandTagline: "النقل والخدمة",
       navClients: "عملاؤنا",
       navNews: "الأخبار",
       selectLanguage: "اختر اللغة",
@@ -868,7 +868,7 @@ export const translations: Record<Language, any> = {
       cap6: "ዓለም አቀፍ የባህር ግንኙነቶች እና ክልላዊ ፍሰቶች።"
     },
     ui: {
-      brandTagline: "ትራንስፖርት እና ሎጂስቲክስ",
+      brandTagline: "ትራንስፖርት እና አገልግሎት",
       navClients: "ደንበኞቻችን",
       navNews: "ዜና",
       selectLanguage: "ቋንቋ ይምረጡ",
@@ -1104,7 +1104,7 @@ export const translations: Record<Language, any> = {
       cap6: "Miunganiko ya kimataifa ya baharini na mtiririko wa kikanda."
     },
     ui: {
-      brandTagline: "Usafiri & Lojistiki",
+      brandTagline: "Usafiri & Huduma",
       navClients: "Wateja Wetu",
       navNews: "Habari",
       selectLanguage: "Chagua lugha",
@@ -1341,7 +1341,7 @@ export const translations: Record<Language, any> = {
       cap6: "Xiriirka badda ee caalamiga ah iyo socodka gobolka."
     },
     ui: {
-      brandTagline: "Gaadiid & Saad",
+      brandTagline: "Gaadiid & Adeeg",
       navClients: "Macaamiisheena",
       navNews: "Warar",
       selectLanguage: "Dooro luqadda",
@@ -1577,7 +1577,7 @@ export const translations: Record<Language, any> = {
       cap6: "Walitti hidhamiinsa galaanaa idil-addunyaa fi soccha naannoo."
     },
     ui: {
-      brandTagline: "Geejjibaa & Loojistiiksii",
+      brandTagline: "Geejjibaa & Tajaajila",
       navClients: "Maamiltoota Keenya",
       navNews: "Oduu",
       selectLanguage: "Afaan filadhu",

@@ -14,13 +14,13 @@ export function Footer() {
           {/* Logo + Social */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-4 mb-5">
-              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/5 ring-1 ring-white/10 backdrop-blur-sm">
-                <img src="/logo-transparent.png" alt="Global Transit and Transport Services" className="max-h-14 w-auto drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)]" />
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white p-1.5 ring-1 ring-slate-200/50 shadow-sm">
+                <img src="/logo-transparent.png" alt="Global Transit and Transport Services" className="max-h-full w-auto object-contain" />
               </div>
               <div>
                 <h3 className="font-serif text-xl font-bold text-white">Global Transit</h3>
                 <p className="text-[11px] uppercase tracking-[0.3em] text-white/60">
-                  Transport & Logistics
+                  {t.ui.brandTagline}
                 </p>
               </div>
             </div>

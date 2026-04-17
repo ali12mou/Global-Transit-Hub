@@ -100,8 +100,8 @@ export function Navbar() {
             role="button"
             tabIndex={0}
           >
-            <div className="flex h-14 w-14 items-center justify-center shrink-0">
-              <img src="/logo-transparent.png" alt="Global Transit and Transport Services" className="max-h-14 w-auto object-contain drop-shadow-[0_8px_20px_rgba(3,12,31,0.25)]" />
+            <div className="flex h-14 w-14 items-center justify-center shrink-0 rounded-xl bg-white p-1 ring-1 ring-slate-200/90 shadow-sm">
+              <img src="/logo-transparent.png" alt="Global Transit and Transport Services" className="max-h-full w-auto object-contain" />
             </div>
             <div className="hidden md:block min-w-0">
               <p className="truncate font-serif text-lg font-bold text-primary">Global Transit</p>

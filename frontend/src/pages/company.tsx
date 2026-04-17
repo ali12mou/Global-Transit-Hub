@@ -41,8 +41,8 @@ export default function CompanyPage() {
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
               <div className="flex items-center gap-4">
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-slate-50 ring-1 ring-slate-200">
-                  <img src="/logo-transparent.png" alt="Global Transit" className="max-h-14 w-auto object-contain" />
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white p-1.5 ring-1 ring-slate-200 shadow-sm">
+                  <img src="/logo-transparent.png" alt="Global Transit" className="max-h-full w-auto object-contain" />
                 </div>
                 <div>
                   <p className="font-serif text-xl font-bold text-primary">Global Transit</p>

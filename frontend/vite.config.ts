@@ -48,6 +48,7 @@ export default defineConfig(({ mode }) => {
 
     server: {
       port,
+      strictPort: true,
       host: "0.0.0.0",
 
       proxy: {
@@ -64,6 +65,7 @@ export default defineConfig(({ mode }) => {
 
     preview: {
       port,
+      strictPort: true,
       host: "0.0.0.0",
     },
   };
