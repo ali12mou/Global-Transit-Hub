@@ -7,19 +7,19 @@ export function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-[#081229] text-white pt-14 md:pt-20 pb-8 border-t border-white/10">
+    <footer className="border-t border-white/10 bg-linear-to-b from-[#061126] via-[#081a37] to-[#050d1f] text-white pt-14 md:pt-20 pb-8">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 mb-12">
 
           {/* Logo + Social */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-4 mb-5">
-              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white shadow-lg">
-                <img src="/logo.png" alt="Global Transit and Transport Services" className="max-h-14 w-auto" />
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/5 ring-1 ring-white/10 backdrop-blur-sm">
+                <img src="/logo-transparent.png" alt="Global Transit and Transport Services" className="max-h-14 w-auto drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)]" />
               </div>
               <div>
                 <h3 className="font-serif text-xl font-bold text-white">Global Transit</h3>
-                <p className="text-[11px] uppercase tracking-[0.28em] text-white/55">
+                <p className="text-[11px] uppercase tracking-[0.3em] text-white/60">
                   Transport & Logistics
                 </p>
               </div>
@@ -31,7 +31,7 @@ export function Footer() {
               <a
                 href="#"
                 aria-label="LinkedIn"
-                className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors"
+                className="w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors"
               >
                 <Linkedin className="h-4 w-4" aria-hidden="true" />
                 <span className="sr-only">LinkedIn</span>
@@ -39,7 +39,7 @@ export function Footer() {
               <a
                 href="#"
                 aria-label="Twitter"
-                className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors"
+                className="w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors"
               >
                 <Twitter className="h-4 w-4" aria-hidden="true" />
                 <span className="sr-only">Twitter</span>
@@ -47,7 +47,7 @@ export function Footer() {
               <a
                 href="#"
                 aria-label="Facebook"
-                className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors"
+                className="w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors"
               >
                 <Facebook className="h-4 w-4" aria-hidden="true" />
                 <span className="sr-only">Facebook</span>
@@ -56,7 +56,7 @@ export function Footer() {
           </div>
 
           {/* Nav links */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 rounded-2xl border border-white/10 bg-white/3 p-5">
             <h4 className="font-serif font-bold text-base mb-5">{t.nav.aboutUs}</h4>
             <ul className="space-y-3">
               <li><Link href="/company" className="text-white/60 hover:text-secondary transition-colors text-sm">{t.nav.ourCompany}</Link></li>
@@ -65,7 +65,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 rounded-2xl border border-white/10 bg-white/3 p-5">
             <h4 className="font-serif font-bold text-base mb-5">
               <Link href="/activities" className="hover:text-secondary transition-colors">
                 {t.nav.ourBusiness}
@@ -86,7 +86,7 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 rounded-2xl border border-white/10 bg-white/3 p-5">
             <h4 className="font-serif font-bold text-base mb-5">{t.contact.info.title}</h4>
             <address className="not-italic text-white/60 space-y-3">
               <div className="flex items-start gap-2">

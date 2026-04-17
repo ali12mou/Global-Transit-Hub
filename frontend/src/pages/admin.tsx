@@ -1435,7 +1435,7 @@ export default function AdminPage() {
             onClick={closeNav}
           >
             <span className="bg-white rounded-md px-2 py-1 shrink-0">
-              <img src="/logo.png" alt="Global Transit" className="h-7 w-auto" />
+              <img src="/logo-transparent.png" alt="Global Transit" className="h-7 w-auto" />
             </span>
             <span className="min-w-0">
               <span className="block truncate">Global Transit</span>

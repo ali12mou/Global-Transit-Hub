@@ -45,10 +45,10 @@ export function Partners() {
   }, [partners]);
 
   return (
-    <section id="partners" className="bg-[#f8fafc] py-16 md:py-24">
+    <section id="partners" className="bg-linear-to-b from-[#f8fafc] via-white to-[#f8fafc] py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-10 md:mb-14">
-          <div className="mb-4 inline-block border-l-2 border-secondary bg-white px-3 py-1 text-sm font-bold tracking-wider text-primary">
+          <div className="mb-4 inline-block rounded-full border border-primary/15 bg-primary/5 px-4 py-1.5 text-xs font-bold tracking-[0.2em] text-primary">
             NOS PARTENAIRES
           </div>
           <h2 className="text-3xl font-serif font-bold text-primary sm:text-4xl md:text-5xl">Ports et partenaires strategiques</h2>
@@ -67,10 +67,12 @@ export function Partners() {
         ) : (
           <div className="space-y-10">
             {grouped.map(([type, items], sectionIdx) => (
-              <div key={type} className="space-y-5">
-                <div className="flex items-center justify-between gap-3 border-b border-border pb-3">
+              <div key={type} className="space-y-5 rounded-2xl border border-slate-200 bg-white p-5 md:p-6">
+                <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-3">
                   <h3 className="text-xl font-semibold text-primary">{TYPE_LABELS[type] ?? type}</h3>
-                  <span className="text-sm text-muted-foreground">{items.length} element(s)</span>
+                  <span className="rounded-full bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
+                    {items.length} element(s)
+                  </span>
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -81,11 +83,15 @@ export function Partners() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-50px" }}
                       transition={{ duration: 0.45, delay: sectionIdx * 0.05 + idx * 0.05 }}
-                      className="rounded-2xl border border-border bg-white p-5 shadow-sm"
+                      className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-lg"
                     >
-                      <div className="flex min-h-[130px] items-center justify-center rounded-xl bg-muted/30 p-4">
+                      <div className="flex min-h-[130px] items-center justify-center rounded-xl border border-slate-100 bg-white p-4">
                         {partner.images?.[0] ? (
-                          <img src={partner.images[0]} alt={partner.name} className="max-h-20 w-full object-contain" />
+                          <img
+                            src={partner.images[0]}
+                            alt={partner.name}
+                            className="max-h-20 w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                          />
                         ) : (
                           <div className="flex h-20 w-full items-center justify-center rounded bg-muted text-sm text-muted-foreground">
                             Pas de logo
@@ -93,10 +99,10 @@ export function Partners() {
                         )}
                       </div>
                       <div className="mt-4 space-y-1">
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+                        <p className="inline-block rounded-full bg-primary/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
                           {TYPE_LABELS[type] ?? type}
                         </p>
-                        <h4 className="text-base font-semibold text-primary">{partner.name}</h4>
+                        <h4 className="pt-1 text-base font-semibold text-primary">{partner.name}</h4>
                       </div>
                     </motion.article>
                   ))}

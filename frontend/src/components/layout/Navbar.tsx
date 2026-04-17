@@ -58,8 +58,8 @@ export function Navbar() {
   return (
     <header className="fixed top-0 w-full z-50">
       {/* Top Info Bar */}
-      <div className="bg-[#184e3b] text-white text-xs px-4">
-        <div className="container mx-auto flex min-h-10 flex-wrap items-center justify-between gap-2 py-2">
+      <div className="border-b border-white/10 bg-linear-to-r from-[#0f2f2b] via-[#143b36] to-[#1a4a42] text-white text-xs px-4">
+        <div className="container mx-auto flex min-h-10 flex-wrap items-center justify-between gap-2 py-2.5">
           <div className="flex items-center gap-3 md:gap-5 flex-wrap">
             <a href="mailto:info@gttsgroup.com" className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
               <Mail className="h-3 w-3 shrink-0" />
@@ -78,7 +78,7 @@ export function Navbar() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full bg-[#25D366] px-3 py-1 font-semibold text-white transition-colors hover:bg-[#20b859]"
+            className="inline-flex items-center gap-1.5 rounded-full bg-[#25D366] px-3 py-1 font-semibold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-[#20b859]"
           >
             <MessageCircle className="h-3 w-3" />
             <span className="hidden sm:inline">WhatsApp +253 77 69 61 30</span>
@@ -90,7 +90,7 @@ export function Navbar() {
       {/* Main Nav */}
       <div
         className={`transition-all duration-300 border-b border-slate-200/80 ${
-          isScrolled ? "bg-white/98 shadow-lg py-2.5" : "bg-white/96 backdrop-blur-md py-3.5"
+          isScrolled ? "bg-white/98 shadow-lg py-2.5" : "bg-white/95 backdrop-blur-md py-3.5"
         }`}
       >
         <div className="container mx-auto px-4 md:px-6 flex items-center justify-between gap-4">
@@ -100,12 +100,12 @@ export function Navbar() {
             role="button"
             tabIndex={0}
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white ring-1 ring-slate-200 shadow-sm shrink-0">
-              <img src="/logo.png" alt="Global Transit and Transport Services" className="max-h-11 w-auto object-contain" />
+            <div className="flex h-14 w-14 items-center justify-center shrink-0">
+              <img src="/logo-transparent.png" alt="Global Transit and Transport Services" className="max-h-14 w-auto object-contain drop-shadow-[0_8px_20px_rgba(3,12,31,0.25)]" />
             </div>
             <div className="hidden md:block min-w-0">
               <p className="truncate font-serif text-lg font-bold text-primary">Global Transit</p>
-              <p className="truncate text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
+              <p className="truncate text-[11px] uppercase tracking-[0.3em] text-primary/60">
                 {t.ui.brandTagline}
               </p>
             </div>
@@ -185,7 +185,7 @@ export function Navbar() {
             </Link>
             <Link
               href="/login"
-              className="inline-flex items-center rounded-full border border-primary/15 px-4 py-2 text-sm text-primary/90 hover:bg-primary/5 hover:text-primary transition-colors font-medium"
+              className="inline-flex items-center rounded-full border border-primary/15 bg-primary px-4 py-2 text-sm text-white shadow-sm hover:bg-primary/90 transition-colors font-medium"
             >
               {t.nav.login}
             </Link>
