@@ -67,6 +67,16 @@ export default defineConfig(({ mode }) => {
       port,
       strictPort: true,
       host: "0.0.0.0",
+      proxy: {
+        "/api": {
+          target: apiProxyTarget,
+          changeOrigin: true,
+        },
+        "/uploads": {
+          target: apiProxyTarget,
+          changeOrigin: true,
+        },
+      },
     },
   };
 });

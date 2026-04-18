@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { apiFetch } from "@/lib/api";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 
 type PublicClient = {
   id: string;
@@ -66,7 +67,7 @@ export function Clients() {
                   <div className="flex min-h-[105px] items-center justify-center rounded-xl border border-slate-100 bg-white p-4">
                     {client.images?.[0] ? (
                       <img
-                        src={client.images[0]}
+                        src={resolveMediaUrl(client.images[0])}
                         alt={client.name}
                         className="max-h-20 w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                       />

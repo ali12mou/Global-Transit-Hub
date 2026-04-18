@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { apiFetch } from "@/lib/api";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { motion } from "framer-motion";
@@ -79,7 +80,7 @@ export default function ProjectsPage() {
                   <div className="relative aspect-4/3 bg-muted overflow-hidden">
                     {p.image ? (
                       <img
-                        src={p.image}
+                        src={resolveMediaUrl(p.image)}
                         alt={p.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />

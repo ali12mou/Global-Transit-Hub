@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { apiFetch } from "@/lib/api";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 type NewsRow = {
@@ -102,7 +103,11 @@ export default function NewsPage() {
 
                         {item.images?.[0] ? (
                           <div className="mb-4 overflow-hidden rounded-xl bg-muted">
-                            <img src={item.images[0]} alt={item.name} className="max-h-[460px] w-full object-cover" />
+                            <img
+                              src={resolveMediaUrl(item.images[0])}
+                              alt={item.name}
+                              className="max-h-[460px] w-full object-cover"
+                            />
                           </div>
                         ) : (
                           <div className="mb-4 aspect-video w-full rounded-xl bg-muted" />
@@ -128,7 +133,11 @@ export default function NewsPage() {
                       <article key={item.id} className="flex items-start gap-3 rounded-lg border border-border/60 p-2 sm:p-3">
                         <div className="h-16 w-20 shrink-0 overflow-hidden rounded bg-muted sm:h-20 sm:w-24">
                           {item.images?.[0] ? (
-                            <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
+                            <img
+                              src={resolveMediaUrl(item.images[0])}
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                            />
                           ) : (
                             <div className="w-full h-full bg-muted" />
                           )}

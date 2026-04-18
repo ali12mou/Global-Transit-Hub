@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import { apiFetch } from "@/lib/api";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 
 type PublicProject = {
   id: string;
@@ -95,7 +96,7 @@ export function Projects() {
               <div className="relative aspect-video sm:aspect-4/3 lg:aspect-4/5 overflow-hidden bg-muted mb-4 sm:mb-6">
                 {project.img ? (
                   <img
-                    src={project.img}
+                    src={resolveMediaUrl(project.img)}
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { apiFetch } from "@/lib/api";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 
 type PublicPartner = {
   id: string;
@@ -88,7 +89,7 @@ export function Partners() {
                       <div className="flex min-h-[130px] items-center justify-center rounded-xl border border-slate-100 bg-white p-4">
                         {partner.images?.[0] ? (
                           <img
-                            src={partner.images[0]}
+                            src={resolveMediaUrl(partner.images[0])}
                             alt={partner.name}
                             className="max-h-20 w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                           />

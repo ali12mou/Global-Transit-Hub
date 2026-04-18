@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 import heroBg from "../assets/hero-bg.png";
 import { SITE_SERVICE_IDS, siteServiceImages } from "@/lib/siteServices";
 
@@ -144,7 +145,7 @@ export default function ActivitiesPage() {
               >
                 <div className="aspect-video overflow-hidden">
                   {item.img ? (
-                    <img src={item.img} alt="" className="w-full h-full object-cover" />
+                    <img src={resolveMediaUrl(item.img)} alt="" className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full bg-muted" />
                   )}
@@ -177,7 +178,7 @@ export default function ActivitiesPage() {
                 <div className="aspect-4/3 overflow-hidden">
                   {it.src ? (
                     <img
-                      src={it.src}
+                      src={resolveMediaUrl(it.src)}
                       alt={it.desc}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />

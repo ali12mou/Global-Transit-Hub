@@ -1,11 +1,12 @@
+import { getApiBaseUrl } from "./runtimeConfig";
+
 const API_PREFIX = "/api";
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim();
 
 function makeApiUrl(path: string, useFallbackRoot = false): string {
   if (path.startsWith("http")) return path;
+  const API_BASE_URL = getApiBaseUrl();
   if (API_BASE_URL) {
-    const base = API_BASE_URL.endsWith("/") ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
-    return `${base}${path}`;
+    return `${API_BASE_URL}${path}`;
   }
   if (useFallbackRoot) return path;
   return `${API_PREFIX}${path}`;
@@ -30,7 +31,7 @@ export async function apiFetch(path: string, init?: RequestInit): Promise<Respon
   if (firstResponse.status !== 404) return firstResponse;
 
   // Compatibility fallback: some environments expose API routes without "/api" prefix.
-  const canFallback = !path.startsWith("http") && !API_BASE_URL && API_PREFIX === "/api";
+  const canFallback = !path.startsWith("http") && !getApiBaseUrl() && API_PREFIX === "/api";
   if (!canFallback) return firstResponse;
 
   return fetch(makeApiUrl(path, true), requestInit);

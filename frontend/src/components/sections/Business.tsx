@@ -3,6 +3,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { SITE_SERVICE_IDS, siteServiceImages } from "@/lib/siteServices";
 import { apiFetch } from "@/lib/api";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 
 type PublicService = {
   id: string;
@@ -81,7 +82,7 @@ export function Business() {
               <div className="aspect-video overflow-hidden relative">
                 {service.img ? (
                   <img
-                    src={service.img}
+                    src={resolveMediaUrl(service.img)}
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

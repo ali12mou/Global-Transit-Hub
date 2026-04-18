@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { apiFetch } from "@/lib/api";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 import { SITE_SERVICE_IDS } from "@/lib/siteServices";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -1793,7 +1794,7 @@ export default function AdminPage() {
                                       {(row.images ?? []).slice(0, 3).map((src) => (
                                         <img
                                           key={src}
-                                          src={src}
+                                          src={resolveMediaUrl(src)}
                                           alt=""
                                           className="h-8 w-8 rounded object-cover border border-border bg-muted"
                                         />
@@ -1888,7 +1889,7 @@ export default function AdminPage() {
                                       {(row.images ?? []).slice(0, 4).map((src) => (
                                         <img
                                           key={src}
-                                          src={src}
+                                          src={resolveMediaUrl(src)}
                                           alt=""
                                           className="h-8 w-8 rounded object-cover border border-border bg-muted"
                                         />
@@ -2081,7 +2082,7 @@ export default function AdminPage() {
                             <td className="px-4 py-3">
                               {row.image ? (
                                 <img
-                                  src={row.image}
+                                  src={resolveMediaUrl(row.image)}
                                   alt=""
                                   className="h-10 w-10 rounded-full object-cover border border-border"
                                 />
@@ -2375,7 +2376,7 @@ export default function AdminPage() {
                             <td className="px-4 py-3">
                               {row.image ? (
                                 <img
-                                  src={row.image}
+                                  src={resolveMediaUrl(row.image)}
                                   alt=""
                                   className="h-10 w-16 rounded object-cover border border-border bg-muted"
                                 />
@@ -2552,7 +2553,7 @@ export default function AdminPage() {
                                   {(row.images ?? []).slice(0, 3).map((src) => (
                                     <img
                                       key={src}
-                                      src={src}
+                                      src={resolveMediaUrl(src)}
                                       alt=""
                                       className="h-8 w-8 rounded object-cover border border-border bg-muted"
                                     />
@@ -2675,7 +2676,7 @@ export default function AdminPage() {
                                   {(row.images ?? []).slice(0, 3).map((src) => (
                                     <img
                                       key={src}
-                                      src={src}
+                                      src={resolveMediaUrl(src)}
                                       alt=""
                                       className="h-8 w-8 rounded object-cover border border-border bg-muted"
                                     />
@@ -2825,7 +2826,7 @@ export default function AdminPage() {
                                   {(row.images ?? []).slice(0, 3).map((src) => (
                                     <img
                                       key={src}
-                                      src={src}
+                                      src={resolveMediaUrl(src)}
                                       alt=""
                                       className="h-8 w-8 rounded object-cover border border-border bg-muted"
                                     />

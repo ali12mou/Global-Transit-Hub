@@ -1,23 +1,28 @@
 import type { Request } from "express";
 
 /**
- * Convert a relative path to a public absolute URL
- * Handles X-Forwarded-Proto and X-Forwarded-Host headers for reverse proxies
+ * Normalise l’URL ou le chemin stocké en base pour l’API / l’admin.
+ * Retourne des chemins relatifs `/uploads/...` (pas d’hôte) pour que le navigateur
+ * les charge via le même origine que le frontend (proxy Vite en dev) ou
+ * pour que le frontend préfixe avec VITE_API_BASE_URL en prod.
  */
-export function toPublicUrl(req: Request | any, src: string): string {
-  const url = String(src ?? "").trim();
-  if (!url) return "";
-  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:")) {
-    return url;
+export function toPublicUrl(_req: Request | any, src: string): string {
+  const raw = String(src ?? "").trim();
+  if (!raw) return "";
+  if (raw.startsWith("data:")) return raw;
+
+  if (raw.startsWith("http://") || raw.startsWith("https://")) {
+    try {
+      const u = new URL(raw);
+      const h = u.hostname;
+      if ((h === "127.0.0.1" || h === "localhost") && u.pathname.startsWith("/uploads")) {
+        return u.pathname + u.search;
+      }
+    } catch {
+      return raw;
+    }
+    return raw;
   }
 
-  // Try X-Forwarded headers first (reverse proxy/load balancer)
-  const forwardedProto = String(req.headers?.["x-forwarded-proto"] ?? "").split(",")[0].trim();
-  const forwardedHost = String(req.headers?.["x-forwarded-host"] ?? "").trim();
-
-  // Fallback to direct values
-  const protocol = forwardedProto || (req.secure ? "https" : "http") || "http";
-  const host = forwardedHost || req.get?.("host") || req.headers?.["host"] || "127.0.0.1:8080";
-
-  return `${protocol}://${host}${url}`;
+  return raw.startsWith("/") ? raw : `/${raw.replace(/^\/+/, "")}`;
 }

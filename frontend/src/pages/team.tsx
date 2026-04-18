@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { apiFetch } from "@/lib/api";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -79,7 +80,7 @@ export default function TeamPage() {
                   <div className="flex items-start gap-4">
                     {m.image ? (
                       <img
-                        src={m.image}
+                        src={resolveMediaUrl(m.image)}
                         alt={m.name}
                         className="h-14 w-14 rounded-full object-cover border border-border bg-muted shrink-0"
                       />
