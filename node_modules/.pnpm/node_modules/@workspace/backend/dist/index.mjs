@@ -55057,17 +55057,23 @@ function ensureUploadsDir() {
 }
 
 // src/lib/publicUrl.ts
-function toPublicUrl(req, src) {
-  const url = String(src ?? "").trim();
-  if (!url) return "";
-  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:")) {
-    return url;
+function toPublicUrl(_req, src) {
+  const raw = String(src ?? "").trim();
+  if (!raw) return "";
+  if (raw.startsWith("data:")) return raw;
+  if (raw.startsWith("http://") || raw.startsWith("https://")) {
+    try {
+      const u = new URL(raw);
+      const h = u.hostname;
+      if ((h === "127.0.0.1" || h === "localhost") && u.pathname.startsWith("/uploads")) {
+        return u.pathname + u.search;
+      }
+    } catch {
+      return raw;
+    }
+    return raw;
   }
-  const forwardedProto = String(req.headers?.["x-forwarded-proto"] ?? "").split(",")[0].trim();
-  const forwardedHost = String(req.headers?.["x-forwarded-host"] ?? "").trim();
-  const protocol = forwardedProto || (req.secure ? "https" : "http") || "http";
-  const host = forwardedHost || req.get?.("host") || req.headers?.["host"] || "127.0.0.1:8080";
-  return `${protocol}://${host}${url}`;
+  return raw.startsWith("/") ? raw : `/${raw.replace(/^\/+/, "")}`;
 }
 
 // src/routes/admin.ts
